@@ -1,0 +1,14 @@
+{
+  "name": "smp",
+  "version": "1.0.0",
+  "description": "smp简单实用的移动端ui框架",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "leijie",
+  "license": "ISC"
+}
