@@ -2298,17 +2298,18 @@ if ( typeof define === "function" && define.amd ) {
 	Smp.prototype.utils = {
 		pageScroll: function () {
             var w_height = document.documentElement.clientHeight;
-            console.log('windowHeight = '+w_height);
             var islock = false;
+            var _body =Sizzle('body')[0];
             return {
                 lock: function () {
                     if (islock)return;
                     islock = true;
-                    Sizzle('body')[0].style.cssText = 'height:'+w_height+';overflow:hidden';
+					setStyle(_body,{height:w_height,overflow:'hidden'});
+					
                 },
                 unlock: function () {
                     islock = false;
-                    Sizzle('body')[0].style.cssText = 'height:auto;overflow:auto';
+					setStyle(_body,{height:'auto',overflow:'auto'});
                 }
             };
         }(),
@@ -2372,20 +2373,23 @@ if ( typeof define === "function" && define.amd ) {
 		},
 		on: function(type,elem,handleFun){
 			var that = this;
-			console.log('handle');
 			handle = function(e){
-				console.log('123');
 				handleFun(e);
 			}
-			console.log(that);
-			elem.addEventListener(type,handle);
-			
+			if(elem == 'undefined'||elem == null){
+				throw new Error('elem must be node type');
+			}else{
+				elem.addEventListener(type,handle);
+			}
+			if(isArray(elem)){
+				for(var i =0,len = elem.length;i<len;i++){
+						elem[i].addEventListener(type,handle);
+				}
+			}
 		},
 		off: function(type,elem,handleFun){
 			var that = this;
-			console.log(this);
 			handle = function(){
-				console.log('456');
 				handleFun();
 			}
 			elem.removeEventListener(type,handle);
@@ -2478,7 +2482,6 @@ if ( typeof define === "function" && define.amd ) {
         	}
         	var iconHtml = '';
             if (type == 'success' || type == 'error') {
-            	console.log('success');
                 iconHtml = '<div class="' + (type == 'error' ? 'toast-error-ico' : 'toast-success-ico') + '"></div>';
             }
         	if(typeof msg ==''){
@@ -2490,17 +2493,14 @@ if ( typeof define === "function" && define.amd ) {
             var toastStr ='<div class="m-toast ' + (iconHtml == '' ? 'none-icon' : '') + '">'
                 			+iconHtml+'<p class="toast-content">' + (msg || '') + '</p>'
                 		  +'</div>';
-			console.log(toastStr);
             _this.utils.pageScroll.lock();
 			dom.innerHTML = toastStr;
             Sizzle('body')[0].appendChild(dom);
         	
-        	console.log(typeof timeout);
         	if(isFunction(timeout)){//没有设置超时时间，直接使用回调函数
         		callback = timeout;
         	}else if(isNumber(timeout)){
         		callback = callFun;
-        		console.log(callback);
         		timer = setTimeout(function(){
 	        		_this.utils.pageScroll.unlock();
 	        		Sizzle('body')[0].removeChild(dom);
@@ -2549,7 +2549,13 @@ if ( typeof define === "function" && define.amd ) {
 		notify:function(params,callFun){//callback  消失之后执行的回调函数
 			var cId = 'smp_notify';
 			var timer = null;
-			var defaults = {msg:'',time:2000,fix:'top'};//msg:默认内容，time默认消失时间,fix默认出现位置
+			var defaults = {
+				msg:'', //msg:默认内容
+				time:2000, //time默认消失时间
+				fix:'top', //fix显示出现位置
+				bgcolor:'#000',//默认背景颜色
+				color:'#fff'//默认字体颜色
+			};
 			var options = s_extend(defaults,params);
 			if(options == ''||!isObject(options)){
 				throw new Error('The params cannot be empty or must be object type');
@@ -2558,23 +2564,26 @@ if ( typeof define === "function" && define.amd ) {
 			var _time = options.time;
 			var _fix = options.fix;
 			var _position = '';
+			var _bgcolor = options.bgcolor;
+			var _color = options.color;
 			
+			var notifys_Out = 'notify-upOut';
 			if(_fix == 'top'){
 				_position = 'notify-top';
+				notifys_Out = 'notify-upOut';
 			}else if(_fix == 'bottom'){
 				_position = 'notify-bottom';
+				notifys_Out = 'notify-downOut';
 			}else{
 				throw new Error('fix must be top or bottom');
 			}
 			var dom = doc.createElement('div');
 			dom.setAttribute('id',cId)
-            var notifytStr ='<div class="m-notify '+_position+'" >' + _msg + '</div>';
-			console.log(notifytStr);
+            var notifytStr ='<div class="m-notify '+_position+'" style="background:'+_bgcolor+';color:'+_color+'">' + _msg + '</div>';
 			dom.innerHTML = notifytStr;
             Sizzle('body')[0].appendChild(dom);
-            console.log(_time);
 			timer = setTimeout(function(){
-				addClass(Sizzle('.m-notify')[0],'notify-out');
+				addClass(Sizzle('.m-notify')[0],notifys_Out);
 				Sizzle('.m-notify')[0].addEventListener('webkitAnimationEnd',function(){
 					Sizzle('body')[0].removeChild(dom);
 					clearTimeout(timer);
@@ -2589,47 +2598,51 @@ if ( typeof define === "function" && define.amd ) {
 	/**
 	 *smp core方法 
 	 **/
+	var OBJ_TOSRTING = Object.prototype.toString;
 	
-	function s_extend(target,option){//浅继承
+	/**
+	 *实现浅继承 
+	 **/
+	function s_extend(target,option){
 		for(var i in option){
 			target[i] = option[i];
 		}
 		return target;
 	}
-	
-	function isEmptyObject(option){//判断option对象是否为空
+	/**
+	 *判断option对象是否为空 
+	 **/
+	function isEmptyObject(option){
 		var obj = option;
 		for(var i in obj){
 			return false;
 		}
 		return true;
 	}
-	
 	function isArray(obj){
-		return Object.prototype.toString.call(obj) === "[object Array]"; 
+		return OBJ_TOSRTING.call(obj) === "[object Array]"; 
 	}
 	function isFunction(obj){
-		return Object.prototype.toString.call(obj) === "[object Function]"; 
+		return OBJ_TOSRTING.call(obj) === "[object Function]"; 
 	}
 	function isObject(obj){
-		return Object.prototype.toString.call(obj) === "[object Object]"; 
+		return OBJ_TOSRTING.call(obj) === "[object Object]"; 
 	}
 	function isNumber(obj){
-		return Object.prototype.toString.call(obj) === "[object Number]"; 
+		return OBJ_TOSRTING.call(obj) === "[object Number]"; 
 	}
 	function isBoolean(obj){
-		return Object.prototype.toString.call(obj) === "[object Boolean]"; 
+		return OBJ_TOSRTING.call(obj) === "[object Boolean]"; 
 	}
 	function isString(obj){
-		return Object.prototype.toString.call(obj) === "[object String]"; 
+		return OBJ_TOSRTING.call(obj) === "[object String]"; 
 	}
 	
 	function isRegExp(obj){
-		return Object.prototype.toString.call(obj) === "[object RegExp]"; 
+		return OBJ_TOSRTING.call(obj) === "[object RegExp]"; 
 	}
 	
 	function hasClass(ele,className){
-		
 		return ele.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 	}
 	
@@ -2638,16 +2651,76 @@ if ( typeof define === "function" && define.amd ) {
 			ele.className += " " + className;  
 		}
 	}
-	
 	function removeClass(ele,className){
 		if(hasClass(ele,className)){
 			var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
 			ele.className = ele.className.replace(reg,'');
 		}
 	}
-	
+	/**
+	 *设置样式 
+	 **/
+	function setStyle(ele,option){
+		for(var i in option){
+			ele.style[i] = option[i];
+		}
+	}
+	/**
+	 *获取样式 
+	 **/
+	function getStyle(ele,attr){
+		if(ele.currentStyle){  
+	        return obj.currentStyle[attr];  
+	    } else{  
+	        return getComputedStyle(ele,false)[attr];  
+	    }  
+	}
+	/**
+	 *将String类型转换成Array类型 
+	 **/
+	function toArray(tag){
+		try{
+			return Array.prototype.slice.call(tag);
+		}catch(e){
+			var arr = [];
+			for(var i =0;i<tag.length;i++){
+				arr[i] = tag[i];
+			}
+			return arr;
+		}
+	}
+	/**
+	 *将Array类型转换成String类型 
+	 **/
+	function tostring(arr){
+		return arr.join('');
+	}
+	/**
+	 *给字符串添加一个 倒序的方法 
+	 **/
+	String.prototype.reverse = function(){
+		return Array.prototype.reverse.call(this.split('')).join('');
+	}
+	/**
+	 *将string类型转换成array类型 
+	 **/
+	String.prototype.toArray = function(){
+		try{
+			return Array.prototype.slice.call(this);
+		}catch(e){
+			var arr = [];
+			for(var i =0;i<this.length;i++){
+				arr[i] = this[i];
+			}
+			return arr;
+		}
+	}
+	Array.prototype.toString = function(){//将array转换成string对象
+	    return this.join('');
+	}
 	
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;
+	
 })(window,document);
