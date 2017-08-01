@@ -2595,6 +2595,218 @@ if ( typeof define === "function" && define.amd ) {
 		}
 	}
 	
+	
+	Smp.prototype.slider = {
+		init:function(ele,option){
+			if(!isString(ele)){
+				throw  new Error('请传入滑动元素id');
+			}
+			var option = option||{};//设置参数
+			var timer = null;//设置一个定时器
+			var default_opt = {
+				autoplay:false,//默认不自动播放
+				playtime:2000,//每2秒切换一张
+				pagination:true,//是否显示分页
+				color:'#333',//分页的颜色
+				activeColor:'#46B8DA',//选中分页按钮颜色
+				positionY:'bottom',//分页显示位置 top,bottom
+				currentIndex:2,//默认显示当前第一页，
+				durationTime:500,//默认动画效果周期为500ms
+				sliderStart:null,//开始滑动
+				sliderEnd:null //结束滑动
+			};
+			var current_opt = s_extend(default_opt,option);
+			var autoplay = current_opt.autoplay;
+			var pagination = current_opt.pagination;
+			var paginationColor = current_opt.paginationColor;
+			var currentIndex = current_opt.currentIndex;
+			var positionY = current_opt.positionY;
+			var playtime = current_opt.playtime;
+			var durationTime = current_opt.durationTime+'ms';
+			var distance = 40;//滑动距离
+			var p_color = default_opt.color;//滑块颜色
+			var activeColor = default_opt.activeColor;//选中当前的滑块的颜色
+			
+			var sliders = Sizzle("#"+ele)[0];//id为ele的 slider的元素
+			var wrapperWidth = parseInt(getStyle(sliders,'width'));//获取当前slider的宽度
+			var wrapper = Sizzle("#"+ele+">.slider-wrapper")[0];//获取当前slider下面的滑块wrapper
+			var sliderItem = Sizzle("#"+ele+" .slider-item");
+			var itemLen = sliderItem.length;
+			
+		    var refremPage = function(){
+		    	wrapperWidth = parseInt(getStyle(sliders,'width'));
+				sliderItem = Sizzle("#"+ele+" .slider-item");
+				itemLen = sliderItem.length;
+		        for(var i =0;i<itemLen;i++){
+					setStyle(sliderItem[i],{width:wrapperWidth+'px'});
+				}
+		    }
+		    window.addEventListener('resize', refremPage, false);
+			window.addEventListener('pageshow', refremPage, false);
+			for(var i =0;i<itemLen;i++){
+				setStyle(sliderItem[i],{width:wrapperWidth+'px'});
+				var pageX;
+				var currPageX;
+				var val;
+				(function(i){
+					sliderItem[i].addEventListener('touchstart',function(e){
+						pageX = e.changedTouches[0].clientX;
+						if(autoplay){//自动播放滑动滑块时关闭自动播放,清除定时器
+							clearInterval(timer);
+						}
+					});
+					sliderItem[i].addEventListener('touchmove',function(e){
+						currPageX = e.changedTouches[0].clientX;
+						val = parseInt(currPageX)-parseInt(pageX);
+						if(i==0){//第一页
+							if(val>distance){
+								currentVal = distance;
+							}else{
+								currentVal = val;
+							}
+						}else {//中间页
+							if(val<0){
+								if(val<-distance){
+									currentVal = '-'+(wrapperWidth*i + distance);
+								}else{
+									currentVal = '-'+(wrapperWidth*i + Math.abs(val));
+								}
+							}else if(val>0){
+								if(val>distance){
+									currentVal = '-'+(wrapperWidth*i - distance);
+								}else{
+									currentVal = '-'+(wrapperWidth*i - Math.abs(val));
+								}
+							}
+						}
+						setStyle(wrapper,{transform:'translate3d('+currentVal+'px,0px,0px)',webkitTransform:'translate3d('+currentVal+'px,0px,0px)'});
+					})
+					sliderItem[i].addEventListener('touchend',function(e){
+						endPageX = e.changedTouches[0].clientX;
+						currentIndex = i+1;
+						var leftWidth;
+						if(i == 0){//当前是第一页
+							if(val<-distance){
+								leftWidth = "-"+(wrapperWidth*i+wrapperWidth);
+								currentIndex +=1;
+							}else{
+								leftWidth = 0;
+							}
+						}else if(i< itemLen-1){
+							if(val<0&&(val<-distance||val == -distance)){//向左滑
+								leftWidth = "-"+(wrapperWidth*i+wrapperWidth);
+								currentIndex += 1;
+							}else if(val<0&&val>-distance){
+								leftWidth = "-"+(wrapperWidth*i);
+							}else if(val>0&&val<distance){//向右滑 <distance时
+								leftWidth = "-"+(wrapperWidth*i);
+							}else if(val>0&&(val>distance||val == distance)){//向右滑 >distance时
+								leftWidth = "-"+(wrapperWidth*i-wrapperWidth);
+								currentIndex -= 1;
+							}
+						}else if(i && i == itemLen-1){//最后一页
+							if(val<0&&val<-distance){//向左滑
+								leftWidth = "-"+(wrapperWidth*i);
+							}else if(val<0&&(val>-distance||val == -distance)){
+								leftWidth = "-"+(wrapperWidth*i);
+							}else if(val>0&&val<distance){//向右滑 <distance时
+								leftWidth = "-"+(wrapperWidth*i);
+							}else if(val>0&&(val>distance||val == distance)){//向右滑 >distance时
+								leftWidth = "-"+(wrapperWidth*i-wrapperWidth);
+								currentIndex -=1;
+							}
+						}
+						if(currentIndex>itemLen){
+							currentIndex = itemLen;
+						}
+						setStyle(wrapper,{webkitTransform:'translate3d('+leftWidth+'px,0px,0px)',transitionDuration:durationTime});
+						if(autoplay){//是否自动播放
+							timer = setInterval(starts,playtime);//自动播放切换滑块之后开启自动播放，开启定时器
+						}
+						setActive(currentIndex);
+						if(isFunction(current_opt.sliderEnd)){//滑动结束执行的方法
+							current_opt.sliderEnd(i,this);//当前元素的下标以及当前元素
+						}
+					})
+				}(i));
+			}
+			var lefts;//根据当前显示的index，计算出当前的位置
+			lefts =(currentIndex == 1)?0:"-"+(wrapperWidth*(currentIndex-1));
+			setStyle(wrapper,{webkitTransform:'translate3d('+lefts+'px,0px,0px)',transitionDuration:durationTime});
+			if(pagination){//是否显示分页按钮
+				//分页
+				var pagStr = document.createElement('ul');
+				addClass(pagStr,'slider-pagination');
+				addClass(pagStr,positionY)
+				var liStr='';
+				for(var i =0;i<itemLen;i++){
+					if(currentIndex == i+1){//currentIndex 为当前显示页
+						liStr+='<li class="active" style="background:'+activeColor+'"></li>';
+					}else{
+						liStr +='<li style="background:'+p_color+'"></li>';
+					}
+				}
+				pagStr.innerHTML = liStr;
+				Sizzle("#smp-slider")[0].appendChild(pagStr);
+//				var paginationList = Sizzle('.slider-pagination li');
+//				console.log(paginationList);
+//				var p_len = paginationList.length;
+//				for(var p= 0;p<p_len;i++){
+//					console.log(p);
+//					(function(p){
+//						_this.utils.on('click',paginationList[p],function(e){
+//							console.log(p);
+//						})
+//					}(p));
+//				}
+				
+				
+				
+			}
+			function setActive(i){//动态设置分页按钮
+				var pagination_li = Sizzle('.slider-pagination li');
+				currentIndex = i || currentIndex;
+				var li_len = pagination_li.length;
+				for(var j =0;j<li_len;j++){
+					if((currentIndex) == j+1){
+						addClass(pagination_li[j],'active');
+						setStyle(pagination_li[j],{background:activeColor});
+					}else{
+						removeClass(pagination_li[j],'active');
+						setStyle(pagination_li[j],{background:p_color});
+					}
+				}
+			}
+			//是否自动播放
+			if(autoplay){
+				clearInterval(timer);
+				timer = setInterval(starts,playtime);
+			}
+			function starts(){
+				var leftWidth;
+				if(currentIndex == itemLen+1){
+					setActive(itemLen);
+				}else{
+					setActive(currentIndex);
+				}
+				if(currentIndex< itemLen+1){
+					leftWidth =(currentIndex == 1)?0:"-"+(wrapperWidth*(currentIndex-1));
+					currentIndex = currentIndex + 1;
+				}else if(currentIndex == itemLen){
+					leftWidth = 0;
+					currentIndex = 1;
+				}
+				if(currentIndex>itemLen){
+					currentIndex = 1;
+				}
+				setStyle(wrapper,{webkitTransform:'translate3d('+leftWidth+'px,0px,0px)',transitionDuration:durationTime});
+			}
+		}
+		,apiInit:function(){
+			console.log('初始化slider-api');
+		}
+	}
+	
 	/**
 	 *smp core方法 
 	 **/
@@ -2637,15 +2849,12 @@ if ( typeof define === "function" && define.amd ) {
 	function isString(obj){
 		return OBJ_TOSRTING.call(obj) === "[object String]"; 
 	}
-	
 	function isRegExp(obj){
 		return OBJ_TOSRTING.call(obj) === "[object RegExp]"; 
 	}
-	
 	function hasClass(ele,className){
 		return ele.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 	}
-	
 	function addClass(ele,className){
 		if(!hasClass(ele,className)){
 			ele.className += " " + className;  
@@ -2696,6 +2905,22 @@ if ( typeof define === "function" && define.amd ) {
 		return arr.join('');
 	}
 	/**
+	 *获取兄弟元素节点 Array
+	 **/
+	function siblings(elem){
+		var n = (elem.parentNode||{}).firstChild;
+		var elemArr = [];
+		var sibs = function(n,elem){
+			for(;n;n = n.nexSibling){
+				if(n.nodeType ===1&&n!==elem){
+					elemArr.push(n);
+				}
+			}
+			return elemArr;
+		}
+		return sibs(n,elem);
+	}
+	/**
 	 *给字符串添加一个 倒序的方法 
 	 **/
 	String.prototype.reverse = function(){
@@ -2722,5 +2947,9 @@ if ( typeof define === "function" && define.amd ) {
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;
+	
+	smp.slider.apiInit();
+	
+	
 	
 })(window,document);
