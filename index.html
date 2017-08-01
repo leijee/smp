@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
+		<title>首页</title>
 		<link rel="stylesheet" type="text/css" href="css/smp.css"/>
 		<script src="js/flexible.js"></script>
 		<style type="text/css">
@@ -113,9 +113,8 @@
 //		smp.utils.off('click',ele,function(){
 //			smp.dialog.confirm();
 //		});
-		console.log(smp.utils.localStorage.set());
 		smp.slider.init("smp-slider",{
-			autoplay:false,//是否自动播放
+			autoplay:true,//是否自动播放
 			playtime:2000,//每2秒切换一张
 			pagination:true,//是否显示分页
 			currentIndex:1,//默认显示当前第一页，
@@ -125,8 +124,5 @@
 		});
 		
 		
-		
-		
-		
-	</script>
+</script>	
 </html>

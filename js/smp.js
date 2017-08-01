@@ -2601,6 +2601,9 @@ if ( typeof define === "function" && define.amd ) {
 			if(!isString(ele)){
 				throw  new Error('请传入滑动元素id');
 			}
+			
+			
+			
 			var option = option||{};//设置参数
 			var timer = null;//设置一个定时器
 			var default_opt = {
@@ -2615,6 +2618,8 @@ if ( typeof define === "function" && define.amd ) {
 				sliderStart:null,//开始滑动
 				sliderEnd:null //结束滑动
 			};
+			
+			
 			var current_opt = s_extend(default_opt,option);
 			var autoplay = current_opt.autoplay;
 			var pagination = current_opt.pagination;
@@ -2748,20 +2753,18 @@ if ( typeof define === "function" && define.amd ) {
 				}
 				pagStr.innerHTML = liStr;
 				Sizzle("#smp-slider")[0].appendChild(pagStr);
-//				var paginationList = Sizzle('.slider-pagination li');
-//				console.log(paginationList);
-//				var p_len = paginationList.length;
-//				for(var p= 0;p<p_len;i++){
-//					console.log(p);
-//					(function(p){
-//						_this.utils.on('click',paginationList[p],function(e){
-//							console.log(p);
-//						})
-//					}(p));
-//				}
-				
-				
-				
+				var paginationList = Sizzle('.slider-pagination li');
+				var p_len = paginationList.length;
+				for(var p= 0;p<p_len;p++){
+					(function(p){
+						_this.utils.on('click',paginationList[p],function(e){
+							currentIndex = p+1;
+							var leftWidth = "-"+(wrapperWidth*p);
+							setStyle(wrapper,{webkitTransform:'translate3d('+leftWidth+'px,0px,0px)',transitionDuration:durationTime});
+							setActive(currentIndex);
+						})
+					}(p));
+				}
 			}
 			function setActive(i){//动态设置分页按钮
 				var pagination_li = Sizzle('.slider-pagination li');
