@@ -8,7 +8,7 @@
 		<script src="js/flexible.js"></script>
 	</head>
 	<body>
-		<div class="smp-search">
+		<div class="smp-search" id="smp-search">
 			<div class="search-head">
 				<div class="search-back">
 					<i class="iconfont icon-back"></i>
@@ -16,7 +16,7 @@
 				<div class="search-text">
 					<div class="search-bar">
 						<i class="iconfont icon-search search"></i>
-						<input type="" name="" id="" value="" placeholder="请输入..."/>
+						<input type="text" autofocus="true" name="searchValue" placeholder="请输入..."/>
 						<i class="iconfont icon-close close"></i>
 					</div>
 				</div>
@@ -28,16 +28,68 @@
 			<div class="search-content">
 				<!--显示历史纪录-->
 				<div class="search-history">
-					
-				</div>
-				
+					<div class="history-header clear-fixed">
+						<span class="history-title float-l">
+							最近搜索
+						</span>
+						<span class="history-delete float-r">
+							<i class="iconfont icon-delete" id="delete-history"></i>
+						</span>
+					</div>
+					<ul class="historyList">
+						<li class="tag">洗衣机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">华为手机</li>
+						<li class="tag">洗衣机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">荣耀7</li>
+						<li class="tag">耳机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">华为荣耀手环</li>
+					</ul>
+				</div>		
 				<!--显示热门搜索-->
 				<div class="search-hot">
-					
+					<div class="hotList-title">热门搜索</div>
+					<ul class="hotList">
+						<li class="tag">洗衣机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">华为手机</li>
+						<li class="tag">洗衣机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">荣耀7</li>
+						<li class="tag">耳机</li>
+						<li class="tag">冰箱</li>
+						<li class="tag">手机</li>
+						<li class="tag">华为荣耀手环</li>
+					</ul>
 				</div>
 				<!--显示搜索结果-->
 				<div class="search-result">
-					
+					<div class="resultList-title">搜索结果</div>
+					<ul class="resultList">
+						<li class="resulItem clear-fixed">
+							<div class="item-name">洗衣机</div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name">洗衣机</div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name">洗衣机</div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">神器</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name">洗衣机</div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+					</ul>
 				</div>
 				
 			</div>
@@ -52,4 +104,13 @@
 		
 		
 	</body>
+	<script src="js/smp.js"></script>
+	
+	<script>
+		smp.Search.init('smp-search',{});
+		
+		
+		
+	</script>
+	
 </html>

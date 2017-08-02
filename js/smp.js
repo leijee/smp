@@ -2601,9 +2601,6 @@ if ( typeof define === "function" && define.amd ) {
 			if(!isString(ele)){
 				throw  new Error('请传入滑动元素id');
 			}
-			
-			
-			
 			var option = option||{};//设置参数
 			var timer = null;//设置一个定时器
 			var default_opt = {
@@ -2810,6 +2807,58 @@ if ( typeof define === "function" && define.amd ) {
 		}
 	}
 	
+	Smp.prototype.Search = {
+		init:function(ele,option){
+			var _search = Sizzle('#'+ele)[0];
+			if(!_search){
+				throw new Error('对象不存在');
+			}
+			var defaults = {
+				showHistory:true//显示搜索历史
+			};
+			var options = s_extend(defaults,option);
+			var _close = Sizzle('.search-bar .close')[0];//清空搜索内容按钮
+			var searchBar = Sizzle('.search-bar input')[0];//搜索内容
+			var delete_history = Sizzle('#delete-history')[0];//清空历史记录
+			
+			var search_history = Sizzle('#'+ele+' .search-history')[0];
+			var search_hot = Sizzle('#'+ele+' .search-hot')[0];
+			var search_result = Sizzle('#'+ele+' .search-result')[0];
+			
+			_this.utils.on('click',_close,function(e){
+				searchBar.value = '';
+				if(searchBar.value == ''){
+					setStyle(search_history,{display:'block'});
+					setStyle(search_hot,{display:'block'});
+					setStyle(search_result,{display:'none'});
+				}
+			});
+			_this.utils.on('input',searchBar,function(e){
+				console.log(e.target.value);
+				var searchValue = e.target.value;
+				if(searchValue != ''){
+					setStyle(search_history,{display:'none'});
+					setStyle(search_hot,{display:'none'});
+					setStyle(search_result,{display:'block'});
+				}else{
+					setStyle(search_history,{display:'block'});
+					setStyle(search_hot,{display:'block'});
+					setStyle(search_result,{display:'none'});
+				}
+				
+				
+			});
+			
+			_this.utils.on('click',delete_history,function(e){
+				console.log('aa');
+				_this.dialog.confirm('提示信息','是否删除历史记录',function(){
+					console.lof('已删除');
+				})
+				
+			});
+			
+		}
+	}
 	/**
 	 *smp core方法 
 	 **/
