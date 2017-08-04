@@ -2337,7 +2337,7 @@ if ( typeof define === "function" && define.amd ) {
 			},
 			get: function(key){
 				if(_this.utils.isSupport('localStorage')){
-					localStorage.getItem(key);
+					return localStorage.getItem(key);
 				}
 			},
 			remove: function(key){
@@ -2358,7 +2358,7 @@ if ( typeof define === "function" && define.amd ) {
 			},
 			get: function(key){
 				if(_this.utils.isSupport('sessionStorage')){
-					sessionStorage.getItem(key);
+					return sessionStorage.getItem(key);
 				}
 			},
 			remove: function(key){
@@ -2371,19 +2371,24 @@ if ( typeof define === "function" && define.amd ) {
 				}
 			}
 		},
-		on: function(type,elem,handleFun){
+		on: function(type,elem,handleFun,bool){
 			var that = this;
 			handle = function(e){
 				handleFun(e);
 			}
+			
+			if(isBoolean(bool)){
+				bool = false;
+			}
+			
 			if(elem == 'undefined'||elem == null){
 				throw new Error('elem must be node type');
 			}else{
-				elem.addEventListener(type,handle);
+				elem.addEventListener(type,handle,bool);
 			}
 			if(isArray(elem)){
 				for(var i =0,len = elem.length;i<len;i++){
-						elem[i].addEventListener(type,handle);
+						elem[i].addEventListener(type,handle,bool);
 				}
 			}
 		},
@@ -2594,12 +2599,15 @@ if ( typeof define === "function" && define.amd ) {
 			},_time);
 		}
 	}
-	
-	
+	/**
+	 *支持主流浏览器的轮播，更适用于移动端 
+	 *使用方式 smp.slider.init('smp-slider',option);smp-slider是当前轮播组件的id名
+	 * option是一个对象，通过传入的参数自定义轮播
+	 **/
 	Smp.prototype.slider = {
 		init:function(ele,option){
 			if(!isString(ele)){
-				throw  new Error('请传入滑动元素id');
+				throwError('请传入轮播组件id');
 			}
 			var option = option||{};//设置参数
 			var timer = null;//设置一个定时器
@@ -2803,10 +2811,9 @@ if ( typeof define === "function" && define.amd ) {
 			}
 		}
 		,apiInit:function(){
-			console.log('初始化slider-api');
+			console.log('使用api的方式,初始化slider-api');
 		}
 	}
-	
 	Smp.prototype.Search = {
 		init:function(ele,option){
 			var _search = Sizzle('#'+ele)[0];
@@ -2820,44 +2827,266 @@ if ( typeof define === "function" && define.amd ) {
 			var _close = Sizzle('.search-bar .close')[0];//清空搜索内容按钮
 			var searchBar = Sizzle('.search-bar input')[0];//搜索内容
 			var delete_history = Sizzle('#delete-history')[0];//清空历史记录
+			var _back = Sizzle('.search-back .back')[0];//返回按钮
+			var _sureSearch = Sizzle('.search-sure .sure-btn')[0];
 			
-			var search_history = Sizzle('#'+ele+' .search-history')[0];
-			var search_hot = Sizzle('#'+ele+' .search-hot')[0];
-			var search_result = Sizzle('#'+ele+' .search-result')[0];
+			var search_history = Sizzle('#'+ele+' .search-history')[0];//搜索历史
+			var search_hot = Sizzle('#'+ele+' .search-hot')[0];//搜索热门
+			var search_result = Sizzle('#'+ele+' .search-result')[0];//动态搜索结果
+			var _historyList = Sizzle('#'+ele+' .search-history .historyList')[0];
 			
-			_this.utils.on('click',_close,function(e){
-				searchBar.value = '';
-				if(searchBar.value == ''){
-					setStyle(search_history,{display:'block'});
-					setStyle(search_hot,{display:'block'});
-					setStyle(search_result,{display:'none'});
+			var getHistory = function(key){
+				var historyRecord = _this.utils.localStorage.get(key)||'[]';
+				var obj = JSON.parse(historyRecord);
+				return obj;
+			}
+			var showHistory = function(key){
+				var historyData = getHistory(key);
+				var dataStr = '';
+				if(historyData.length>0){
+					for(var i=0,len=historyData.length;i<len;i++){
+						dataStr+='<li class="tag"><a href="#">'+historyData[i].text+'</a></li>';
+					}
 				}
-			});
-			_this.utils.on('input',searchBar,function(e){
-				console.log(e.target.value);
-				var searchValue = e.target.value;
-				if(searchValue != ''){
-					setStyle(search_history,{display:'none'});
-					setStyle(search_hot,{display:'none'});
-					setStyle(search_result,{display:'block'});
+				_historyList.innerHTML = dataStr;
+				if(_historyList.innerHTML !=''){
+					setStyle(search_history,{display:'block'});
 				}else{
-					setStyle(search_history,{display:'block'});
-					setStyle(search_hot,{display:'block'});
-					setStyle(search_result,{display:'none'});
+					setStyle(search_history,{display:'none'});
+				}
+				setStyle(search_hot,{display:'block'});
+				setStyle(search_result,{display:'none'});
+			}
+			showHistory('history');
+			var setHistory = function(key,value){
+				var obj = getHistory(key);
+				var flag = 0;
+				if(obj.length ===0){
+					obj.push(value);
+				}else{
+					for(var i in obj){
+						if(JSON.stringify(value)!= JSON.stringify(obj[i])||obj.length === 0){
+							
+							flag +=1;
+						}else{
+							flag +=0;
+							return ;
+						}
+					}
+					if(flag){
+						obj.push(value);
+					}
 				}
 				
-				
-			});
+				_this.utils.localStorage.set(key,JSON.stringify(obj,function(tt,val){
+					return val;
+				}));
+			}
+			console.log(getHistory('history'));
 			
+			
+			var searchValue = '';
+			var zh_Lock = false;
+			var result_or_history = function(zh_Lock,callFun_result,callFun_history){
+				if(!zh_Lock){
+					console.log(searchValue);
+					if(searchValue != ''){//显示搜索结果
+						setStyle(search_history,{display:'none'});
+						setStyle(search_hot,{display:'none'});
+						setStyle(search_result,{display:'block'});
+						if(isFunction(callFun_result)){
+							callFun_result();
+						}
+					}else{//显示搜索历史
+						setStyle(search_history,{display:'block'});
+						setStyle(search_hot,{display:'block'});
+						setStyle(search_result,{display:'none'});
+						if(isFunction(callFun_history)){
+							callFun_history();
+						}
+					}
+				}
+			}
+			_this.utils.on('compositionstart',searchBar,function(e){
+				zh_Lock = true;
+			},true);
+			_this.utils.on('compositionend',searchBar,function(e){
+				zh_Lock = false;
+				result_or_history(zh_Lock,null,null);
+			},true);
+			_this.utils.on('input',searchBar,function(e){
+				searchValue = e.target.value;
+				result_or_history(zh_Lock,null,null);
+			},true);
 			_this.utils.on('click',delete_history,function(e){
 				console.log('aa');
 				_this.dialog.confirm('提示信息','是否删除历史记录',function(){
-					console.lof('已删除');
+					_historyList.innerHTML = '';
+					setStyle(search_history,{display:'none'});
 				})
-				
+			});
+			_this.utils.on('click',_back,function(){
+				setStyle(_search,{display:'none'});
+			});
+			_this.utils.on('click',_sureSearch,function(e){
+				var searchText = searchBar.value;
+				if(searchText!=''){
+					setHistory('history',{text:searchText});
+				}
+				setStyle(Sizzle('#smp-search')[0],{display:'none'});
+				console.log(getHistory('history'));
+			});
+			_this.utils.on('click',_close,function(e){
+				searchBar.value = '';
+				if(searchBar.value == ''){
+					if(_historyList.innerHTML!=''){
+						setStyle(search_history,{display:'block'});
+						showHistory('history');
+					}
+					setStyle(search_hot,{display:'block'});
+					setStyle(search_result,{display:'none'});
+				}
+			});
+			
+			smp.utils.on('click',Sizzle('#search-btn')[0],function(){
+				setStyle(Sizzle('#smp-search')[0],{display:'block'});
+				showHistory('history');
 			});
 			
 		}
+	}
+	//回到顶部
+	function backTop(ele){
+		if(ele == undefined){
+			var ele = _this.backTop.create();
+		}
+		//指定的顶部滚动高度为100
+		var winHeight =  document.body.clientWidth;//可见区域高度
+		var docHeight = getStyle(Sizzle('body')[0],'height');//内容的高度
+		var topVal = parseInt(docHeight)*0.15;//文档高度的15%作为判断的临界值
+		var backTopBtn = Sizzle('#'+ele)[0];
+		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;;
+		var setScroll = function(scrollTop){
+			if(scrollTop>topVal){
+				addClass(backTopBtn,'animatedFadeIn');
+				setStyle(backTopBtn,{display:'block'});
+			}else{
+				removeClass(backTopBtn,'animatedFadeIn');
+				setStyle(backTopBtn,{display:'none'});
+			}
+		}
+		setScroll(scrollTop);
+		//给窗口添加一个滚动事件
+		window.addEventListener('scroll',function(){
+			scrollTop = window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+			setScroll(scrollTop);
+		});
+		backTopBtn.addEventListener('click',function(){
+			document.body.scrollTop = 0;
+			window.document.documentElement.scrollTop = 0;
+		});
+	}
+	
+	/**
+	 *回到顶部   smp.backTop.init('smp-back-top');
+	 **/
+	Smp.prototype.backTop ={
+		init:function(ele){
+			backTop(ele);
+		},
+		create:function(){
+			var id = 'smp-back-top';
+			var div = document.createElement('div');
+			addClass(div,'smp-back-top');
+			addClass(div,'animated');
+			div.id = id;
+			div.innerHTML = '<i class="iconfont icon-less"></i>';
+//			var backStr = '<div class="smp-back-top animated" id="smp-back-top">'
+//							+'<i class="iconfont icon-less"></i>'
+//						 +'</div>';
+			Sizzle('body')[0].appendChild(div);
+			return id;
+		}
+	}
+	
+	/**
+	 *公用的ajax请求方式  
+	 *使用ajax的时候，需要当前页面与请求的url必须是同域下(浏览器的同源策略)
+	 * 同源策略：协议相同，域名相同，端口号相同
+	 **/
+	function _ajax(option,type){
+		if(isObject(option)&&type == 'undefined'){
+			var option = isObject(option)?option:{};
+			var defaults = {
+				method:'get',//默认get请求
+				async:true,//默认异步方式
+				data:null,//请求参数为null
+				contentType:'application/x-www-form-urlencoded',//请求参数的格式
+				cache:true,//是否开启缓存(针对于get方法)
+				succFun:null//数据获取成功之后的回调函数
+			};
+			var obj_option = s_extend(defaults,option);
+			var method = obj_option.method.toLowerCase();
+			var url = obj_option.url;//请求的url，目的地址
+			var data = obj_option.data;
+			var async = obj_option.async;
+			var contentType = obj_option.contentType;
+			var succFun = obj_option.succFun;
+		}else if(isString(option)){
+			var url = option;//get方式直接传入一个 string类型的url
+		}
+		var xhr =null;
+		if(window.XMLHttpRequest){
+			xhr = new XMLHttpRequest();
+		}else{
+			xhr = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		if(type == 'get'){
+			method = 'get';
+		}
+		if(type == 'post'){
+			method = 'post';
+		}
+		if(method == 'get'){
+			data = null;
+		}
+		xhr.open(method,url,async);
+		ajax.setRequestHeader("Content-Type", contentType);
+		xhr.send(data);
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4){//已成功接收请求信息
+				console.log(xhr);
+				if(xhr.status == 200){//返回成功
+					var responseData = xhr.responseText;
+					if(isFunction(succFun)){
+						succFun(responseData);
+					}
+				}else{
+					throwError(xhr.status);//请求成功，返回失败状态码)
+				}
+			}else{
+				throwError('请求中...');
+			}
+		}
+	}
+	/**
+	 *使用ajax获取数据，不直接指定获取方式 
+	 **/
+	Smp.prototype.ajax = function(option){
+		_ajax(option);
+	}
+	/**
+	 *使用get方式获取数据   使用方式：smp.getData('http://www.test.com/test?req1=abc&req2=3');
+	 **/
+	Smp.prototype.getData = function(url){
+		_ajax(url,'get');
+	}
+	/**
+	 *使用post方式获取数据 
+	 * 无需指定请求类型，请求参数需要传入一个对象，与ajax方式类似
+	 **/
+	Smp.prototype.postData = function(Option){
+		_ajax(option,'post');
 	}
 	/**
 	 *smp core方法 
@@ -2865,14 +3094,42 @@ if ( typeof define === "function" && define.amd ) {
 	var OBJ_TOSRTING = Object.prototype.toString;
 	
 	/**
+	 *将对象转换成指定格式的字符串如：a=123&b=234 
+	 **/
+	function objData (obj){
+		if(!isObject(obj)){
+			throw new Error('obj is not Object'); 
+		}
+		var dataArr =[];
+		for(var i in obj){
+			var dataStr =i+'='+obj[i];
+			dataArr.push(dataStr);
+		}
+		return dataArr.join('&');
+	}
+	/**
 	 *实现浅继承 
 	 **/
 	function s_extend(target,option){
+		if(!isObject(target)){
+			throwError('target is not Object');
+		}
+		if(!isObject(option)){
+			throwError('option is not Object');
+		}
+		
 		for(var i in option){
 			target[i] = option[i];
 		}
 		return target;
 	}
+	/**
+	 *抛出错误信息 
+	 **/
+	function throwError(msg){
+		throw new Error(msg);
+	}
+
 	/**
 	 *判断option对象是否为空 
 	 **/
@@ -2973,7 +3230,9 @@ if ( typeof define === "function" && define.amd ) {
 		return sibs(n,elem);
 	}
 	/**
-	 *给字符串添加一个 倒序的方法 
+	 *给字符串添加一个倒序的方法 
+	 * this.split('') 将当前字符串转换成一个数组，调用数组的reverse方法，将数组倒序排列，倒序之后
+	 * 使用join('')方法，将数组转换成字符串
 	 **/
 	String.prototype.reverse = function(){
 		return Array.prototype.reverse.call(this.split('')).join('');
@@ -2995,13 +3254,9 @@ if ( typeof define === "function" && define.amd ) {
 	Array.prototype.toString = function(){//将array转换成string对象
 	    return this.join('');
 	}
-	
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;
-	
-	smp.slider.apiInit();
-	
-	
+//	smp.slider.apiInit();
 	
 })(window,document);

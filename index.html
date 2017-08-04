@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>首页</title>
 		<link rel="stylesheet" type="text/css" href="css/smp.css"/>
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
 		<script src="js/flexible.js"></script>
 		<style type="text/css">
 			.dialog-test button{
@@ -60,6 +61,11 @@
 		</div>
 		
 		
+		<div class="smp-back-top animated" id="smp-back-top">
+			<i class="iconfont icon-less"></i>
+		</div>
+		
+		
 	</body>
 	<script src="js/smp.js"></script>
 	<script>
@@ -102,10 +108,10 @@
 		SMP_UTILS.on('click',_notify,function(){
 			smp.dialog.notify({
 					msg:'密码错误',
-					time:2000,
-					fix:'bottom',
-					bgcolor:'#ccc',
-					color:'#ff0000'
+					time:3000,
+					fix:'top',
+					bgcolor:'#000',
+					color:'#fff'
 				},function(){
 				console.log('消失了');
 			});
@@ -123,6 +129,8 @@
 			activeColor:'orange',
 		});
 		
+		smp.backTop.init('smp-back-top');//方式一
+		//smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
 		
 </script>	
 </html>

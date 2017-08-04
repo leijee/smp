@@ -530,8 +530,7 @@ body
     z-index: 1500;
     font-size: .26rem;
     color: #FFF;
-    padding: .3rem .24rem;
-    opacity: 1;
+    padding: .6rem .24rem;
     word-break: break-all;
     text-align: center;
 }
@@ -716,9 +715,13 @@ body
  **/
 
 .smp-search{
-	display: block;
-	width: 100%;
-	background: #f0f0f0;
+	display: none;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+    z-index: 99;
 }
 .search-head{
 	position: absolute;
@@ -856,7 +859,7 @@ body
 }
 .search-content
 {
-	position: absolute;
+	position: fixed;
 	top: 0rem;
 	left: 50%;
 	margin-left: -7.5rem;
@@ -919,9 +922,11 @@ body
 .historyList .tag,
 .hotList .tag
 {
+	float: left;
 	display: inline-block;
 	padding:.1rem .5rem;
 	margin-bottom: .15rem;
+	margin-right: .5rem;
 	background: #f0f2f5;
 	color: #686868;
 	white-space: nowrap;
@@ -930,6 +935,12 @@ body
     border-radius: .2rem;
     font-size: .5rem;
 }
+
+.tag a{
+	vertical-align:bottom;
+	display:block;
+}
+
 
 .search-result
 {
@@ -1092,5 +1103,55 @@ body
 }
 
 
+/**
+ *回到顶部 
+ **/
+.smp-back-top{
+	display: none;
+	position: fixed;
+	bottom:2rem;
+	right: .5rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	text-align: center;
+	z-index: 999;
+	border: 1px solid #FFB400;
+	background: rgba(0,0,0,.5);
+			border-radius: 1.5rem;
+	   -moz-border-radius: 1.5rem;
+	-webkit-border-radius: 1.5rem;
+	-webkit-appearance: none;
+}
+.smp-back-top i{
+	font-size: 1rem;
+	color: #FFB400;
+}
 
 
+@keyframes fadeIn{
+	from{
+		opacity: 0;
+	}
+	to{
+		opacity: 1;
+	}
+}
+.fadeIn{
+	
+}
+
+.animatedFadeIn
+{
+   animation-name: fadeIn;
+   animation-duration: 1.5s;
+   animation-fill-mode: both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -8,10 +8,12 @@
 		<script src="js/flexible.js"></script>
 	</head>
 	<body>
+		
+		<button type="button" id="search-btn"><i class="iconfont icon-search"></i>点击搜索</button>
 		<div class="smp-search" id="smp-search">
 			<div class="search-head">
 				<div class="search-back">
-					<i class="iconfont icon-back"></i>
+					<i class="iconfont icon-back back"></i>
 				</div>
 				<div class="search-text">
 					<div class="search-bar">
@@ -24,7 +26,6 @@
 					<button type="button" class="sure-btn">搜索</button>
 				</div>
 			</div>
-			
 			<div class="search-content">
 				<!--显示历史纪录-->
 				<div class="search-history">
@@ -36,37 +37,37 @@
 							<i class="iconfont icon-delete" id="delete-history"></i>
 						</span>
 					</div>
-					<ul class="historyList">
-						<li class="tag">洗衣机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">华为手机</li>
-						<li class="tag">洗衣机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">荣耀7</li>
-						<li class="tag">耳机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">华为荣耀手环</li>
+					<ul class="historyList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
 					</ul>
 				</div>		
 				<!--显示热门搜索-->
 				<div class="search-hot">
 					<div class="hotList-title">热门搜索</div>
-					<ul class="hotList">
-						<li class="tag">洗衣机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">华为手机</li>
-						<li class="tag">洗衣机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">荣耀7</li>
-						<li class="tag">耳机</li>
-						<li class="tag">冰箱</li>
-						<li class="tag">手机</li>
-						<li class="tag">华为荣耀手环</li>
+					<ul class="hotList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
 					</ul>
 				</div>
 				<!--显示搜索结果-->
@@ -74,42 +75,30 @@
 					<div class="resultList-title">搜索结果</div>
 					<ul class="resultList">
 						<li class="resulItem clear-fixed">
-							<div class="item-name">洗衣机</div>
+							<div class="item-name"><a href="#">洗衣机</a></div>
 							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
 						</li>
 						<li class="resulItem clear-fixed">
-							<div class="item-name">洗衣机</div>
+							<div class="item-name"><a href="#">洗衣机</a></div>
 							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
 						</li>
 						<li class="resulItem clear-fixed">
-							<div class="item-name">洗衣机</div>
+							<div class="item-name"><a href="#">洗衣机</a></div>
 							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">神器</span><span class="tag">炒锅</span></div>
 						</li>
 						<li class="resulItem clear-fixed">
-							<div class="item-name">洗衣机</div>
+							<div class="item-name"><a href="#">洗衣机</a></div>
 							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
 						</li>
 					</ul>
 				</div>
-				
 			</div>
-			
-			
-			
-			
-			
-			
 		</div>
-		
-		
 		
 	</body>
 	<script src="js/smp.js"></script>
-	
 	<script>
 		smp.Search.init('smp-search',{});
-		
-		
 		
 	</script>
 	
