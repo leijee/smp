@@ -528,7 +528,7 @@ body
     background-color: rgba(0, 0, 0, 0.8);
     line-height: .28rem;
     z-index: 1500;
-    font-size: .26rem;
+    font-size: .5rem;
     color: #FFF;
     padding: .6rem .24rem;
     word-break: break-all;
@@ -1154,4 +1154,194 @@ body
   to {
     opacity: 1;
   }
+}
+
+/**
+ * smp-menu 菜单按钮布局 
+ **/
+.smp-menu
+{
+	width: 100%;
+}
+.smp-menu .menu-list
+{
+	width: 100%;
+	height: auto;
+}
+.smp-menu .menu-list:after
+{
+	content: '';
+	display: block;
+	clear: both;
+	overflow: hidden;
+}
+
+
+
+
+
+.menu-list.list-grid-4 .menu-item
+{
+	width: 25%;
+	height: 3.75rem;
+	float: left;
+}
+.menu-list.list-grid-5 .menu-item
+{
+	width: 20%;
+	height: 3rem;
+	float: left;
+}
+.menu-list.border .menu-item{
+	border-bottom: 1px solid #ccc;
+}
+
+.list-grid-4.border .menu-item:not(:nth-child(4n)) 
+{
+    border-right: 1px solid #ccc;
+}
+.list-grid-5.border .menu-item:not(:nth-child(5n)) 
+{
+    border-right: 1px solid #ccc;
+}
+.menu-list .menu-item .mi-link
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding-top: .35rem;
+	font-size: .5rem;
+	text-align: center;
+}
+.menu-list .menu-item .mi-link img{
+	width: 1.5rem;
+	height: 1.5rem;
+}
+.menu-list .menu-item .mi-link span{
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+
+
+
+/**
+ *smp-list-style1 列表风格1 
+ **/
+.lazy-img{
+	background: url(../img/loading1.gif);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.smp-list
+{
+	width: 100%;
+	background: #fff;
+}
+.smp-list .data-list
+{
+	width: 100%;
+	
+}
+.theme1 .data-list .data-item
+{
+	width: 100%;
+	height: 4rem;
+	font-size: .55rem;
+}
+.theme1 .data-list .data-item .item-pic
+{
+	width: 4rem;
+	height: 4rem;
+	padding: .2rem;
+	float: left;
+}
+.theme1 .data-list .data-item .item-info
+{
+	height: 4rem;
+	margin-left: 4rem;
+	padding: .1rem .2rem;
+}
+.theme1 .data-list .data-item .item-info .item-title
+{
+	height: 2rem;
+	line-height: .85rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.theme2 .data-list .data-item
+{
+	width: 50%;
+	height: auto;
+	font-size: .55rem;
+	float: left;
+}
+.theme2 .data-list .data-item .item-pic
+{
+	width: 100%;
+	height: 7.5rem;
+	padding: .2rem;
+}
+.theme2 .data-list .data-item .item-info
+{
+	width: 100%;
+	height: 3rem;
+	padding: .1rem .2rem;
+}
+.theme2 .data-list .data-item .item-info .item-title
+{
+	height: 1rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.data-item .item-pic img
+{
+	width: 100%;
+	height: 100%;	
+}
+.data-item .item-info .item-title{
+	padding-top: .2rem;
+	color: #333;
+	font-size: .55rem;
+    font-weight: 600;
+    
+}
+.data-item .item-info .item-detail{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #999;
+	font-size: .55rem;
+	height: 1rem;
+}
+.data-item .item-info .item-content{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #666;
+	font-size: .55rem;
+	height: 1rem;
+}
+
+/**
+ *底部加载更多图片 
+ **/
+.loadingImg{
+	position: fixed;
+	bottom: .5rem;
+	left: 50%;
+	margin-left: -.5rem;
+	width: 1rem;
+	height: 1rem;
+}
+.loadingImg img{
+	width: 100%;
+	height: 100%;
 }

@@ -2961,11 +2961,11 @@ if ( typeof define === "function" && define.amd ) {
 			var ele = _this.backTop.create();
 		}
 		//指定的顶部滚动高度为100
-		var winHeight =  document.body.clientWidth;//可见区域高度
+		var winHeight =  document.body.clientHeight;//可见区域高度
 		var docHeight = getStyle(Sizzle('body')[0],'height');//内容的高度
 		var topVal = parseInt(docHeight)*0.15;//文档高度的15%作为判断的临界值
 		var backTopBtn = Sizzle('#'+ele)[0];
-		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;;
+		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
 		var setScroll = function(scrollTop){
 			if(scrollTop>topVal){
 				addClass(backTopBtn,'animatedFadeIn');
@@ -3001,13 +3001,90 @@ if ( typeof define === "function" && define.amd ) {
 			addClass(div,'animated');
 			div.id = id;
 			div.innerHTML = '<i class="iconfont icon-less"></i>';
-//			var backStr = '<div class="smp-back-top animated" id="smp-back-top">'
-//							+'<i class="iconfont icon-less"></i>'
-//						 +'</div>';
 			Sizzle('body')[0].appendChild(div);
 			return id;
 		}
 	}
+	/**
+	 *图片出现在可见区域里的时候，显示图片 
+	 **/
+	function lazyLoadImg(){
+		var lazyImg = Sizzle('.lazy-img');
+		var img_len = lazyImg.length;
+		var winHeight =  document.documentElement.clientHeight;//可见区域高度
+		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+		for(var i=0;i<img_len;i++){
+			var img_top = lazyImg[i].offsetTop;
+			if((img_top>scrollTop)&&(scrollTop+winHeight)>img_top){//图片出现在可见区域
+				lazyImg[i].setAttribute('src',lazyImg[i].getAttribute('data-src'));
+			}
+		}
+		window.addEventListener('scroll',function(){
+			var lazyImg = Sizzle('.lazy-img');
+			var img_len = lazyImg.length;
+			var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+			for(var i=0;i<img_len;i++){
+				var img_top = lazyImg[i].offsetTop;
+				if((img_top>scrollTop)&&(scrollTop+winHeight)>img_top){//图片出现在可见区域
+					(function(i){
+						setTimeout(function(){
+							lazyImg[i].setAttribute('src',lazyImg[i].getAttribute('data-src'));
+						},250);
+					})(i);
+				}
+			}
+		});
+	}
+	/**
+	 * 懒加载 
+	 **/
+	Smp.prototype.Loading= {
+		lazyLoading:function(){//图片出现在可见区域里的时候，显示图片 
+			lazyLoadImg();
+		}
+	}
+	/**
+	 * 到达底部加载更多 
+	 **/
+	Smp.prototype.bottomLoading = {
+		init:function(callFun){
+			var _loading = this;
+			var windowHeight = document.documentElement.clientHeight;//可见区域高度
+			window.addEventListener('scroll',function(){
+				var docHeight = document.body.scrollHeight;//文档高度
+				var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+				if(scrollTop+windowHeight>=docHeight){//到达底部
+					console.log('到达底部');
+					if(isFunction(callFun)){
+						callFun(_loading.Loading);
+					}
+				}
+			});
+		},
+		Loading:function(){
+			var loadingId = 'loadingImg';
+			var loadingDiv = document.createElement('div');
+			loadingDiv.id = 'loadingImg';
+			addClass(loadingDiv,'loadingImg');
+			return {
+				showLoading:function(){//创建正在加载的动画
+					loadingDiv.innerHTML = '<img src="./img/loading9.gif">';
+					Sizzle('body')[0].appendChild(loadingDiv);
+				},
+				hideLoading:function(){//销毁正在加载的动画
+					var loadingDiv = Sizzle('#loadingImg')[0];
+					if(loadingDiv){
+						//移除当前节点
+						loadingDiv.parentNode.removeChild(loadingDiv);
+					}
+				}
+			}
+		}()
+		
+	}
+	
+	
+	
 	
 	/**
 	 *公用的ajax请求方式  
@@ -3228,6 +3305,12 @@ if ( typeof define === "function" && define.amd ) {
 			return elemArr;
 		}
 		return sibs(n,elem);
+	}
+	/**
+	 *判断是否一个整数 
+	 **/
+	function isNumber(num){
+		return typeof(num)== 'number'&&num%1 === 0;
 	}
 	/**
 	 *给字符串添加一个倒序的方法 
