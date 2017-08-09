@@ -1,5 +1,4 @@
 
-
 /*!
  * Sizzle CSS Selector Engine v@VERSION
  * https://sizzlejs.com/
@@ -2468,13 +2467,13 @@ if ( typeof define === "function" && define.amd ) {
 			Sizzle('body')[0].appendChild(dom);
 			var sureBtn = Sizzle(".confirm-btn.btn-sure")[0];
 			var cancelBtn = Sizzle(".confirm-btn.btn-cancel")[0];
-			
+			_this.utils.pageScroll.lock();
 			_this.utils.on('click',sureBtn,function(){
 				if(isFunction(arguments[1])){
 					callback();
 				}
 				Sizzle('body')[0].removeChild(dom);
-				
+				_this.utils.pageScroll.unlock();
 			});
 		},
 		toast:function(msg,type,timeout,callFun){
@@ -2735,11 +2734,12 @@ if ( typeof define === "function" && define.amd ) {
 						}
 						setActive(currentIndex);
 						if(isFunction(current_opt.sliderEnd)){//滑动结束执行的方法
-							current_opt.sliderEnd(i,this);//当前元素的下标以及当前元素
+							current_opt.sliderEnd(currentIndex,this);//当前元素的下标以及当前元素
 						}
 					})
 				}(i));
 			}
+			active(currentIndex);
 			var lefts;//根据当前显示的index，计算出当前的位置
 			lefts =(currentIndex == 1)?0:"-"+(wrapperWidth*(currentIndex-1));
 			setStyle(wrapper,{webkitTransform:'translate3d('+lefts+'px,0px,0px)',transitionDuration:durationTime});
@@ -2771,12 +2771,25 @@ if ( typeof define === "function" && define.amd ) {
 					}(p));
 				}
 			}
+			
+			function active(_index){
+				var _index = _index;
+				for(var j = 0;j<itemLen;j++){
+					if((_index) == j+1){
+						addClass(sliderItem[j],'slider-active');
+					}else{
+						removeClass(sliderItem[j],'slider-active');
+					}
+				}
+			}
+			
 			function setActive(i){//动态设置分页按钮
 				var pagination_li = Sizzle('.slider-pagination li');
 				currentIndex = i || currentIndex;
 				var li_len = pagination_li.length;
 				for(var j =0;j<li_len;j++){
 					if((currentIndex) == j+1){
+						
 						addClass(pagination_li[j],'active');
 						setStyle(pagination_li[j],{background:activeColor});
 					}else{
@@ -2784,7 +2797,11 @@ if ( typeof define === "function" && define.amd ) {
 						setStyle(pagination_li[j],{background:p_color});
 					}
 				}
+				active(currentIndex);
 			}
+			
+			
+			
 			//是否自动播放
 			if(autoplay){
 				clearInterval(timer);
@@ -2792,6 +2809,7 @@ if ( typeof define === "function" && define.amd ) {
 			}
 			function starts(){
 				var leftWidth;
+				current_opt.sliderEnd(currentIndex);
 				if(currentIndex == itemLen+1){
 					setActive(itemLen);
 				}else{
@@ -2898,7 +2916,7 @@ if ( typeof define === "function" && define.amd ) {
 							callFun_result();
 						}
 					}else{//显示搜索历史
-						setStyle(search_history,{display:'block'});
+						setStyle(search_history,{display:'none'});
 						setStyle(search_hot,{display:'block'});
 						setStyle(search_result,{display:'none'});
 						if(isFunction(callFun_history)){
@@ -2923,6 +2941,7 @@ if ( typeof define === "function" && define.amd ) {
 				_this.dialog.confirm('提示信息','是否删除历史记录',function(){
 					_historyList.innerHTML = '';
 					setStyle(search_history,{display:'none'});
+					_this.utils.localStorage.remove('history');
 				})
 			});
 			_this.utils.on('click',_back,function(){
@@ -2952,7 +2971,26 @@ if ( typeof define === "function" && define.amd ) {
 				setStyle(Sizzle('#smp-search')[0],{display:'block'});
 				showHistory('history');
 			});
-			
+		},
+		on:function(ele,callback){
+			var zh_Lock = false;
+			_this.utils.on('compositionstart',ele,function(e){
+				zh_Lock = true;
+			},true);
+			_this.utils.on('compositionend',ele,function(e){
+				zh_Lock = false;
+				
+				if(!zh_Lock){
+					console.log()
+				}
+				
+			},true);
+			_this.utils.on('input',ele,function(e){
+				var searchValue = e.target.value;
+				if(zh_Lock){
+					console.log('searchValue = '+searchValue);
+				}
+			},true);
 		}
 	}
 	//回到顶部
@@ -3008,7 +3046,7 @@ if ( typeof define === "function" && define.amd ) {
 	/**
 	 *图片出现在可见区域里的时候，显示图片 
 	 **/
-	function lazyLoadImg(){
+	function lazyLoadImg(timeover){
 		var lazyImg = Sizzle('.lazy-img');
 		var img_len = lazyImg.length;
 		var winHeight =  document.documentElement.clientHeight;//可见区域高度
@@ -3029,7 +3067,7 @@ if ( typeof define === "function" && define.amd ) {
 					(function(i){
 						setTimeout(function(){
 							lazyImg[i].setAttribute('src',lazyImg[i].getAttribute('data-src'));
-						},250);
+						},timeover);
 					})(i);
 				}
 			}
@@ -3039,8 +3077,13 @@ if ( typeof define === "function" && define.amd ) {
 	 * 懒加载 
 	 **/
 	Smp.prototype.Loading= {
-		lazyLoading:function(){//图片出现在可见区域里的时候，显示图片 
-			lazyLoadImg();
+		lazyLoading:function(option){//图片出现在可见区域里的时候，显示图片 
+			var option = option||{};
+			var defaults = {
+				timeover:250//图片显示的延迟时间
+			};
+			var obj_option = s_extend(defaults,option);
+			lazyLoadImg(obj_option.timeover);
 		}
 	}
 	/**
@@ -3083,8 +3126,68 @@ if ( typeof define === "function" && define.amd ) {
 		
 	}
 	
-	
-	
+	Smp.prototype.actionsheet={
+		eType:'',//事件类型
+		openHandle:null,//打开事件时候执行的方法
+		closeHandle:null,//关闭事件时候执行的方法
+		init:function(ele,type){
+			var self = this;
+			var ele = Sizzle('#'+ele)[0];//获取当前的元素
+			var body = Sizzle('body')[0];//获取body
+			var cancelBtn = Sizzle('#J_Cancel')[0];//获取取消按钮
+			var coverNode = Sizzle('.mask-black')[0];//获取遮罩层
+			var cover = null;//遮罩层
+			cover = document.createElement('div');
+			addClass(cover,'mask-black');
+			var cancel = function(){
+				if(hasClass(ele,'toggle')){
+					removeClass(ele,'toggle');
+				}
+				if(coverNode!=null&&coverNode!=undefined){
+					body.removeChild(coverNode);
+				}else{
+					body.removeChild(cover);
+				}
+				cancelBtn.removeEventListener('click',cancel);
+				if(isFunction(self.closeHandle)){
+					self.handle(self.closeHandle);
+				}
+			}
+			var open = function(){
+				body.appendChild(cover);
+				addClass(ele,'toggle');
+				if(isFunction(self.openHandle)){
+					self.handle(self.openHandle);
+				}
+			}
+			if(type == 'open'){
+				open();
+				cancelBtn.addEventListener('click',cancel);
+			}else if (type == 'close'){
+				if(cover){
+					cancel();
+				}
+			}
+			cover.addEventListener('click',function(e){
+				var e = e||window.event;
+				cancel();
+				e.preventDefault();
+				e.cancelable;
+			});
+		},
+		on:function(type,callback){//自定义事件，监听actionsheet开启与关闭 事件
+			if(type&&type == 'open'){
+				this.eType = 'open';
+				this.openHandle = callback;
+			}else if(type&&type == 'close'){
+				this.eType = 'close';
+				this.closeHandle = callback;
+			}
+		},
+		handle:function(callback){//事件触发
+			callback();
+		}
+	}
 	
 	/**
 	 *公用的ajax请求方式  
@@ -3241,15 +3344,86 @@ if ( typeof define === "function" && define.amd ) {
 	function hasClass(ele,className){
 		return ele.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 	}
+	/**
+	 *添加class 
+	 **/
 	function addClass(ele,className){
 		if(!hasClass(ele,className)){
 			ele.className += " " + className;  
 		}
 	}
+	/**
+	 *移除class 
+	 **/
 	function removeClass(ele,className){
 		if(hasClass(ele,className)){
 			var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
 			ele.className = ele.className.replace(reg,'');
+		}
+	}
+	
+	/**
+	 * 对象obj是否含有自身属性prop 
+	 **/
+	function hasProp(obj,prop){
+		return Object.prototype.hasOwnProperty.call(obj,prop);
+	}
+	
+	/**
+	 * bind方法将func方法绑定到obj对象上 
+	 **/
+	function bind(obj,func){
+		return function(){
+			return func.apply(obj,arguments);
+		}
+	}
+	/**
+	 * 返回自身属性值 value
+	 **/
+	function getOwn(obj,prop){
+	    return hasProp(obj,prop)&&obj[obj];
+	}
+	/**
+	 * 遍历自身属性  
+	 * func两个参数分别是:当前自身属性key 当前自身属性对应的值value
+	 **/
+	function eachProp(obj,func){
+		for(var prop in obj){
+			if(hasProp(obj,prop)&&func(prop,obj[prop])){
+				break;
+			}
+		}
+	}
+	/**
+	 * obj对象中的属性是否可枚举 
+	 **/
+	function isEnumer(obj,prop){
+		return obj&&obj.propertyIsEnumerable(prop);
+	}
+	/**
+	 *each方法遍历数组元素，并且在func中返回相关的数据
+	 * func三个参数分别是 数组下标对应的元素 数组下标  当前数组 
+	 **/
+	function each(arr,func){
+		if(arr){
+			for(var i=0,len=arr.length;i<len;i++){
+				if(arr[i]&&func(arr[i],i.arr)){
+					break;
+				}
+			}
+		}
+	}
+	/**
+	 *eachReverse方法逆向遍历数组元素，并且在func中返回相关的数据
+	 * func三个参数分别是 数组下标对应的元素 数组下标  当前数组 
+	 **/
+	function eachReverse(arr,func){
+		if(arr){
+			for(var i=arr.length-1;i>-1;i--){
+				if(arr[i]&&func(arr[i],i.arr)){
+					break;
+				}
+			}
 		}
 	}
 	/**

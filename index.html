@@ -25,18 +25,13 @@
 		<!--大按钮-->
 		<div class="dialog-test">
 			<button type="button" class="btn btn-primary" id="confirm">confirm</button>
-			
 			<button type="button" class="btn btn-warning" id="alert">alert</button>
-			
 			<button type="button" class="btn btn-primary" id="success">success</button>
-			
 			<button type="button" class="btn btn-default" id="notify">notify</button>
-			
 			<button type="button" class="btn btn-info" id="error">error</button>
-			
 			<button type="button" class="btn btn-danger" id="loading">loading</button>
+			<button type="button" class="btn btn-warning" id="actionsheet">actionsheet</button>
 		</div>
-		
 		<!--轮播-->
 		<div class="smp-slider" id="smp-slider">
 			<div class="slider-wrapper">
@@ -45,7 +40,6 @@
 						<img alt="" src="http://static.ydcss.com/uploads/ydui/1.jpg"/>
 					</a>
 				</div>
-				
 				<div class="slider-item slider-active">
 					<a href="javascript:void(0)">
 						<img alt="" src="http://static.ydcss.com/uploads/ydui/2.jpg"/>
@@ -58,7 +52,17 @@
 				</div>
 			</div>
 		</div>
-		
+		<!--进度条组件  直线跟圆圈-->
+		<div class="smp-progress" id="smp-progress">
+			<div class="progress lineBar">
+				<div class="progress-bar tips">
+					<span class="topTips" tip-value="60"></span>
+				</div>
+			</div>
+			<!--<div class="progress-bar circleBar">
+				<span>60% Complete</span>
+			</div>-->
+		</div>
 		<!--菜单列表按钮-->
 		<div class="smp-menu">
 			<ul class="menu-list list-grid-5">
@@ -124,9 +128,6 @@
 				</li>
 			</ul>	
 		</div>
-		
-		
-		
 		<div class="smp-list theme1">
 			<ul class="data-list">
 				<li class="data-item clear-fixed">
@@ -192,8 +193,6 @@
 				</li>
 			</ul>
 		</div>
-		
-		
 		<div class="smp-list theme2">
 			<ul class="data-list">
 				<li class="data-item clear-fixed">
@@ -259,16 +258,20 @@
 				</li>
 			</ul>
 		</div>
-		
-		
-		
-		
-		
+		<!--回到顶部-->
 		<div class="smp-back-top animated" id="smp-back-top">
 			<i class="iconfont icon-less"></i>
 		</div>
 		
-		
+		<!--底部菜单-->
+		<div class="smp-actionsheet" id="smp-actionsheet">
+            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
+            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
+            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
+            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
+            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
+		</div>
+	
 	</body>
 	<script src="js/smp.js"></script>
 	<script>
@@ -279,7 +282,7 @@
 		var _error= doc.getElementById('error');
 		var _loading= doc.getElementById('loading');
 		var _notify = doc.getElementById('notify');
-		
+		var _actionsheet = doc.getElementById('actionsheet');
 		var SMP_UTILS = smp.utils;
 		
 		SMP_UTILS.on('click',_confirm,function(){
@@ -316,20 +319,35 @@
 					bgcolor:'#000',
 					color:'#fff'
 				},function(){
-				console.log('消失了');
+					console.log('消失了');
 			});
 		});
-//		smp.utils.off('click',ele,function(){
-//			smp.dialog.confirm();
-//		});
+		SMP_UTILS.on('click',_actionsheet,function(){
+			smp.actionsheet.init('smp-actionsheet','open');
+			
+//			setTimeout(function(){
+//				smp.actionsheet.init('smp-actionsheet','close');//关闭底部菜单
+//			},2000);
+		});
+		
+		smp.actionsheet.on('open',function(){
+			console.log('打开了');
+		});
+		smp.actionsheet.on('close',function(){
+			console.log('关闭了');
+		});
+		
 		smp.slider.init("smp-slider",{
-			autoplay:true,//是否自动播放
+			autoplay:false,//是否自动播放
 			playtime:2000,//每2秒切换一张
 			pagination:true,//是否显示分页
 			currentIndex:1,//默认显示当前第一页，
 			durationTime:500,//默认动画效果周期为500ms
-			color:'#ccc',
-			activeColor:'orange',
+			color:'#ccc',//分页背景色
+			activeColor:'orange',//分页当前页的颜色
+			sliderEnd:function(index){
+				console.log('currentIndex'+index);
+			}
 		});
 		
 		smp.backTop.init('smp-back-top');//方式一
@@ -369,4 +387,16 @@
 			},500);
 		});
 </script>	
+	<script>
+//		smp.progress.init('smp-progress',{
+//			type:'lineBar',//分为lineBar 跟circleBar两种风格
+//			width:'',//设置bar的宽度
+//			background:'',//设置bar的背景颜色
+//			fillColor:'',//填充颜色
+//			fillWidth:'',//填充宽度
+//			progress:'50%'//进度值	
+//		});
+		
+		
+	</script>
 </html>
