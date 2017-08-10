@@ -1,0 +1,25 @@
+nav {
+  border: 2px solid blue;
+  width: 100px;
+}
+
+.btn {
+  position: relative;
+  display: block;
+  padding: 0 .2rem;
+  width: 100%;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  border: none;
+  font-size: 0.45rem;
+  text-align: center;
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: 0.1rem;
+  -ms-border-radius: 0.1rem;
+  -moz-border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
+  -webkit-appearance: none;
+}
+
+/*# sourceMappingURL=demo.css.map */

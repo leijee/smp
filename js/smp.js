@@ -1,22 +1,32 @@
+function Sizzle(selector){
+	var _selectors = document.querySelectorAll(selector);
+	return Array.prototype.slice.call(_selectors);
+}
+
 /**
  * time:2017/7/21
  * author:雷杰
  **/
-;(function(window,doc,undefined){
+(function(window,factory){
+	if(typeof define == 'function'&&define.amd){
+		define(function(){
+			return factory(window);
+		});
+	}else{
+		factory(window);
+	}
+}(this,function(window){
+	
+	var doc = document,handle;//添加的事件处理函数handle
 	/**
 	 * 选择器方法 
 	 **/
-	function Sizzle(selector){
-		var _selectors = document.querySelectorAll(selector);
-		return Array.prototype.slice.call(_selectors);
-	}
 	var Smp = function(){
 		window._this = this;
 		if(typeof(Smp) == 'function'){
 			
 		}
 	}
-	var handle ;//添加的事件处理函数
 	
 	Smp.prototype.utils = {
 		pageScroll: function () {
@@ -1020,12 +1030,6 @@
 		if(deep == 'undefined' || deep == null){
 			deep = false;
 		}
-		if(target&&!isObject(target)){
-			throw TypeError('target is not Object');
-		}
-		if(option&&!isObject(option)){
-			throw TypeError('option is not Object');
-		}
 		for(var name in option){
 			var scr = target[name];
 			var copy = option[name];
@@ -1035,10 +1039,10 @@
 				if(target === copy){
 					continue;
 				}
-				if(isArray(copy)&&isObject(copy)){
+				if(isArray(copy)&&isPlainObject(copy)){
 					if(isArray(copy)){//如果是数组的话就直接替换
 						clone = src && isArray( src ) ? src : [];
-					}else if(isObject(copy)){//如果是对象的话
+					}else if(isPlainObject(copy)){//如果是对象的话
 						clone = src && isObject( src ) ? src : {};
 					}
 					target[name] = s_extend(clone,copy,deep);
@@ -1053,7 +1057,7 @@
 	 *抛出错误信息 
 	 **/
 	function throwError(msg){
-		throw new Error(msg);
+		throw Error(msg);
 	}
 
 	/**
@@ -1087,6 +1091,21 @@
 	function isRegExp(obj){
 		return OBJ_TOSRTING.call(obj) === "[object RegExp]"; 
 	}
+	/**
+	 * 是否为一个window对象
+	 **/
+	function isWindow(obj){
+		return obj != null && obj == obj.window
+	}
+	/**
+	 * 判断obj是否为一个真实对象
+	 **/
+	function isPlainObject(obj) {
+	    return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype
+	}
+	/**
+	 * 是否存在class 
+	 **/
 	function hasClass(ele,className){
 		return ele.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 	}
@@ -1260,6 +1279,5 @@
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;
-//	smp.slider.apiInit();
-	
-})(window,document);
+}))
+
