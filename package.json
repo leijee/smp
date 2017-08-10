@@ -10,5 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "leijie",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.0.0-beta.2"
+  }
 }
