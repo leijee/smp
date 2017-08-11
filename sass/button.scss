@@ -1,0 +1,87 @@
+$primary-color:#04BE02;
+$danger-color:#EF4F4F;
+$warning-color:#FFB400;
+$disabled-color:#CCC;
+$default-color:#FFF;
+$info-color:#46b8da;
+
+$primary-active:#04ab02;
+$danger-active:#d74747;
+$warning-active:#e6a200;
+$disabled-active:#b8b8b8;
+$default-active:#e6e6e6;
+$info-active:#31b0d5;
+
+
+$f-color:#FFF;
+$disabled:#F0F0F0;
+
+@import "mixins";
+
+$border-width:2px;
+$border:$border-width solid blue;
+nav{
+    $width:100px;
+    border:$border;
+    width: $width;
+}
+.btn{
+    position: relative;
+    display: block;
+    padding: 0 .2rem;
+    width: 100%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    border: none;
+    font-size: 0.45rem;
+    text-align: center;
+    pointer-events: auto;
+    cursor: pointer;
+    @include border-radius(.1rem);
+}
+.btn-primary,
+.btn-danger,
+.btn-default,
+.btn-warning,
+.btn-info{
+    color: $f-color;
+}
+.btn-disabled{
+    color: $disabled;
+}
+.btn-primary{
+    background: $primary-color;
+    &:active{
+        background: $primary-active;
+    }
+}
+.btn-danger{
+    background: $danger-color;
+    &:active{
+        background: $danger-active;
+    }
+}
+.btn-default{
+    background: $default-color;
+    &:active{
+        background: $default-active;
+    }
+}
+.btn-disabled{
+    background: $disabled-color;
+    &:active{
+        background: $disabled-active;
+    }
+}
+.btn-warning{
+    background: $warning-color;
+    &:active{
+        background: $warning-active;
+    }
+}
+.btn-info{
+    background: $info-color;
+    &:active{
+        background: $info-active;
+    }
+}

@@ -1,0 +1,93 @@
+/* line 23, ../sass/button.scss */
+nav {
+  border: 2px solid blue;
+  width: 100px;
+}
+
+/* line 28, ../sass/button.scss */
+.btn {
+  position: relative;
+  display: block;
+  padding: 0 .2rem;
+  width: 100%;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  border: none;
+  font-size: 0.45rem;
+  text-align: center;
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: 0.1rem;
+  -ms-border-radius: 0.1rem;
+  -moz-border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
+  -webkit-appearance: none;
+}
+
+/* line 42, ../sass/button.scss */
+.btn-primary,
+.btn-danger,
+.btn-default,
+.btn-warning,
+.btn-info {
+  color: #FFF;
+}
+
+/* line 49, ../sass/button.scss */
+.btn-disabled {
+  color: #F0F0F0;
+}
+
+/* line 52, ../sass/button.scss */
+.btn-primary {
+  background: #04BE02;
+}
+/* line 54, ../sass/button.scss */
+.btn-primary:active {
+  background: #04ab02;
+}
+
+/* line 58, ../sass/button.scss */
+.btn-danger {
+  background: #EF4F4F;
+}
+/* line 60, ../sass/button.scss */
+.btn-danger:active {
+  background: #d74747;
+}
+
+/* line 64, ../sass/button.scss */
+.btn-default {
+  background: #FFF;
+}
+/* line 66, ../sass/button.scss */
+.btn-default:active {
+  background: #e6e6e6;
+}
+
+/* line 70, ../sass/button.scss */
+.btn-disabled {
+  background: #CCC;
+}
+/* line 72, ../sass/button.scss */
+.btn-disabled:active {
+  background: #b8b8b8;
+}
+
+/* line 76, ../sass/button.scss */
+.btn-warning {
+  background: #FFB400;
+}
+/* line 78, ../sass/button.scss */
+.btn-warning:active {
+  background: #e6a200;
+}
+
+/* line 82, ../sass/button.scss */
+.btn-info {
+  background: #46b8da;
+}
+/* line 84, ../sass/button.scss */
+.btn-info:active {
+  background: #31b0d5;
+}

@@ -285,7 +285,7 @@
 		var _actionsheet = doc.getElementById('actionsheet');
 		var SMP_UTILS = smp.utils;
 		
-		console.log(Sizzle);
+		console.log($$);
 		SMP_UTILS.on('click',_confirm,function(){
 			smp.dialog.confirm('提示信息','测试一下',function(){
 				console.log('你点击了确定');
@@ -382,7 +382,7 @@
 				+'</li>';
 				i++;
 			}
-			Sizzle('.theme2 .data-list')[0].insertAdjacentHTML('beforeend',Str);
+			$$('.theme2 .data-list')[0].insertAdjacentHTML('beforeend',Str);
 			setTimeout(function(){
 				Loading.hideLoading();//关闭正在加载的图片
 			},500);

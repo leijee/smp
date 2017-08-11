@@ -5,28 +5,24 @@ $disabled-color:#CCC;
 $default-color:#FFF;
 $info-color:#46b8da;
 
+$primary-active:#04ab02;
+$danger-active:#d74747;
+$warning-active:#e6a200;
+$disabled-active:#b8b8b8;
+$default-active:#e6e6e6;
+$info-active:#31b0d5;
+
+
+$f-color:#FFF;
+$disabled:#F0F0F0;
+
 @import "mixins";
 
 $border-width:2px;
 $border:$border-width solid blue;
-nav{
-    $width:100px;
-    border:$border;
-    width: $width;
-}
 
-.btn{
-    position: relative;
-    display: block;
-    padding: 0 .2rem;
-    width: 100%;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    border: none;
-    font-size: 0.45rem;
-    text-align: center;
-    pointer-events: auto;
-    cursor: pointer;
-    @include border-radius(.1rem);
-}
+@import "button","dialog";
+
+
+
 

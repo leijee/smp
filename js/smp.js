@@ -1,4 +1,4 @@
-function Sizzle(selector){
+function $$(selector){
 	var _selectors = document.querySelectorAll(selector);
 	return Array.prototype.slice.call(_selectors);
 }
@@ -32,7 +32,7 @@ function Sizzle(selector){
 		pageScroll: function () {
             var w_height = document.documentElement.clientHeight;
             var islock = false;
-            var _body =Sizzle('body')[0];
+            var _body =$$('body')[0];
             return {
                 lock: function () {
                     if (islock)return;
@@ -165,12 +165,12 @@ function Sizzle(selector){
 								+'</div>'
 							+'</div>';
 			dom.innerHTML = confirmStr;
-			Sizzle('body')[0].appendChild(dom);
-			var sureBtn = Sizzle(".confirm-btn.btn-sure")[0];
-			var cancelBtn = Sizzle(".confirm-btn.btn-cancel")[0];
+			$$('body')[0].appendChild(dom);
+			var sureBtn = $$(".confirm-btn.btn-sure")[0];
+			var cancelBtn = $$(".confirm-btn.btn-cancel")[0];
 			
 			var removeDialog = function(){
-				Sizzle('body')[0].removeChild(dom);
+				$$('body')[0].removeChild(dom);
 				_this.utils.pageScroll.unlock();
 			}
 			
@@ -198,15 +198,15 @@ function Sizzle(selector){
 								+'</div>'
 							+'</div>';
 			dom.innerHTML = alertStr;
-			Sizzle('body')[0].appendChild(dom);
-			var sureBtn = Sizzle(".confirm-btn.btn-sure")[0];
-			var cancelBtn = Sizzle(".confirm-btn.btn-cancel")[0];
+			$$('body')[0].appendChild(dom);
+			var sureBtn = $$(".confirm-btn.btn-sure")[0];
+			var cancelBtn = $$(".confirm-btn.btn-cancel")[0];
 			_this.utils.pageScroll.lock();
 			_this.utils.on('click',sureBtn,function(){
 				if(isFunction(arguments[1])){
 					callback();
 				}
-				Sizzle('body')[0].removeChild(dom);
+				$$('body')[0].removeChild(dom);
 				_this.utils.pageScroll.unlock();
 			});
 		},
@@ -233,7 +233,7 @@ function Sizzle(selector){
                 		  +'</div>';
             _this.utils.pageScroll.lock();
 			dom.innerHTML = toastStr;
-            Sizzle('body')[0].appendChild(dom);
+            $$('body')[0].appendChild(dom);
         	
         	if(isFunction(timeout)){//没有设置超时时间，直接使用回调函数
         		callback = timeout;
@@ -241,7 +241,7 @@ function Sizzle(selector){
         		callback = callFun;
         		timer = setTimeout(function(){
 	        		_this.utils.pageScroll.unlock();
-	        		Sizzle('body')[0].removeChild(dom);
+	        		$$('body')[0].removeChild(dom);
 	        		callback();
 	        		clearTimeout(timer);
 	        	},timeout);
@@ -251,7 +251,7 @@ function Sizzle(selector){
 		},
 		closeToast:function(callback){
 			_this.utils.pageScroll.unlock();
-    		Sizzle('body')[0].removeChild(Sizzle('#Smp_toast')[0]);
+    		$$('body')[0].removeChild($$('#Smp_toast')[0]);
     		if(isFunction(callback)){
     			callback();
     		}
@@ -270,19 +270,19 @@ function Sizzle(selector){
                     		+'<div class="loading-txt">' + (text || '数据加载中') + '</div>'
             		     +'</div>'; 
 			dom.innerHTML = loadingStr;
-            Sizzle('body')[0].appendChild(dom);
+            $$('body')[0].appendChild(dom);
             _this.utils.pageScroll.lock();
             if(timeout!='undefined'&& typeof timeout == 'number'){
             	timer = setTimeout(function(){
             		_this.utils.pageScroll.unlock();
-					Sizzle('body')[0].removeChild(Sizzle('#Smp_loading')[0]);
+					$$('body')[0].removeChild($$('#Smp_loading')[0]);
 					clearTimeout(timer);
             	},timeout);	
             }
 		},
 		closeLoding:function(){
 			_this.utils.pageScroll.unlock();
-			Sizzle('body')[0].removeChild(Sizzle('#Smp_loading')[0]);
+			$$('body')[0].removeChild($$('#Smp_loading')[0]);
 		},
 		notify:function(params,callFun){//callback  消失之后执行的回调函数
 			var cId = 'smp_notify';
@@ -319,11 +319,11 @@ function Sizzle(selector){
 			dom.setAttribute('id',cId)
             var notifytStr ='<div class="m-notify '+_position+'" style="background:'+_bgcolor+';color:'+_color+'">' + _msg + '</div>';
 			dom.innerHTML = notifytStr;
-            Sizzle('body')[0].appendChild(dom);
+            $$('body')[0].appendChild(dom);
 			timer = setTimeout(function(){
-				addClass(Sizzle('.m-notify')[0],notifys_Out);
-				Sizzle('.m-notify')[0].addEventListener('webkitAnimationEnd',function(){
-					Sizzle('body')[0].removeChild(dom);
+				addClass($$('.m-notify')[0],notifys_Out);
+				$$('.m-notify')[0].addEventListener('webkitAnimationEnd',function(){
+					$$('body')[0].removeChild(dom);
 					clearTimeout(timer);
 					if(isFunction(callFun)){
 						callFun();
@@ -370,15 +370,15 @@ function Sizzle(selector){
 			var p_color = default_opt.color;//滑块颜色
 			var activeColor = default_opt.activeColor;//选中当前的滑块的颜色
 			
-			var sliders = Sizzle("#"+ele)[0];//id为ele的 slider的元素
+			var sliders = $$("#"+ele)[0];//id为ele的 slider的元素
 			var wrapperWidth = parseInt(getStyle(sliders,'width'));//获取当前slider的宽度
-			var wrapper = Sizzle("#"+ele+">.slider-wrapper")[0];//获取当前slider下面的滑块wrapper
-			var sliderItem = Sizzle("#"+ele+" .slider-item");
+			var wrapper = $$("#"+ele+">.slider-wrapper")[0];//获取当前slider下面的滑块wrapper
+			var sliderItem = $$("#"+ele+" .slider-item");
 			var itemLen = sliderItem.length;
 			
 		    var refremPage = function(){
 		    	wrapperWidth = parseInt(getStyle(sliders,'width'));
-				sliderItem = Sizzle("#"+ele+" .slider-item");
+				sliderItem = $$("#"+ele+" .slider-item");
 				itemLen = sliderItem.length;
 		        for(var i =0;i<itemLen;i++){
 					setStyle(sliderItem[i],{width:wrapperWidth+'px'});
@@ -491,8 +491,8 @@ function Sizzle(selector){
 					}
 				}
 				pagStr.innerHTML = liStr;
-				Sizzle("#smp-slider")[0].appendChild(pagStr);
-				var paginationList = Sizzle('.slider-pagination li');
+				$$("#smp-slider")[0].appendChild(pagStr);
+				var paginationList = $$('.slider-pagination li');
 				var p_len = paginationList.length;
 				for(var p= 0;p<p_len;p++){
 					(function(p){
@@ -518,7 +518,7 @@ function Sizzle(selector){
 			}
 			
 			function setActive(i){//动态设置分页按钮
-				var pagination_li = Sizzle('.slider-pagination li');
+				var pagination_li = $$('.slider-pagination li');
 				currentIndex = i || currentIndex;
 				var li_len = pagination_li.length;
 				for(var j =0;j<li_len;j++){
@@ -568,7 +568,7 @@ function Sizzle(selector){
 	}
 	Smp.prototype.Search = {
 		init:function(ele,option){
-			var _search = Sizzle('#'+ele)[0];
+			var _search = $$('#'+ele)[0];
 			if(!_search){
 				throw new Error('对象不存在');
 			}
@@ -576,16 +576,16 @@ function Sizzle(selector){
 				showHistory:true//显示搜索历史
 			};
 			var options = s_extend(defaults,option);
-			var _close = Sizzle('.search-bar .close')[0];//清空搜索内容按钮
-			var searchBar = Sizzle('.search-bar input')[0];//搜索内容
-			var delete_history = Sizzle('#delete-history')[0];//清空历史记录
-			var _back = Sizzle('.search-back .back')[0];//返回按钮
-			var _sureSearch = Sizzle('.search-sure .sure-btn')[0];
+			var _close = $$('.search-bar .close')[0];//清空搜索内容按钮
+			var searchBar = $$('.search-bar input')[0];//搜索内容
+			var delete_history = $$('#delete-history')[0];//清空历史记录
+			var _back = $$('.search-back .back')[0];//返回按钮
+			var _sureSearch = $$('.search-sure .sure-btn')[0];
 			
-			var search_history = Sizzle('#'+ele+' .search-history')[0];//搜索历史
-			var search_hot = Sizzle('#'+ele+' .search-hot')[0];//搜索热门
-			var search_result = Sizzle('#'+ele+' .search-result')[0];//动态搜索结果
-			var _historyList = Sizzle('#'+ele+' .search-history .historyList')[0];
+			var search_history = $$('#'+ele+' .search-history')[0];//搜索历史
+			var search_hot = $$('#'+ele+' .search-hot')[0];//搜索热门
+			var search_result = $$('#'+ele+' .search-result')[0];//动态搜索结果
+			var _historyList = $$('#'+ele+' .search-history .historyList')[0];
 			
 			var getHistory = function(key){
 				var historyRecord = _this.utils.localStorage.get(key)||'[]';
@@ -686,7 +686,7 @@ function Sizzle(selector){
 				if(searchText!=''){
 					setHistory('history',{text:searchText});
 				}
-				setStyle(Sizzle('#smp-search')[0],{display:'none'});
+				setStyle($$('#smp-search')[0],{display:'none'});
 				console.log(getHistory('history'));
 			});
 			_this.utils.on('click',_close,function(e){
@@ -701,8 +701,8 @@ function Sizzle(selector){
 				}
 			});
 			
-			smp.utils.on('click',Sizzle('#search-btn')[0],function(){
-				setStyle(Sizzle('#smp-search')[0],{display:'block'});
+			smp.utils.on('click',$$('#search-btn')[0],function(){
+				setStyle($$('#smp-search')[0],{display:'block'});
 				showHistory('history');
 			});
 		},
@@ -734,9 +734,9 @@ function Sizzle(selector){
 		}
 		//指定的顶部滚动高度为100
 		var winHeight =  document.body.clientHeight;//可见区域高度
-		var docHeight = getStyle(Sizzle('body')[0],'height');//内容的高度
+		var docHeight = getStyle($$('body')[0],'height');//内容的高度
 		var topVal = parseInt(docHeight)*0.15;//文档高度的15%作为判断的临界值
-		var backTopBtn = Sizzle('#'+ele)[0];
+		var backTopBtn = $$('#'+ele)[0];
 		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
 		var setScroll = function(scrollTop){
 			if(scrollTop>topVal){
@@ -773,7 +773,7 @@ function Sizzle(selector){
 			addClass(div,'animated');
 			div.id = id;
 			div.innerHTML = '<i class="iconfont icon-less"></i>';
-			Sizzle('body')[0].appendChild(div);
+			$$('body')[0].appendChild(div);
 			return id;
 		}
 	}
@@ -781,7 +781,7 @@ function Sizzle(selector){
 	 *图片出现在可见区域里的时候，显示图片 
 	 **/
 	function lazyLoadImg(timeover){
-		var lazyImg = Sizzle('.lazy-img');
+		var lazyImg = $$('.lazy-img');
 		var img_len = lazyImg.length;
 		var winHeight =  document.documentElement.clientHeight;//可见区域高度
 		var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
@@ -792,7 +792,7 @@ function Sizzle(selector){
 			}
 		}
 		window.addEventListener('scroll',function(){
-			var lazyImg = Sizzle('.lazy-img');
+			var lazyImg = $$('.lazy-img');
 			var img_len = lazyImg.length;
 			var scrollTop =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
 			for(var i=0;i<img_len;i++){
@@ -846,10 +846,10 @@ function Sizzle(selector){
 			return {
 				showLoading:function(){//创建正在加载的动画
 					loadingDiv.innerHTML = '<img src="./img/loading9.gif">';
-					Sizzle('body')[0].appendChild(loadingDiv);
+					$$('body')[0].appendChild(loadingDiv);
 				},
 				hideLoading:function(){//销毁正在加载的动画
-					var loadingDiv = Sizzle('#loadingImg')[0];
+					var loadingDiv = $$('#loadingImg')[0];
 					if(loadingDiv){
 						//移除当前节点
 						loadingDiv.parentNode.removeChild(loadingDiv);
@@ -866,10 +866,10 @@ function Sizzle(selector){
 		closeHandle:null,//关闭事件时候执行的方法
 		init:function(ele,type){
 			var self = this;
-			var ele = Sizzle('#'+ele)[0];//获取当前的元素
-			var body = Sizzle('body')[0];//获取body
-			var cancelBtn = Sizzle('#J_Cancel')[0];//获取取消按钮
-			var coverNode = Sizzle('.mask-black')[0];//获取遮罩层
+			var ele = $$('#'+ele)[0];//获取当前的元素
+			var body = $$('body')[0];//获取body
+			var cancelBtn = $$('#J_Cancel')[0];//获取取消按钮
+			var coverNode = $$('.mask-black')[0];//获取遮罩层
 			var cover = null;//遮罩层
 			cover = document.createElement('div');
 			addClass(cover,'mask-black');

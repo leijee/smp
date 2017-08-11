@@ -1,39 +1,79 @@
-@mixin border-radius($radius){
-            border-radius: $radius;
-        -ms-border-radius: $radius;
-       -moz-border-radius: $radius;
+//圆角
+@mixin border-radius($radius) {
+    border-radius: $radius;
+    -ms-border-radius: $radius;
+    -moz-border-radius: $radius;
     -webkit-border-radius: $radius;
     -webkit-appearance: none;
 }
-@mixin box-sizing($type){
-            box-sizing: $type;
-       -moz-box-sizing: $type;
+//盒模型
+@mixin box-sizing($type) {
+    box-sizing: $type;
+    -moz-box-sizing: $type;
     -webkit-box-sizing: $type;
 }
-@mixin clearfix(){
+//清除浮动
+@mixin clearfix{
     &:before,
-    &:after{
-        content:'';
-        display:block;
-        clear:both;
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
     }
 }
-@mixin animation($name, $duration: 1000ms, $iterations: infinite, $timing-function: ease, $delay: 0ms) {
-          animation: $name $duration $iterations $timing-function $delay;
-       -o-animation: $name $duration $iterations $timing-function $delay;
-     -moz-animation: $name $duration $iterations $timing-function $delay;
-  -webkit-animation: $name $duration $iterations $timing-function $delay;
-}
-@mixin transition($property,$duration,$function){
-            transition: $property $duration $function;
-         -o-transition: $property $duration $function;
-       -moz-transition: $property $duration $function;
-    -webkit-transition: $property $duration $function;
-}
-@mixin transform($transform){
-            transform: $transform;
-         -o-transform: $transform;
-       -moz-transform: $transform;
-    -webkit-transform: $transform;
+//flex布局
+@mixin display-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
 }
 
+@mixin flex-value($val){
+    -webkit-box-flex: $val;
+    -webkit-flex: $val;
+    -ms-flex: $val;
+    flex: $val;
+}
+//动画
+@mixin animation($name, $duration: 1s, $iterations: infinite, $timingFun: ease, $delay: 0ms) {
+    animation: $name $duration $iterations $timingFun $delay;
+    -o-animation: $name $duration $iterations $timingFun $delay;
+    -moz-animation: $name $duration $iterations $timingFun $delay;
+    -webkit-animation: $name $duration $iterations $timingFun $delay;
+}
+//过渡
+@mixin transition($property, $duration, $function) {
+    transition: $property $duration $function;
+    -o-transition: $property $duration $function;
+    -moz-transition: $property $duration $function;
+    -webkit-transition: $property $duration $function;
+}
+
+@mixin transform($transform) {
+    transform: $transform;
+    -o-transform: $transform;
+    -moz-transform: $transform;
+    -webkit-transform: $transform;
+}
+//默认显示不换行，文本超过的宽度的时候显示点
+@mixin text-operation($whitespace:nowrap,$textoverflow:ellipsis,$overflow:hidden){
+    white-space: $whitespace;
+    text-overflow: $textoverflow;
+    overflow: $overflow;
+}
+//动画帧播放
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
