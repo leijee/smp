@@ -833,14 +833,8 @@ function $id(elementStr){
 	function setBar(){
 		var lineBar = $$('.lineBar .progress-bar');
 		var time = 2;//2秒实现动画
-		
-		var s = 50;//毫秒设置50ms
-		
-		
-		
+		var s = 0;//毫秒设置50ms
 		var timer = [];
-		
-		
 		
 		var circleBar = $$('.circleBar .progress-bar');
 		var r_circleBar = $$('.circleBar .progress-bar .rightBar');
@@ -856,49 +850,66 @@ function $id(elementStr){
 		}
 		if(circleBar){
 			var cir_len = circleBar.length;
-			var circleBarVal = 0;
+			var circleBarVal = [];
 			var deg = [];
+			var flag = true;
+			
+			var d = [];
+			var l = [];
+			var r = [];
+			var c = [];
 			for(var j=0;j<cir_len;j++){
-				circleBarVal = parseInt(circleBar[j].getAttribute('bar-value'));
-				circleBarVal = circleBarVal<0?0:circleBarVal>100?100:circleBarVal;//设置最小0最大100
-				deg[j] = 3.6*circleBarVal+45;//默认需要加45度
+				circleBarVal[j] = parseInt(circleBar[j].getAttribute('bar-value'));
+				circleBarVal[j] = circleBarVal[j]<0?0:circleBarVal[j]>100?100:circleBarVal[j];//设置最小0最大100
+				deg[j] = 3.6*circleBarVal[j]+45;//默认需要加45度
 				
-				
-				var d =0;
-				var l =0;
-				var r =0;
+				d[j] = 0;
+				l[j] = 0;
+				r[j] = 0;
+				c[j] = 0;
 				(function(j){
-					if(circleBarVal<51){
+					if(circleBarVal[j]<51){
 						timer[j] = setInterval(function(){
-							r*=3.6;
-							r_circleBar[j].style.transform = "rotate("+ (180-45-r)+"deg)";
-							d++;
-							
-							if(d>circleBarVal){
+							r[j]= 3.6*(d[j]);
+							r_circleBar[j].style.transform = "rotate("+ (45+r[j]).toFixed(2)+"deg)";
+							d[j] ++;
+							if(d[j]>circleBarVal[j]){
 								clearInterval(timer[j])
 							}
 						},s);
 					}
-					if(circleBarVal>50){
-						r_circleBar[j].addEventListener('transitionend',function(){
-							l_circleBar[j].style.transform = "rotate("+ (deg[j]-180)+"deg)";
-						});
-						timer[j] = setInterval(function(){
-							r*=3.6;
-							r_circleBar[j].style.transform = "rotate("+ r+"deg)";
-							d++;
-							r++;
-							l++;
-							if(d>50){
-								r =50;
-								r_circleBar[j].style.transform = "rotate("+ (180+l*3.6)+"deg)";
-							}else if(d>circleBarVal){
-								clearInterval(timer[j])
+					
+					if(circleBarVal[j]>50){
+						timer[j]= setInterval(function(){
+							r[j]= 3.6*(d[j]);
+							if(c[j] <51&&flag){
+								r_circleBar[j].style.transform = "rotate("+ (45+r[j])+"deg)";
 							}
-						},s*100);
+							d[j] ++;
+							c[j] ++;
+							if(c[j] >50){
+								console.log('c['+j+'] ='+c[j]);
+								d[j] =50;
+								
+								flag =false;
+								l[j]++;
+								if(d[j]==50){
+									console.log('结束'+Date.now());
+								}
+								console.log(j+'========'+parseInt(l[j]));
+								handle[j] = function(){
+									console.log('开始'+Date.now());
+									l_circleBar[j].style.transform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
+									r_circleBar[j].removeEventListener('transitionend',handle[j]);
+								}
+								r_circleBar[j].style.transform = "rotate("+ 225+"deg)";
+								r_circleBar[j].addEventListener('transitionend',handle[j]);
+							}
+							if((c[j])>circleBarVal[j]){
+								clearInterval(timer[j]);
+							}
+						},s);
 					}
-					
-					
 				})(j)
 				
 				

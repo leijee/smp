@@ -1236,6 +1236,11 @@ body
 	height: auto;
 	padding: 1rem;
 }
+.smp-progress:after{
+	content: '';
+	clear: both;
+	display: block;
+}
 .smp-progress .lineBar{
 	position: relative;
 	display: block;
@@ -1268,23 +1273,21 @@ body
 }
 .smp-progress .circleBar
 {
-	width: 200px;
-    height: auto;
-    margin: 50px auto;
+    margin: 1rem .5rem;
     position: relative;
 }
 .smp-progress .circleBar .progress-bar
 {
-	width: 200px;
-	height: 200px;
+	width: 3rem;
+	height: 3rem;
     border-radius: 50%;
     position: relative;
 }
 .circleBar .circle-right,
 .circleBar .circle-left
 {
-    width: 100px;
-    height: 200px;
+    width: 1.5rem;
+    height: 3rem;
     position: absolute;
     top:0;
     overflow: hidden;
@@ -1301,25 +1304,53 @@ body
 .circleBar .rightBar,
 .circleBar .leftBar
 {
-	width: 200px;
-	height: 200px;
-    border: 20px solid rgb(232, 232, 12);
+	width: 3rem;
+	height: 3rem;
+    border-width: .3rem;
+    border-style: solid;
+    border-color: red;
     border-radius: 50%;
     position: absolute;
     top: 0;
     -webkit-transform: rotate(45deg);
 }
+.circleBar .primary
+{
+	border-color: green;
+}
+.circleBar .danger
+{
+	border-color: #EF4F4F;
+}
+.circleBar .warning
+{
+	border-color: #FFB400;
+}
+.circleBar .info
+{
+	border-color: #46b8da;
+}
+.circleBar .disabled
+{
+	border-color: #CCC;
+}
+.circleBar .default
+{
+	border-color: #fff;
+}
+
+
 .circleBar .rightBar
 {
-    border-top:20px solid #f0f0f0;
-    border-right:20px solid #f0f0f0;
+    border-top:.3rem solid #ccc;
+    border-right:.3rem solid #ccc;
     right:0;
     transition: transform 1s;
 }
 .circleBar .leftBar
 {
-    border-bottom:20px solid #f0f0f0;
-    border-left:20px solid #f0f0f0;
+    border-bottom:.3rem solid #ccc;
+    border-left:.3rem solid #ccc;
     left:0;
     transition: transform 1s;
 }
