@@ -171,11 +171,11 @@ th
 }
 .float-l
 {
-	float: left;
+	float: left !important;
 }
 .float-r
 {
-	float: right;
+	float: right !important;
 }
 
 
@@ -185,9 +185,6 @@ body
     background-color: #fff;
     -webkit-overflow-scrolling: touch;
 }
-
-
-
 
 /**
  *button样式 
@@ -1244,17 +1241,19 @@ body
 	display: block;
 	width: 100%;
 	height: .2rem;
+	margin-bottom: 1rem;
     overflow: hidden;
     background-color: #f5f5f5;
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
     box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 }
-.smp-progress .lineBar .progress-bar{
+.smp-progress .lineBar .progress-bar
+{
 	position: absolute;
 	top: 0;
 	left: 0;
-    width: 50%;
+    width: 0;
     height: .2rem;
     font-size: .35rem;
     line-height: .2rem;
@@ -1267,6 +1266,64 @@ body
     -o-transition: width .6s ease;
     transition: width .6s ease;
 }
+.smp-progress .circleBar
+{
+	width: 200px;
+    height: auto;
+    margin: 50px auto;
+    position: relative;
+}
+.smp-progress .circleBar .progress-bar
+{
+	width: 200px;
+	height: 200px;
+    border-radius: 50%;
+    position: relative;
+}
+.circleBar .circle-right,
+.circleBar .circle-left
+{
+    width: 100px;
+    height: 200px;
+    position: absolute;
+    top:0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.circleBar .circle-right
+{
+    right:0;
+}
+.circleBar .circle-left
+{
+    left:0;
+}
+.circleBar .rightBar,
+.circleBar .leftBar
+{
+	width: 200px;
+	height: 200px;
+    border: 20px solid rgb(232, 232, 12);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    -webkit-transform: rotate(45deg);
+}
+.circleBar .rightBar
+{
+    border-top:20px solid #f0f0f0;
+    border-right:20px solid #f0f0f0;
+    right:0;
+    transition: transform 1s;
+}
+.circleBar .leftBar
+{
+    border-bottom:20px solid #f0f0f0;
+    border-left:20px solid #f0f0f0;
+    left:0;
+    transition: transform 1s;
+}
+
 /**
  *smp-list-style1 列表风格1 
  **/

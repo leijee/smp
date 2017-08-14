@@ -1,0 +1,63 @@
+nav {
+  border: 2px solid blue;
+  width: 100px; }
+
+.btn {
+  position: relative;
+  display: block;
+  padding: 0 .2rem;
+  width: 100%;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  border: none;
+  font-size: 0.45rem;
+  text-align: center;
+  pointer-events: auto;
+  cursor: pointer;
+  border-radius: 0.1rem;
+  -ms-border-radius: 0.1rem;
+  -moz-border-radius: 0.1rem;
+  -webkit-border-radius: 0.1rem;
+  -webkit-appearance: none; }
+
+.btn-primary,
+.btn-danger,
+.btn-default,
+.btn-warning,
+.btn-info {
+  color: #FFF; }
+
+.btn-disabled {
+  color: #F0F0F0; }
+
+.btn-primary {
+  background: #04BE02; }
+  .btn-primary:active {
+    background: #04ab02; }
+
+.btn-danger {
+  background: #EF4F4F; }
+  .btn-danger:active {
+    background: #d74747; }
+
+.btn-default {
+  background: #FFF; }
+  .btn-default:active {
+    background: #e6e6e6; }
+
+.btn-disabled {
+  background: #CCC; }
+  .btn-disabled:active {
+    background: #b8b8b8; }
+
+.btn-warning {
+  background: #FFB400; }
+  .btn-warning:active {
+    background: #e6a200; }
+
+.btn-info {
+  background: #46b8da; }
+  .btn-info:active {
+    background: #31b0d5; }
+
+/*# sourceMappingURL=button.css.map */

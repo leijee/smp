@@ -2,6 +2,12 @@ function $$(selector){
 	var _selectors = document.querySelectorAll(selector);
 	return Array.prototype.slice.call(_selectors);
 }
+function $id(elementStr){
+	if(typeof elementStr != 'string'){
+		return null;
+	}
+	return document.getElementById(elementStr);
+}
 
 /**
  * time:2017/7/21
@@ -820,6 +826,89 @@ function $$(selector){
 			lazyLoadImg(obj_option.timeover);
 		}
 	}
+	
+	/**
+	 * 设置进度条bar 
+	 **/
+	function setBar(){
+		var lineBar = $$('.lineBar .progress-bar');
+		var time = 2;//2秒实现动画
+		
+		var s = 50;//毫秒设置50ms
+		
+		
+		
+		var timer = [];
+		
+		
+		
+		var circleBar = $$('.circleBar .progress-bar');
+		var r_circleBar = $$('.circleBar .progress-bar .rightBar');
+		var l_circleBar = $$('.circleBar .progress-bar .leftBar');
+		if(lineBar){//线性 progress-bar
+			var line_len = lineBar.length;
+			var lineBarVal = 0;
+			for(var i=0;i<line_len;i++){
+				lineBarVal = parseInt(lineBar[i].getAttribute('bar-value'));
+				lineBarVal = lineBarVal<0?0:lineBarVal>100?100:lineBarVal;//设置最小0最大100
+				setStyle(lineBar[i],{width:lineBarVal+'%'});
+			}
+		}
+		if(circleBar){
+			var cir_len = circleBar.length;
+			var circleBarVal = 0;
+			var deg = [];
+			for(var j=0;j<cir_len;j++){
+				circleBarVal = parseInt(circleBar[j].getAttribute('bar-value'));
+				circleBarVal = circleBarVal<0?0:circleBarVal>100?100:circleBarVal;//设置最小0最大100
+				deg[j] = 3.6*circleBarVal+45;//默认需要加45度
+				
+				
+				var d =0;
+				var l =0;
+				var r =0;
+				(function(j){
+					if(circleBarVal<51){
+						timer[j] = setInterval(function(){
+							r*=3.6;
+							r_circleBar[j].style.transform = "rotate("+ (180-45-r)+"deg)";
+							d++;
+							
+							if(d>circleBarVal){
+								clearInterval(timer[j])
+							}
+						},s);
+					}
+					if(circleBarVal>50){
+						r_circleBar[j].addEventListener('transitionend',function(){
+							l_circleBar[j].style.transform = "rotate("+ (deg[j]-180)+"deg)";
+						});
+						timer[j] = setInterval(function(){
+							r*=3.6;
+							r_circleBar[j].style.transform = "rotate("+ r+"deg)";
+							d++;
+							r++;
+							l++;
+							if(d>50){
+								r =50;
+								r_circleBar[j].style.transform = "rotate("+ (180+l*3.6)+"deg)";
+							}else if(d>circleBarVal){
+								clearInterval(timer[j])
+							}
+						},s*100);
+					}
+					
+					
+				})(j)
+				
+				
+				
+			}
+		}
+	}
+	setBar();
+	
+	
 	/**
 	 * 到达底部加载更多 
 	 **/
@@ -857,9 +946,10 @@ function $$(selector){
 				}
 			}
 		}()
-		
 	}
-	
+	/**
+	 * 底部弹出菜单栏 
+	 **/
 	Smp.prototype.actionsheet={
 		eType:'',//事件类型
 		openHandle:null,//打开事件时候执行的方法

@@ -55,12 +55,52 @@
 		<!--进度条组件  直线跟圆圈-->
 		<div class="smp-progress" id="smp-progress">
 			<div class="progress lineBar">
-				<div class="progress-bar tips">
-					<span class="topTips" tip-value="60"></span>
+				<div class="progress-bar tips" bar-value="60">
 				</div>
 			</div>
-			<!--<div class="progress-bar circleBar">
-				<span>60% Complete</span>
+			<div class="progress lineBar">
+				<div class="progress-bar tips" bar-value="30">
+				</div>
+			</div>
+			<div class="progress lineBar">
+				<div class="progress-bar tips" bar-value="75">
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="10">
+					<div class="circle-right ">
+						<div class="rightBar">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="100">
+					<div class="circle-right ">
+						<div class="rightBar">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="55">
+					<div class="circle-right ">
+						<div class="rightBar">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar">
+						</div>
+					</div>
+				</div>
 			</div>-->
 		</div>
 		<!--菜单列表按钮-->
@@ -276,16 +316,15 @@
 	<script src="js/smp.js"></script>
 	<script>
 		var doc = document;
-		var _confirm = doc.getElementById('confirm');
-		var _alert = doc.getElementById('alert');
-		var _success = doc.getElementById('success');
-		var _error= doc.getElementById('error');
-		var _loading= doc.getElementById('loading');
-		var _notify = doc.getElementById('notify');
-		var _actionsheet = doc.getElementById('actionsheet');
+		var _confirm = $id('confirm');
+		var _alert = $id('alert');
+		var _success = $id('success');
+		var _error= $id('error');
+		var _loading= $id('loading');
+		var _notify = $id('notify');
+		var _actionsheet = $id('actionsheet');
 		var SMP_UTILS = smp.utils;
 		
-		console.log($$);
 		SMP_UTILS.on('click',_confirm,function(){
 			smp.dialog.confirm('提示信息','测试一下',function(){
 				console.log('你点击了确定');
