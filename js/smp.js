@@ -862,7 +862,6 @@ function $id(elementStr){
 				circleBarVal[j] = parseInt(circleBar[j].getAttribute('bar-value'));
 				circleBarVal[j] = circleBarVal[j]<0?0:circleBarVal[j]>100?100:circleBarVal[j];//设置最小0最大100
 				deg[j] = 3.6*circleBarVal[j]+45;//默认需要加45度
-				
 				d[j] = 0;
 				l[j] = 0;
 				r[j] = 0;
@@ -878,7 +877,6 @@ function $id(elementStr){
 							}
 						},s);
 					}
-					
 					if(circleBarVal[j]>50){
 						timer[j]= setInterval(function(){
 							r[j]= 3.6*(d[j]);
@@ -888,17 +886,10 @@ function $id(elementStr){
 							d[j] ++;
 							c[j] ++;
 							if(c[j] >50){
-								console.log('c['+j+'] ='+c[j]);
 								d[j] =50;
-								
 								flag =false;
 								l[j]++;
-								if(d[j]==50){
-									console.log('结束'+Date.now());
-								}
-								console.log(j+'========'+parseInt(l[j]));
 								handle[j] = function(){
-									console.log('开始'+Date.now());
 									l_circleBar[j].style.transform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
 									r_circleBar[j].removeEventListener('transitionend',handle[j]);
 								}
@@ -918,7 +909,6 @@ function $id(elementStr){
 		}
 	}
 	setBar();
-	
 	
 	/**
 	 * 到达底部加载更多 
@@ -1125,7 +1115,7 @@ function $id(elementStr){
 	/**
 	 *实现对象复制
 	 **/
-	function s_extend(deep,target,option,){
+	function s_extend(deep,target,option){
 		var deep = false;
 		var clone;
 		if(deep == 'undefined' || deep == null){

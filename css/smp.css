@@ -1273,8 +1273,33 @@ body
 }
 .smp-progress .circleBar
 {
-    margin: 1rem .5rem;
     position: relative;
+}
+.smp-progress .circleBar .barText{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 3rem;
+	height: 3rem;
+	padding-top: .3rem;
+	z-index: 1;
+	border-radius: 50%;
+	text-align: center;
+}
+.smp-progress .circleBar .barText span{
+	margin-top: 1rem;
+	font-size: .35rem;
+}
+.smp-progress .circleBar .barText p
+{
+	width: 80%;
+	margin: 0 auto;
+	padding: 0;
+	line-height: initial;
+	font-size: .4rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .smp-progress .circleBar .progress-bar
 {
@@ -1282,6 +1307,7 @@ body
 	height: 3rem;
     border-radius: 50%;
     position: relative;
+    margin: 0 .1rem;
 }
 .circleBar .circle-right,
 .circleBar .circle-left
@@ -1317,35 +1343,40 @@ body
 .circleBar .primary
 {
 	border-color: green;
+	color: green;
 }
 .circleBar .danger
 {
 	border-color: #EF4F4F;
+	color: #EF4F4F;
 }
 .circleBar .warning
 {
 	border-color: #FFB400;
+	color: #FFB400;
 }
 .circleBar .info
 {
 	border-color: #46b8da;
+	color: #46b8da;
 }
 .circleBar .disabled
 {
 	border-color: #CCC;
+	color: #CCC;
 }
 .circleBar .default
 {
 	border-color: #fff;
+	color: #fff;
 }
-
 
 .circleBar .rightBar
 {
     border-top:.3rem solid #ccc;
     border-right:.3rem solid #ccc;
     right:0;
-    transition: transform 1s;
+    transition: transform .1s;
 }
 .circleBar .leftBar
 {
@@ -1539,4 +1570,25 @@ body
     -ms-flex-align: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+/*加载页面显示层*/
+#isLoadPage{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: #fff;
+	z-index: 10;
+}
+#isLoadPage img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -3.5rem;
+    margin-top: -3.5rem;
+    width: 7rem;
+    height: 7rem;
 }
