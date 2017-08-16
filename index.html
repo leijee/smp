@@ -7,188 +7,148 @@
 		<link rel="stylesheet" type="text/css" href="css/smp.css"/>
 		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
 		<script src="js/flexible.js"></script>
-		<style type="text/css">
-			.dialog-test button{
-				margin-top: 20px;
-			}
-		</style>
 	</head>
 	<body>
+		<script src="js/loadPage.js"></script>
 		<script>
-			//页面进入之后显示正在加载中
-			var loadPage = (function (){
-				var ID = 'isLoadPage';
-				var flag = false;
-				var body = document.querySelector('body');
-				return {
-					showLoading:function(){//显示正在加载
-						var div = document.createElement('div');
-						div.id = ID;
-						div.innerHTML = '<img class="loading" src="./img/loading2.gif">';
-						if(!flag){
-							body.appendChild(div);
-							
-							body.style.overflow = 'hidden';
-							flag = true;
-						}
-					},
-					hideLoading:function(){//加载完毕
-						if(flag){
-							var _div = document.getElementById('isLoadPage');
-							_div.parentNode.removeChild(_div);
-							body.style.overflow = 'auto';
-						}
-					}
-				}
-			})();
-			function $ready(callback){
-				if ('addEventListener' in document) {
-					document.addEventListener('DOMContentLoaded', function() {
-						callback();
-					}, false);
-				}	
-			}
-			console.log(loadPage);
 			loadPage.showLoading();
 		</script>
-		
-		<!--小按钮-->
-		<div class="button">
-			<button type="button" class="small-btn btn-danger">danger</button>
-			<button type="button" class="small-btn btn-primary">primary</button>
-			<button type="button" class="small-btn btn-warning">warning</button>
-			<button type="button" class="small-btn btn-default">default</button>
-			<button type="button" class="small-btn btn-disabled">disabled</button>
-			<button type="button" class="small-btn btn-info">info</button>
+		<div class="header">
+			<div class="header-search-form" id="search-form">
+				<i class="iconfont icon-search"></i>
+				<input type="text" placeholder="请输入搜索的商品"/>
+			</div>
+			<div class="header-login">
+				<i class="iconfont icon-account"></i>
+			</div>
+			<div class="search-bg" id="search-bg">
+			</div>
+			
 		</div>
-		<!--大按钮-->
-		<div class="dialog-test">
-			<button type="button" class="btn btn-primary" id="confirm">confirm</button>
-			<button type="button" class="btn btn-warning" id="alert">alert</button>
-			<button type="button" class="btn btn-primary" id="success">success</button>
-			<button type="button" class="btn btn-default" id="notify">notify</button>
-			<button type="button" class="btn btn-info" id="error">error</button>
-			<button type="button" class="btn btn-danger" id="loading">loading</button>
-			<button type="button" class="btn btn-warning" id="actionsheet">actionsheet</button>
+		
+		<div class="smp-search" id="smp-search">
+			<div class="search-head">
+				<div class="search-back">
+					<i class="iconfont icon-back back"></i>
+				</div>
+				<div class="search-text">
+					<div class="search-bar">
+						<i class="iconfont icon-search search"></i>
+						<input type="text" autofocus="true" name="searchValue" placeholder="请输入..."/>
+						<i class="iconfont icon-close close"></i>
+					</div>
+				</div>
+				<div class="search-sure">
+					<button type="button" class="sure-btn">搜索</button>
+				</div>
+			</div>
+			<div class="search-content">
+				<!--显示历史纪录-->
+				<div class="search-history">
+					<div class="history-header clear-fixed">
+						<span class="history-title float-l">
+							最近搜索
+						</span>
+						<span class="history-delete float-r">
+							<i class="iconfont icon-delete" id="delete-history"></i>
+						</span>
+					</div>
+					<ul class="historyList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
+					</ul>
+				</div>		
+				<!--显示热门搜索-->
+				<div class="search-hot">
+					<div class="hotList-title">热门搜索</div>
+					<ul class="hotList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
+					</ul>
+				</div>
+				<!--显示搜索结果-->
+				<div class="search-result">
+					<div class="resultList-title">搜索结果</div>
+					<ul class="resultList">
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">神器</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<!--轮播-->
 		<div class="smp-slider" id="smp-slider">
 			<div class="slider-wrapper">
 				<div class="slider-item">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/1.jpg"/>
+						<img alt="" src="https://img1.360buyimg.com/da/jfs/t7762/169/298675053/47499/3a38c2d3/599168e5Nfaf11ad5.jpg"/>
 					</a>
 				</div>
 				<div class="slider-item slider-active">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/2.jpg"/>
+						<img alt="" src="https://img1.360buyimg.com/da/jfs/t7384/238/319027687/89622/17c5fec5/59916f0cN38de44c3.jpg"/>
 					</a>
 				</div>
 				<div class="slider-item">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/3.jpg"/>
+						<img alt="" src="https://m.360buyimg.com/mobilecms/s720x322_jfs/t7159/17/2024559098/189326/5e210f08/59916719N8fb333b3.jpg!q70.jpg"/>
 					</a>
 				</div>
 			</div>
 		</div>
-		<!--进度条组件  直线跟圆圈-->
-		<div class="smp-progress" id="smp-progress">
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="60">
-				</div>
-			</div>
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="30">
-				</div>
-			</div>
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="75">
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="50">
-					<div class="circle-right " >
-						<div class="rightBar danger">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar danger">
-						</div>
-					</div>
-				</div>
-				<div class="barText">
-					<span class="danger">50%</span>
-					<p>利用率</p>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="75">
-					<div class="circle-right ">
-						<div class="rightBar info">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar info">
-						</div>
-					</div>
-				</div>
-				<div class="barText">
-					<span class="info">75%</span>
-					<p>利用率</p>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="55">
-					<div class="circle-right ">
-						<div class="rightBar warning">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar warning">
-						</div>
-					</div>
-				</div>
-				<div class="barText">
-					<span class="warning">55%</span>
-					<p>利用率</p>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="35">
-					<div class="circle-right ">
-						<div class="rightBar primary">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar primary">
-						</div>
-					</div>
-				</div>
-				<div class="barText">
-					<span class="primary">35%</span>
-					<p>利用率</p>
-				</div>
-			</div>
-		</div>
-		<!--菜单列表按钮-->
+		<!--菜单按钮-->
 		<div class="smp-menu">
 			<ul class="menu-list list-grid-5">
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./button.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5875/51/9145207616/18667/66a76536/59843c8cN82899dad.png" alt="京东超市"/>
-						<span class="link-title">京东超市</span>
+						<span class="link-title">按钮</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./form.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5965/339/3633548361/13799/cd4d0416/5954cf81N3294a71c.png" alt="全球购"/>
-						<span class="link-title">全球购</span>
+						<span class="link-title">表单</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./progressBar.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5656/351/153181074/12227/e35aa8d/591d9456Naa85e195.png" alt="服装城"/>
-						<span class="link-title">服装城</span>
+						<span class="link-title">进度条</span>
 					</a>
 				</li>
 				<li class="menu-item">
@@ -235,6 +195,7 @@
 				</li>
 			</ul>	
 		</div>
+		<!--列表-->
 		<div class="smp-list theme1">
 			<ul class="data-list">
 				<li class="data-item clear-fixed">
@@ -365,97 +326,50 @@
 				</li>
 			</ul>
 		</div>
+		
 		<!--回到顶部-->
 		<div class="smp-back-top animated" id="smp-back-top">
 			<i class="iconfont icon-less"></i>
 		</div>
+		<!--底部固定菜单-->
+		<footer class="smp-fix-menu">
+			<a href="#">
+				<i class="iconfont icon-all"></i>
+				<p>首页</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-manageorder"></i>
+				<p>订单</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-logistic"></i>
+				<p>发现</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-cart"></i>
+				<p>购物车</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-gerenzhongxin"></i>
+				<p>我的</p>
+			</a>
+		</footer>
 		
-		<!--底部菜单-->
-		<div class="smp-actionsheet" id="smp-actionsheet">
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
-		</div>
-	
 	</body>
 	
 	<script src="js/fastclick.js"></script>
 	<script src="js/smp.js"></script>
 	<script>
-		function $ready(callback){
-			if ('addEventListener' in document) {
-				document.addEventListener('DOMContentLoaded', function() {
-					callback();
-				}, false);
-			}	
-		}
 		$ready(function(){
 			setTimeout(function(){
 				loadPage.hideLoading();//关闭页面正在加载中...
-			},800);
+			},500);
 			FastClick.attach(document.body);
-			var doc = document;
-			var _confirm = $id('confirm');
-			var _alert = $id('alert');
-			var _success = $id('success');
-			var _error= $id('error');
-			var _loading= $id('loading');
-			var _notify = $id('notify');
-			var _actionsheet = $id('actionsheet');
-			var SMP_UTILS = smp.utils;
 			
-			SMP_UTILS.on('click',_confirm,function(){
-				smp.dialog.confirm('提示信息','测试一下',function(){
-					console.log('你点击了确定');
-				});
-			});
-			SMP_UTILS.on('click',_alert,function(){
-				smp.dialog.alert('你点击了我',function(){
-					console.log('你点击了确定');
-				});
-			});
-			SMP_UTILS.on('click',_success,function(){
-				smp.dialog.toast('成功','success',1000,function(){
-					console.log('success');
-				});
-			});
-			SMP_UTILS.on('click',_error,function(){
-				smp.dialog.toast('失败','error',function(){
-					console.log('error');
-				});
-				setTimeout(function(){
-					smp.dialog.closeToast();
-				},1000);
-			});
-			SMP_UTILS.on('click',_loading,function(){
-				smp.dialog.loading('正在加载中..',2000);
-			});
-			SMP_UTILS.on('click',_notify,function(){
-				smp.dialog.notify({
-						msg:'密码错误',
-						time:3000,
-						fix:'top',
-						bgcolor:'#000',
-						color:'#fff'
-					},function(){
-						console.log('消失了');
-				});
-			});
-			SMP_UTILS.on('click',_actionsheet,function(){
-				smp.actionsheet.init('smp-actionsheet','open');
-			});
-			
-			smp.actionsheet.on('open',function(){
-				console.log('打开了');
-			});
-			smp.actionsheet.on('close',function(){
-				console.log('关闭了');
-			});
+			smp.Search.init('smp-search','search-form',{});
 			
 			smp.slider.init("smp-slider",{
-				autoplay:false,//是否自动播放
+				autoplay:true,//是否自动播放
 				playtime:2000,//每2秒切换一张
 				pagination:true,//是否显示分页
 				currentIndex:1,//默认显示当前第一页，
@@ -463,14 +377,14 @@
 				color:'#ccc',//分页背景色
 				activeColor:'orange',//分页当前页的颜色
 				sliderEnd:function(index){
-					console.log('currentIndex'+index);
+//					console.log('currentIndex'+index);
 				}
 			});
+			//回到顶部  需要手动添加 html
+			smp.backTop.init('smp-back-top');
 			
-			smp.backTop.init('smp-back-top');//方式一
-			//smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
-			
-			smp.Loading.lazyLoading();//图片出现在可见区域里的时候，加载图片
+			//懒加载 图片出现在可见区域里的时候，加载图片
+			smp.Loading.lazyLoading();
 			
 			/**
 			 * 到达底部，通过在一个回调方法中加载更多的数据

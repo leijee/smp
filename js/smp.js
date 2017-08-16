@@ -1,18 +1,63 @@
+/**
+ * time:2017/7/21
+ * author:雷杰
+ **/
+//使用querySelectorAll 获取dom对象
 function $$(selector){
 	var _selectors = document.querySelectorAll(selector);
 	return Array.prototype.slice.call(_selectors);
 }
+//id选择器
 function $id(elementStr){
 	if(typeof elementStr != 'string'){
 		return null;
 	}
 	return document.getElementById(elementStr);
 }
+//html节点加载完成之后执行的方法
+function $ready(callback){
+	if ('addEventListener' in document) {
+		document.addEventListener('DOMContentLoaded', function() {
+			callback();
+		}, false);
+	}	
+}
+//对cookie的操作
+var Cookies = (function(){
+	
+	var encodeStr = function(str){
+		var str = encodeURIComponent(str);
+		return str;
+	}
+	var decodeStr = function(str){
+		var str = decodeURIComponent(str);
+		return str;
+	}
+	
+	return {
+		set:function(key,value,option){
+			var options =option||{expire:3};
+			
+			
+		},
+		get:function(key){
+			
+		},
+		hasItem:function(key){
+			
+		},
+		keys:function(){
+			
+		},
+		removeItem:function(){
+			
+		}
+	}
+	
+})();
 
-/**
- * time:2017/7/21
- * author:雷杰
- **/
+
+
 (function(window,factory){
 	if(typeof define == 'function'&&define.amd){
 		define(function(){
@@ -363,7 +408,6 @@ function $id(elementStr){
 				sliderEnd:null //结束滑动
 			};
 			
-			
 			var current_opt = s_extend(default_opt,option);
 			var autoplay = current_opt.autoplay;
 			var pagination = current_opt.pagination;
@@ -573,7 +617,7 @@ function $id(elementStr){
 		}
 	}
 	Smp.prototype.Search = {
-		init:function(ele,option){
+		init:function(ele,searchBtn,option){
 			var _search = $$('#'+ele)[0];
 			if(!_search){
 				throw new Error('对象不存在');
@@ -640,14 +684,10 @@ function $id(elementStr){
 					return val;
 				}));
 			}
-			console.log(getHistory('history'));
-			
-			
 			var searchValue = '';
 			var zh_Lock = false;
 			var result_or_history = function(zh_Lock,callFun_result,callFun_history){
 				if(!zh_Lock){
-					console.log(searchValue);
 					if(searchValue != ''){//显示搜索结果
 						setStyle(search_history,{display:'none'});
 						setStyle(search_hot,{display:'none'});
@@ -677,7 +717,6 @@ function $id(elementStr){
 				result_or_history(zh_Lock,null,null);
 			},true);
 			_this.utils.on('click',delete_history,function(e){
-				console.log('aa');
 				_this.dialog.confirm('提示信息','是否删除历史记录',function(){
 					_historyList.innerHTML = '';
 					setStyle(search_history,{display:'none'});
@@ -693,7 +732,6 @@ function $id(elementStr){
 					setHistory('history',{text:searchText});
 				}
 				setStyle($$('#smp-search')[0],{display:'none'});
-				console.log(getHistory('history'));
 			});
 			_this.utils.on('click',_close,function(e){
 				searchBar.value = '';
@@ -707,10 +745,24 @@ function $id(elementStr){
 				}
 			});
 			
-			smp.utils.on('click',$$('#search-btn')[0],function(){
+			smp.utils.on('click',$$('#'+searchBtn)[0],function(){
 				setStyle($$('#smp-search')[0],{display:'block'});
 				showHistory('history');
 			});
+			
+			function changeBgcolor(){
+				var scroll_top =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+				
+				var opt = 0;
+				if(scroll_top<1000){
+					opt = scroll_top*0.001;
+				}else{
+					opt = 1;
+				}
+				setStyle($id('search-bg'),{opacity:opt});
+			}
+			document.addEventListener('scroll',changeBgcolor);
+			
 		},
 		on:function(ele,callback){
 			var zh_Lock = false;
@@ -728,7 +780,6 @@ function $id(elementStr){
 			_this.utils.on('input',ele,function(e){
 				var searchValue = e.target.value;
 				if(zh_Lock){
-					console.log('searchValue = '+searchValue);
 				}
 			},true);
 		}
@@ -858,6 +909,7 @@ function $id(elementStr){
 			var l = [];
 			var r = [];
 			var c = [];
+			var handles = [];
 			for(var j=0;j<cir_len;j++){
 				circleBarVal[j] = parseInt(circleBar[j].getAttribute('bar-value'));
 				circleBarVal[j] = circleBarVal[j]<0?0:circleBarVal[j]>100?100:circleBarVal[j];//设置最小0最大100
@@ -870,7 +922,7 @@ function $id(elementStr){
 					if(circleBarVal[j]<51){
 						timer[j] = setInterval(function(){
 							r[j]= 3.6*(d[j]);
-							r_circleBar[j].style.transform = "rotate("+ (45+r[j]).toFixed(2)+"deg)";
+							r_circleBar[j].style.webkitTransform = "rotate("+ (45+r[j]).toFixed(2)+"deg)";
 							d[j] ++;
 							if(d[j]>circleBarVal[j]){
 								clearInterval(timer[j])
@@ -881,7 +933,7 @@ function $id(elementStr){
 						timer[j]= setInterval(function(){
 							r[j]= 3.6*(d[j]);
 							if(c[j] <51&&flag){
-								r_circleBar[j].style.transform = "rotate("+ (45+r[j])+"deg)";
+								r_circleBar[j].style.webkitTransform = "rotate("+ (45+r[j])+"deg)";
 							}
 							d[j] ++;
 							c[j] ++;
@@ -889,12 +941,14 @@ function $id(elementStr){
 								d[j] =50;
 								flag =false;
 								l[j]++;
-								handle[j] = function(){
-									l_circleBar[j].style.transform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
-									r_circleBar[j].removeEventListener('transitionend',handle[j]);
+								handles[j] = function(){
+									console.log('test');
+									l_circleBar[j].style.webkitTransform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
+									r_circleBar[j].removeEventListener('webkitTransitionEnd',handles[j]);
 								}
-								r_circleBar[j].style.transform = "rotate("+ 225+"deg)";
-								r_circleBar[j].addEventListener('transitionend',handle[j]);
+								r_circleBar[j].style.webkitTransform = "rotate("+ 225+"deg)";
+								r_circleBar[j].addEventListener('webkitTransitionEnd',handles[j]);
+								console.log('aaaaaa');
 							}
 							if((c[j])>circleBarVal[j]){
 								clearInterval(timer[j]);
@@ -902,9 +956,6 @@ function $id(elementStr){
 						},s);
 					}
 				})(j)
-				
-				
-				
 			}
 		}
 	}
@@ -1060,7 +1111,6 @@ function $id(elementStr){
 		xhr.send(data);
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4){//已成功接收请求信息
-				console.log(xhr);
 				if(xhr.status == 200){//返回成功
 					var responseData = xhr.responseText;
 					if(isFunction(succFun)){
@@ -1115,7 +1165,7 @@ function $id(elementStr){
 	/**
 	 *实现对象复制
 	 **/
-	function s_extend(deep,target,option){
+	function s_extend(target,option,deep){
 		var deep = false;
 		var clone;
 		if(deep == 'undefined' || deep == null){

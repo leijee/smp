@@ -185,7 +185,13 @@ body
     background-color: #fff;
     -webkit-overflow-scrolling: touch;
 }
-
+/*隐藏横向和纵向滚动条*/
+::-webkit-scrollbar{
+width: 0;
+}
+::-webkit-scrollbar:horizontal {
+height: 0;
+}
 /**
  *button样式 
  **/
@@ -225,6 +231,7 @@ body
     -webkit-appearance: none;
     pointer-events: auto;
     cursor: pointer;
+    margin-bottom: .35rem;
 }
 .btn-primary 
 {
@@ -306,6 +313,55 @@ body
 }
 .btn-default:after{
 	border-color: #ccc;
+}
+
+/**
+ * smp-fix-menu 底部固定菜单 
+ **/
+.smp-fix-menu{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2rem;
+	background: #fff;
+	z-index: 10;
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-box-align: center;
+    -moz-box-align: justify;
+    -ms-flex-align: center;
+    justify-content: space-between;
+    align-content: center;
+    background-color: #FFF;
+}
+.smp-fix-menu a{
+	display: block;
+	-webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: center;
+    font-size: .5rem;
+    padding-top: .35rem;
+    color: #000;
+}
+.smp-fix-menu a:active{
+	color: red;
+}
+.smp-fix-menu a i{
+	font-size: .55rem;
+}
+.smp-fix-menu a p{
+	margin-top: .1rem;
+	padding: 0;
+	font-size: .45rem;
 }
 /**
  *dialog样式 
@@ -706,10 +762,76 @@ body
     transform: translate3d(0, 50px, 0);
   }
 }
-
 /**
  *搜索栏 searchBar
  **/
+.paddingTop2{
+	padding-top: 2rem;
+}
+.header{
+	position: fixed;
+	left: 50%;
+	margin-left: -7.5rem;
+	width: 15rem;
+	height: 1.6rem;
+	padding-top: .2rem;
+	z-index: 20;
+}
+.header .search-bg{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: #EF4F4F;
+	z-index: 21;
+	opacity: 0;
+}
+.header .header-search-form{
+	position: relative;
+	width: 11rem;
+	margin-left: 2rem;
+	float: left;
+	padding: 1px;
+	height: 1.2rem;
+	border-radius: .75rem;
+	background: #fff;
+	z-index: 22;
+}
+.header .header-search-form i,
+.header .header-search-form input{
+	z-index: 22;
+	position: absolute;
+	height: 1.1rem;
+	line-height: 1.1rem;
+}
+.header .header-search-form i{
+	width: 10%;
+	left: 0;
+	text-align: center;
+	font-size: .55rem;
+	color: #000;
+}
+.header .header-search-form input{
+	display: block;
+	width: 85%;
+	left: 10%;
+	border: none;
+	font-size: .45rem;
+}
+.header .header-login{
+	position: relative;
+	float: right;
+	width: 2rem;
+	height: 1.2rem;
+	line-height: .8rem;
+	text-align: center;
+	z-index: 22;
+}
+.header .header-login i{
+	font-size: .5rem;
+	color: #ccc;
+}
 
 .smp-search{
 	display: none;
@@ -1068,6 +1190,7 @@ body
 }
 .slider-item img{
 	width: 100%;
+	height: 100%;
 }
 #smp-slider .slider-pagination{
 	position: absolute;
@@ -1226,6 +1349,8 @@ body
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	color: #000;
+	font-size: .45rem;
 }
 
 /**
@@ -1376,14 +1501,16 @@ body
     border-top:.3rem solid #ccc;
     border-right:.3rem solid #ccc;
     right:0;
-    transition: transform .1s;
+    transition: all 1s;
+    -webkit-transition: all 1s;
 }
 .circleBar .leftBar
 {
     border-bottom:.3rem solid #ccc;
     border-left:.3rem solid #ccc;
     left:0;
-    transition: transform 1s;
+    transition: all 1s;
+    -webkit-transition: all 1s;
 }
 
 /**
@@ -1425,7 +1552,7 @@ body
 .theme1 .data-list .data-item .item-info .item-title
 {
 	height: 2rem;
-	line-height: .85rem;
+	line-height: .95rem;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 2;
@@ -1581,7 +1708,7 @@ body
 	height: 100%;
 	overflow: hidden;
 	background: #fff;
-	z-index: 10;
+	z-index: 99;
 }
 #isLoadPage img{
     position: absolute;
