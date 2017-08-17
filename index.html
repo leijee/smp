@@ -195,6 +195,35 @@
 				</li>
 			</ul>	
 		</div>
+		
+		<!--广告图片-->
+		<div class="smp-ad">
+			<ul class="ad-list">
+				<li class="ad-item">
+					<a href="#">
+						<img src="https://m.360buyimg.com/mobilecms/jfs/t5635/181/9760687193/67974/966811b/598aaf7bNb8531dc9.jpg!q70.jpg" alt="" />
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!--消息播报-->
+		<div class="smp-news-msg">
+			<a class="news-msg-title" href="https://pro.m.jd.com/mall/active/3vWapAz58pJGYRfNeG88ddfsMM8S/index.html">
+				<img src="//st.360buyimg.com/m/images/index/jd-news-tit.png">
+			</a>
+			<div class="news-msg-cont">
+				<ul class="msg-cont-list">
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>爱上大声大声大声道阿斯达</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">爆</span>哈哈哈死定了华盛顿了和</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>鹅鹅诶诶诶鹅饿饿</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">火</span>哈哈哈哈反反复复</a></li>
+				</ul>
+			</div>
+			<a class="news-msg-more" href="https://pro.m.jd.com/mall/active/3vWapAz58pJGYRfNeG88ddfsMM8S/index.html">
+				更多
+			</a>
+		</div>
+		
 		<!--列表-->
 		<div class="smp-list theme1">
 			<ul class="data-list">
@@ -363,7 +392,7 @@
 		$ready(function(){
 			setTimeout(function(){
 				loadPage.hideLoading();//关闭页面正在加载中...
-			},500);
+			},10);
 			FastClick.attach(document.body);
 			
 			smp.Search.init('smp-search','search-form',{});
@@ -417,6 +446,8 @@
 					Loading.hideLoading();//关闭正在加载的图片
 				},500);
 			});
+			
+			smp.newsMsg.init('msg-cont-list');
 		});
 	</script>	
 </html>

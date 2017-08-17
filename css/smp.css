@@ -177,7 +177,9 @@ th
 {
 	float: right !important;
 }
-
+.red-color{
+	color: red;
+}
 
 body
 {
@@ -830,9 +832,8 @@ height: 0;
 }
 .header .header-login i{
 	font-size: .5rem;
-	color: #ccc;
+	color: #fff;
 }
-
 .smp-search{
 	display: none;
     position: fixed;
@@ -1718,4 +1719,76 @@ height: 0;
     margin-top: -3.5rem;
     width: 7rem;
     height: 7rem;
+}
+
+/**
+ * smp-ad 广告图片列 
+ **/
+.smp-ad{
+	width: 100%;
+	height: auto;
+	position: relative;
+}
+.smp-ad .ad-list{
+	width: 100%;
+	height: auto;
+}
+.smp-ad .ad-list .ad-item{
+	width: 100%;
+	height: 3.3rem;
+}
+.smp-ad .ad-list .ad-item img{
+	width: 100%;
+	height: 100%;
+}
+/**
+ * smp-msg 消息滚动 
+ **/
+.smp-news-msg{
+	width: 100%;
+	height: 2rem;
+	overflow: hidden;
+}
+.smp-news-msg .news-msg-title,
+.smp-news-msg .news-msg-cont,
+.smp-news-msg .news-msg-more{
+	float: left;
+	height: 1.5rem;
+	line-height: 1.5rem;
+}
+.smp-news-msg .news-msg-title{
+	width: 30%;
+	text-align: center;
+}
+.smp-news-msg .news-msg-title img{
+	width: 3.5rem;
+	margin-left: .2rem;
+}
+.smp-news-msg .news-msg-cont{
+	width: 50%;
+	overflow: hidden;
+}
+.smp-news-msg .news-msg-cont .msg-cont-list{
+	transition: all 1s;
+}
+.news-msg-cont .msg-cont-list .msg-cont-item{
+	height: 1.4rem;
+	line-height: initial;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.msg-cont-list .msg-cont-item a{
+	height: 100%;
+	font-size: .55rem;
+}
+.msg-cont-list .msg-cont-item a span{
+	margin: 0 .35rem;
+	font-size: .65rem;
+}
+.smp-news-msg .news-msg-more{
+	width: 20%;
+	text-align: center;
+	color: #333;
+	font-size: .55rem;
 }

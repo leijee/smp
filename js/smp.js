@@ -961,6 +961,44 @@ var Cookies = (function(){
 	}
 	setBar();
 	
+	
+	/**
+	 * smp-news-msg 新闻消息滚动
+	 **/
+	
+	
+	Smp.prototype.newsMsg = (function(ele){
+		var newsMsg = function (ele){
+			var msgList = $$("."+ele)[0];
+			var msgItem = $$("."+ele+" li");
+			var itemLen = msgItem.length;
+			var itemHeight = 0,allHeight;
+			var timer = null;
+			if(itemLen>0){
+				itemHeight = parseInt(getStyle(msgItem[0],'height'));
+			}
+			allHeight = itemHeight*itemLen;
+			var currentVal = 0;
+			if(timer){
+				clearInterval(timer);
+			}
+			timer = setInterval(function(){
+				if(Math.abs(currentVal) == (allHeight-itemHeight)){
+					currentVal = 0;
+				}else{
+					currentVal+=itemHeight;
+				}
+				setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'})
+			},2000);
+		}
+		return {
+			init:function(ele){
+				newsMsg(ele);
+			}
+		}
+	})();
+	
+	
 	/**
 	 * 到达底部加载更多 
 	 **/
