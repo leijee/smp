@@ -966,7 +966,6 @@ var Cookies = (function(){
 	 * smp-news-msg 新闻消息滚动
 	 **/
 	
-	
 	Smp.prototype.newsMsg = (function(ele){
 		var newsMsg = function (ele){
 			var msgList = $$("."+ele)[0];
@@ -988,7 +987,7 @@ var Cookies = (function(){
 				}else{
 					currentVal+=itemHeight;
 				}
-				setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'})
+				setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'});
 			},2000);
 		}
 		return {
@@ -1040,69 +1039,144 @@ var Cookies = (function(){
 	/**
 	 * 底部弹出菜单栏 
 	 **/
-	Smp.prototype.actionsheet={
-		eType:'',//事件类型
-		openHandle:null,//打开事件时候执行的方法
-		closeHandle:null,//关闭事件时候执行的方法
-		init:function(ele,type){
-			var self = this;
-			var ele = $$('#'+ele)[0];//获取当前的元素
-			var body = $$('body')[0];//获取body
-			var cancelBtn = $$('#J_Cancel')[0];//获取取消按钮
-			var coverNode = $$('.mask-black')[0];//获取遮罩层
-			var cover = null;//遮罩层
-			cover = document.createElement('div');
-			addClass(cover,'mask-black');
-			var cancel = function(){
-				if(hasClass(ele,'toggle')){
-					removeClass(ele,'toggle');
+	Smp.prototype.actionsheet= (function(){
+		var _flag = false;
+		var c_flag = false;
+		var eType = '';//事件类型
+		var openHandle = null;//打开事件时候执行的方法
+		var closeHandle = null;//关闭事件时候执行的方法
+		var body = $$('body')[0];//获取body
+		var cancelBtn = $$('#J_Cancel')[0];//获取取消按钮
+		var coverNode = $$('.mask-black')[0];//获取遮罩层
+		var cover = null;//遮罩层
+		cover = document.createElement('div');
+		addClass(cover,'mask-black');
+		return {
+			init:function(ele,type){
+				var ele = $$('#'+ele)[0];//获取当前的元素
+				var cancel = function(){//关闭   触发close事件
+					if(hasClass(ele,'toggle')){
+						removeClass(ele,'toggle');
+					}
+					if(coverNode!=null&&coverNode!=undefined){
+						body.removeChild(coverNode);
+					}else if(cover){
+						body.removeChild(cover);
+					}else{
+						console.log('cover不存在');
+					}
+					if(isFunction(closeHandle)){
+						smp.actionsheet.handle(closeHandle);
+					}
 				}
-				if(coverNode!=null&&coverNode!=undefined){
-					body.removeChild(coverNode);
-				}else{
-					body.removeChild(cover);
+				var open = function(){//打开   触发open事件
+					body.appendChild(cover);
+					addClass(ele,'toggle');
+					if(isFunction(openHandle)){
+						smp.actionsheet.handle(openHandle);
+					}
 				}
-				cancelBtn.removeEventListener('click',cancel);
-				if(isFunction(self.closeHandle)){
-					self.handle(self.closeHandle);
+				if(type == 'open'){
+					open();
+					if(!_flag){//只添加一次事件
+						_flag = true;
+						cancelBtn.addEventListener('click',cancel);
+					}
+				}else if (type == 'close'){
+					if(cover){
+						cancel();
+					}
 				}
+				if(!c_flag){//添加一次事件
+					c_flag = true;
+					cover.addEventListener('click',function(e){
+						var e = e||window.event;
+						cancel();
+						e.preventDefault();
+						e.cancelable;
+					});
+				}
+			},
+			on:function(type,callback){//自定义事件，监听actionsheet开启与关闭 事件
+				if(type&&type == 'open'){
+					eType = 'open';
+					openHandle = callback;
+				}else if(type&&type == 'close'){
+					eType = 'close';
+					closeHandle = callback;
+				}
+			},
+			handle:function(callback){//事件触发
+				callback();
 			}
-			var open = function(){
-				body.appendChild(cover);
-				addClass(ele,'toggle');
-				if(isFunction(self.openHandle)){
-					self.handle(self.openHandle);
-				}
+		}
+	}());
+	
+	/**
+	 * 添加百度地图 
+	 **/
+	Smp.prototype.setBaiduMap = {
+		init:function(ele,option){
+			var option = option||{},
+				_w,
+				_h,
+				zoomC,
+				scaleC,
+				setZoom,
+				_theme,
+				_icon;
+			var defaults = {
+				width:'100%',
+				height:'200px',
+				zoomControl: false, // 是否开启地图缩放控件
+		    	scaleControl: false, // 是否开启地图比例尺控件
+				setZoom:11,
+				theme:0,
+				icon:'',
 			}
-			if(type == 'open'){
-				open();
-				cancelBtn.addEventListener('click',cancel);
-			}else if (type == 'close'){
-				if(cover){
-					cancel();
-				}
+			var obj_option = s_extend(defaults,option);
+			var mapId = $id(ele);
+			_w = obj_option.width;//设置地图宽度
+			_h = obj_option.height;//设置地图高度
+			zoomC = obj_option.zoomControl;//
+			scaleC = obj_option.scaleControl;//
+			setZoom = obj_option.setZoom;//
+			_theme = obj_option.theme;//主题风格
+			_icon = obj_option.icon;//自定义标注图
+			setStyle(mapId,{width:_w,height:_h});
+			var map = null;
+			var getMap = function(){
+				return new BMap.Map(ele);
 			}
-			cover.addEventListener('click',function(e){
-				var e = e||window.event;
-				cancel();
-				e.preventDefault();
-				e.cancelable;
-			});
-		},
-		on:function(type,callback){//自定义事件，监听actionsheet开启与关闭 事件
-			if(type&&type == 'open'){
-				this.eType = 'open';
-				this.openHandle = callback;
-			}else if(type&&type == 'close'){
-				this.eType = 'close';
-				this.closeHandle = callback;
+			map = !map?getMap():map;
+			var poi = new BMap.Point(113.448054, 22.491276);
+			map.centerAndZoom(poi, setZoom);
+			map.enableScrollWheelZoom(zoomC);//启用滚轮放大缩小
+			map.addControl(new BMap.NavigationControl());// 添加平移缩放控件
+			map.addControl(new BMap.MapTypeControl());//添加地图类型控件
+			if(scaleC){
+				map.addControl(new BMap.ScaleControl());// 添加比例尺控件
 			}
-		},
-		handle:function(callback){//事件触发
-			callback();
+			var myIcon = null;
+			if(_icon!= ''){
+				myIcon = new BMap.Icon(_icon, new BMap.Size(300,157));//定义自己的标注
+			}
+			var marker = new BMap.Marker(poi,{icon:myIcon}); //创建marker对象
+			map.addOverlay(marker); //在地图中添加marker
+			var setTheme = function(_theme){//设置主题风格
+				var themes = ['normal','light','dark','redalert','googlelite','grassgreen','midnight','pink','darkgreen','bluish','grayscale','hardedge'];
+				map.setMapStyle({style:themes[_theme]});
+			}
+			setTheme(_theme);
+			var intoBaidu = function(){
+				var a_div = document.createElement('div');
+				a_div.id = 'intoBaidu';
+				a_div.innerHTML = '<a href = "http://api.map.baidu.com/marker?location=22.491276,113.448054&title=中山雅居乐长江高尔夫会所&content=中山雅居乐长江高尔夫会所&output=html&src=appName|yourAppName">打开app</a>';
+				$$('body')[0].appendChild(a_div);
+			}
+			intoBaidu();
 		}
 	}
-	
 	/**
 	 *公用的ajax请求方式  
 	 *使用ajax的时候，需要当前页面与请求的url必须是同域下(浏览器的同源策略)
@@ -1430,6 +1504,21 @@ var Cookies = (function(){
 	function isNumber(num){
 		return typeof(num)== 'number'&&num%1 === 0;
 	}
+	/**
+	 * 移除数组中指定位置 
+	 **/
+	Array.prototype.deleteIndex = function(index){
+		var len = this.length;
+		var index = index;
+		if(index>len-1){//下标超过数组最大值的时候，移除最后一个
+			index =  len-1;
+		}
+		if(index<0&&Math.abs(index)>len-1){
+			index = 0;
+		}
+		return this.splice(index,1);
+	}
+	
 	/**
 	 *给字符串添加一个倒序的方法 
 	 * this.split('') 将当前字符串转换成一个数组，调用数组的reverse方法，将数组倒序排列，倒序之后

@@ -98,4 +98,78 @@
 	        </div>
 		</div>
 	</body>
+	<script>
+		var Event = {};
+		(function(ev){
+			var Events = {},
+				e_num = -1;
+			ev.on = function(e_name,func){
+				if(!Events[e_name]){
+					Events[e_name] = [];
+				}
+				var token = (++e_num).toString();
+				Events[e_name].push({
+					token:token,
+					func:func
+				})
+				return token;
+			}
+			ev.trig = function(e_name,args){
+				if(!Events[e_name]){
+					return false;
+				}
+				var ev_names = Events[e_name];
+				var len = ev_names.length;
+				if(len>0){
+					while(len--){
+						Events[e_name][len].func(args);
+					}
+				}
+				return true;
+			}
+			ev.off = function(token){
+				for(var o in Events){
+					if(Events[o]){
+						for(var i=0,len=Events[o].length;i<len;i++){
+							if(Events[o][i].token === token){
+								Events[o].splice(i,1);
+								return token;
+							}
+						}
+					}
+				}
+				return false
+			}
+		}(Event));
+		
+		
+		function Product(id,description){
+			this.getid = function{
+				return id;
+			}
+			this.getdescription = function(){
+				return description;
+			}
+		}
+		
+		function Cart(){
+			var items = [];
+			this.addItem = function(item){
+				items.push(item);
+			}
+		}
+		(function(){
+			var p1 = new Product(1,'test1');
+			var p2 = new Product(2,'test2');
+			var p3 = new Product(3,'test3');
+			var products = [p1,p2,p3];
+			var cat = new Cat();
+			function addToCat(){
+				
+			}
+			
+			
+		}())
+		
+	</script>
 </html>

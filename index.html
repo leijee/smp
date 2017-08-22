@@ -152,15 +152,15 @@
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./map.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5803/126/9174390895/18336/72dd428e/598420dfNdab74566.png" alt="京东生鲜"/>
-						<span class="link-title">京东生鲜</span>
+						<span class="link-title">进入地图</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" id="openMap" href="javascript:void(0);">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5773/256/159664156/17475/742fec7e/591d9475Na810c2eb.png" alt="京东到家"/>
-						<span class="link-title">京东到家</span>
+						<span class="link-title">选择地图</span>
 					</a>
 				</li>
 				<li class="menu-item">
@@ -196,6 +196,12 @@
 			</ul>	
 		</div>
 		
+		<!--菜单弹出-->
+		<div class="smp-actionsheet" id="smp-actionsheet">
+            <a class="actionsheet-item baidu-map">百度地图</a>
+            <a class="actionsheet-item gaode-map">高德地图</a>
+            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
+		</div>
 		<!--广告图片-->
 		<div class="smp-ad">
 			<ul class="ad-list">
@@ -208,21 +214,23 @@
 		</div>
 		<!--消息播报-->
 		<div class="smp-news-msg">
-			<a class="news-msg-title" href="https://pro.m.jd.com/mall/active/3vWapAz58pJGYRfNeG88ddfsMM8S/index.html">
-				<img src="//st.360buyimg.com/m/images/index/jd-news-tit.png">
+			<a class="news-msg-title" href="#">
+				<img src="img/smp-news-tit.png">
 			</a>
 			<div class="news-msg-cont">
-				<ul class="msg-cont-list">
-					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>爱上大声大声大声道阿斯达</a></li>
-					<li class="msg-cont-item"><a href="#"><span class="red-color">爆</span>哈哈哈死定了华盛顿了和</a></li>
-					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>鹅鹅诶诶诶鹅饿饿</a></li>
-					<li class="msg-cont-item"><a href="#"><span class="red-color">火</span>哈哈哈哈反反复复</a></li>
+				<ul class="msg-cont-list transtions">
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>更新表单</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">爆</span>添加地图功能</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>添加选项卡功能</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">火</span>添加内容列表</a></li>
 				</ul>
 			</div>
 			<a class="news-msg-more" href="https://pro.m.jd.com/mall/active/3vWapAz58pJGYRfNeG88ddfsMM8S/index.html">
 				更多
 			</a>
 		</div>
+		
+		
 		
 		<!--列表-->
 		<div class="smp-list theme1">
@@ -446,8 +454,37 @@
 					Loading.hideLoading();//关闭正在加载的图片
 				},500);
 			});
-			
+			//开启动态消息滚动
 			smp.newsMsg.init('msg-cont-list');
+			
+			//弹出底部菜单
+			var SMP_UTILS = smp.utils;
+			var baidu_map = $$('.baidu-map')[0];
+			var gaode_map = $$('.gaode-map')[0];
+			var openMap = $id('openMap');
+			SMP_UTILS.on('click',openMap,function(){
+				smp.actionsheet.init('smp-actionsheet','open');
+			});
+			smp.actionsheet.on('open',function(){
+				console.log('打开了');
+			});
+			smp.actionsheet.on('close',function(){
+				console.log('关闭了');
+			});
+			var Longitude = '113.448054';
+			var Latitude = '22.491276';
+			var activity_address = '中山雅居乐长江高尔夫会所';
+			//进入百度地图
+			baidu_map.addEventListener('click',function(){
+				smp.actionsheet.init('smp-actionsheet','close');
+				location.href = "http://api.map.baidu.com/geocoder?address=" + activity_address + "&output=html&src=appName|yourAppName";
+			});
+			//进入高德地图
+			gaode_map.addEventListener('click',function(){
+				smp.actionsheet.init('smp-actionsheet','close');
+				location.href = "http://uri.amap.com/marker?position=" + Longitude + "," + Latitude + "&name=" + activity_address + "&src=mypage&coordinate=gaode&callnative=1";
+			});
+			
 		});
 	</script>	
 </html>

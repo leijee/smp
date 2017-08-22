@@ -2,27 +2,56 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<link rel="shortcut icon" href="./favicon.ico"/>
 	    <meta name="apple-mobile-web-app-capable" content="yes">
 	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<title>表单</title>
 		<link rel="stylesheet" href="css/smp.css"/>
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
 		<script src="js/flexible.js"></script>
 	</head>
 	<body>
 		<script src="js/loadPage.js"></script>
 		<script>
-			loadPage.showLoading();
+//			loadPage.showLoading();
 		</script>
 		<!--表单-->
-		<form >
-			<div class="">
-				<input type="text" />
+		<form class="smp-form">
+			<label class="rows" >input表单</label>
+			<div class="form-group" >
+				<label class="rows" >input文本输入框</label>
+				<input type="text" class="radius" autofocus placeholder="请输入用户名"/>
 			</div>
-			<div class="">
-				<input type="password" />
+			<div class="form-group">
+				<label class="rows" >input密码输入框</label>
+				<input type="password" class="radius" placeholder="请输入密码"/>
+			</div>
+			<div class="form-group">
+				<label class="rows" >是否显示密码</label>
+				<input type="password" class="radius font-browse" autofocus placeholder="请输入密码"/>
+				<i class="iconfont icon-browse"></i>
 			</div>
 			
-			<input type="submit" value=""/>
+			<div class="form-group">
+				<label class="rows">选择项</label>
+				<select name="" id="" class="radius">
+					<option value="0">请选择0</option>
+					<option value="1">请选择1</option>
+					<option value="2">请选择1</option>
+					<option value="3">请选择3</option>
+				</select>
+				<i class="iconfont icon-moreunfold"></i>
+			</div>
+			
+			<div class="form-group">
+				<div class="switch-btn">
+				　　  <input type='checkbox' id='foo3' class='cir'>
+				    <label for='foo3' class='switch-left'></label>
+				    <label for='foo3' class='switch-right'></label>
+				</div>
+			</div>
+			
+			<input type="submit" class="btn btn-info" autofocus value="提交"/>
 		</form>
 		
 	</body>
@@ -31,11 +60,16 @@
 	<script>
 		$ready(function(){
 			setTimeout(function(){
-				loadPage.hideLoading();//关闭页面正在加载中...
+//				loadPage.hideLoading();//关闭页面正在加载中...
 			},500);
 			FastClick.attach(document.body);
 			
 			smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
+		
+			var switchs = $id('foo3');
+			switchs.onchange=function(event){
+			　　 console.log(event.target.checked);
+			}
 		})
 	</script>
 </html>
