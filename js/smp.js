@@ -1422,10 +1422,10 @@ var Cookies = (function(){
 	 *each方法遍历数组元素，并且在func中返回相关的数据
 	 * func三个参数分别是 数组下标对应的元素 数组下标  当前数组 
 	 **/
-	function each(arr,func){
+	window.each = function(arr,func){
 		if(arr){
 			for(var i=0,len=arr.length;i<len;i++){
-				if(arr[i]&&func(arr[i],i.arr)){
+				if(arr[i]&&func(arr[i],i,arr)){
 					break;
 				}
 			}
@@ -1485,12 +1485,28 @@ var Cookies = (function(){
 	/**
 	 *获取兄弟元素节点 Array
 	 **/
-	function siblings(elem){
+//	function siblings(elem){
+//		var n = (elem.parentNode||{}).firstChild;
+//		var elemArr = [];
+//		var sibs = function(n,elem){
+//			for(;n;n = n.nextSibling){
+//				if(n.nodeType ===1&&n!==elem){
+//					elemArr.push(n);
+//				}
+//			}
+//			return elemArr;
+//		}
+//		return sibs(n,elem);
+//	}
+//	
+	
+	window.siblings = function(elem){
 		var n = (elem.parentNode||{}).firstChild;
 		var elemArr = [];
 		var sibs = function(n,elem){
-			for(;n;n = n.nexSibling){
+			for(;n;n = n.nextSibling){
 				if(n.nodeType ===1&&n!==elem){
+					
 					elemArr.push(n);
 				}
 			}
@@ -1498,6 +1514,7 @@ var Cookies = (function(){
 		}
 		return sibs(n,elem);
 	}
+	
 	/**
 	 *判断是否一个整数 
 	 **/

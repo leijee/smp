@@ -17,38 +17,59 @@
 		</script>
 		<!--表单-->
 		<form class="smp-form">
-			<label class="rows" >input表单</label>
 			<div class="form-group" >
 				<label class="rows" >input文本输入框</label>
 				<input type="text" class="radius" autofocus placeholder="请输入用户名"/>
 			</div>
 			<div class="form-group">
 				<label class="rows" >input密码输入框</label>
-				<input type="password" class="radius" placeholder="请输入密码"/>
+				<input type="password" class="radius"  placeholder="请输入密码"/>
 			</div>
 			<div class="form-group">
 				<label class="rows" >是否显示密码</label>
-				<input type="password" class="radius font-browse" autofocus placeholder="请输入密码"/>
+				<input type="password" class="radius font-browse" maxlength="15" autofocus placeholder="请输入6-12位的密码"/>
 				<i class="iconfont icon-browse"></i>
 			</div>
 			
 			<div class="form-group">
 				<label class="rows">选择项</label>
 				<select name="" id="" class="radius">
-					<option value="0">请选择0</option>
-					<option value="1">请选择1</option>
-					<option value="2">请选择1</option>
-					<option value="3">请选择3</option>
+					<option value="0" title="-99999">请选择0</option>
+					<option value="1" title="-99999">请选择1</option>
+					<option value="2" title="-99999">请选择1</option>
+					<option value="3" title="-99999">请选择3</option>
 				</select>
 				<i class="iconfont icon-moreunfold"></i>
 			</div>
 			
 			<div class="form-group">
+				<label class="rows">日期</label>
+				<input type="date" class="radius" name="" id="" value="" />
+			</div>
+			
+			
+			<div class="form-group">
 				<div class="switch-btn">
-				　　  <input type='checkbox' id='foo3' class='cir'>
+				　　   <input type='checkbox' id='foo3' checked class='cir'>
 				    <label for='foo3' class='switch-left'></label>
 				    <label for='foo3' class='switch-right'></label>
+				    
+				    <span class="switch-value" style="position:relative;left: 1rem;">true</span>
 				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<label  for="boy" class="radio-rows">男</label>
+				<aside class="radio-rows">
+					<input type="radio" name="radio1" id="boy" checked class="radios"  value="1" />
+					<label for="boy"></label>
+				</aside>
+				<label  for="girl" class="radio-rows">女</label>
+				<aside class="radio-rows">
+					<input type="radio" name="radio1" id="girl" class="radios"  value="0" />
+					<label for="girl"></label>
+				</aside>
 			</div>
 			
 			<input type="submit" class="btn btn-info" autofocus value="提交"/>
@@ -66,10 +87,47 @@
 			
 			smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
 		
+			var pwd = $$('input+.icon-browse');
+			var pwd_len = pwd.length;
+			
+			for(var j=0;j<pwd_len;j++){
+				console.log(pwd[j]);
+				(function(i){
+					pwd[j].addEventListener('click',function(e){
+						var _this = this;
+						window.each(siblings(this),function(ele){
+							if(ele.nodeName == 'INPUT'&&ele.type == 'password'){
+								ele.type = 'text';
+								_this.style.textDecoration = 'line-through';
+							}else{
+								_this.style.textDecoration = 'none';
+								ele.type = 'password';
+							}
+						})
+						
+					})
+				}(j));
+			}
+		
 			var switchs = $id('foo3');
 			switchs.onchange=function(event){
-			　　 console.log(event.target.checked);
+				$$('.switch-value')[0].innerHTML= event.target.checked;
+			　　  
 			}
+			var radios = $$('.radios');
+			var len = radios.length;
+
+			for(var i=0;i<len;i++){
+				console.log(radios[i]);
+				(function(i){
+					radios[i].addEventListener('change',function(e){
+						console.log(e.target.value);
+					})
+				}(i));
+			}
+			
+			
+			
 		})
 	</script>
 </html>
