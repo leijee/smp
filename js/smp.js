@@ -977,17 +977,21 @@ var Cookies = (function(){
 				itemHeight = parseInt(getStyle(msgItem[0],'height'));
 			}
 			allHeight = itemHeight*itemLen;
+			console.log('allHeight='+allHeight+'itemHeight='+itemHeight);
 			var currentVal = 0;
 			if(timer){
 				clearInterval(timer);
 			}
+			console.log(isExsitCssStyle('webkitTransform'));
 			timer = setInterval(function(){
 				if(Math.abs(currentVal) == (allHeight-itemHeight)){
 					currentVal = 0;
 				}else{
 					currentVal+=itemHeight;
 				}
-				setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'});
+				if(isExsitCssStyle('webkitTransform')){
+					setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'});
+				}
 			},2000);
 		}
 		return {
@@ -1113,6 +1117,37 @@ var Cookies = (function(){
 	}());
 	
 	/**
+	 * 设置是否开启显示密码
+	 **/
+	function isShowPassword(pwdBtn){
+		var pwd = $$('input+.icon-browse');
+		if(pwdBtn){
+			pwd = $$('input+.'+pwdBtn);
+		}
+		if(pwd){
+			var pwd_len = pwd.length;
+			for(var j=0;j<pwd_len;j++){
+				(function(i){
+					pwd[j].addEventListener('click',function(e){
+						var _this = this;
+						each(siblings(this),function(ele){
+							if(ele.nodeName == 'INPUT'&&ele.type == 'password'){
+								ele.type = 'text';
+								_this.style.textDecoration = 'line-through';
+							}else{
+								_this.style.textDecoration = 'none';
+								ele.type = 'password';
+							}
+						})
+						
+					})
+				}(j));
+			}
+		}
+	}
+	isShowPassword();
+	
+	/**
 	 * 添加百度地图 
 	 **/
 	Smp.prototype.setBaiduMap = {
@@ -1183,9 +1218,10 @@ var Cookies = (function(){
 	 * 同源策略：协议相同，域名相同，端口号相同
 	 **/
 	function _ajax(option,type){
-		if(isObject(option)&&type == 'undefined'){
+		if(isObject(option)&&type != 'undefined'){
 			var option = isObject(option)?option:{};
 			var defaults = {
+				url:'',
 				method:'get',//默认get请求
 				async:true,//默认异步方式
 				data:null,//请求参数为null
@@ -1201,16 +1237,13 @@ var Cookies = (function(){
 			var contentType = obj_option.contentType;
 			var succFun = obj_option.succFun;
 		}else if(isString(option)){
-			var url = option;//get方式直接传入一个 string类型的url
+			url = option;//get方式直接传入一个 string类型的url
 		}
 		var xhr =null;
 		if(window.XMLHttpRequest){
 			xhr = new XMLHttpRequest();
 		}else{
 			xhr = new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		if(type == 'get'){
-			method = 'get';
 		}
 		if(type == 'post'){
 			method = 'post';
@@ -1219,7 +1252,7 @@ var Cookies = (function(){
 			data = null;
 		}
 		xhr.open(method,url,async);
-		ajax.setRequestHeader("Content-Type", contentType);
+		xhr.setRequestHeader("Content-Type", contentType);
 		xhr.send(data);
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4){//已成功接收请求信息
@@ -1232,7 +1265,7 @@ var Cookies = (function(){
 					throwError(xhr.status);//请求成功，返回失败状态码)
 				}
 			}else{
-				throwError('请求中...');
+				throwError('请求失败');
 			}
 		}
 	}
@@ -1245,8 +1278,8 @@ var Cookies = (function(){
 	/**
 	 *使用get方式获取数据   使用方式：smp.getData('http://www.test.com/test?req1=abc&req2=3');
 	 **/
-	Smp.prototype.getData = function(url){
-		_ajax(url,'get');
+	Smp.prototype.getData = function(url,callback){
+		_ajax({url:url,method:'get',succFun:callback});
 	}
 	/**
 	 *使用post方式获取数据 
@@ -1277,7 +1310,7 @@ var Cookies = (function(){
 	/**
 	 *实现对象复制
 	 **/
-	function s_extend(target,option,deep){
+	 window.s_extend = function(target,option,deep){
 		var deep = false;
 		var clone;
 		if(deep == 'undefined' || deep == null){
@@ -1312,7 +1345,15 @@ var Cookies = (function(){
 	function throwError(msg){
 		throw Error(msg);
 	}
-
+	
+	function isExsitCssStyle(styleName){
+		var flag = false;
+		if(styleName in document.documentElement.style){
+			flag = true;
+		}
+		return flag;
+	}
+	
 	/**
 	 *判断option对象是否为空 
 	 **/
