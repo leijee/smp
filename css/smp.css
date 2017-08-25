@@ -342,6 +342,13 @@ height: 0;
 	display: block;
 	clear: both;
 }
+.smp-form .form-group .tipInfo{
+	float: right;
+	margin: .25rem;
+	font-size: .45rem;
+	color: red;
+	text-align: right;
+}
 .smp-form .form-group.identify .identify-code{
 	width: 60%;
 }
@@ -503,6 +510,8 @@ height: 0;
 }
 .smp-tab .tab-header .tab-header-list .head-item{
 	display: flex;
+	display: -ms-flexbox;
+	display: -webkit-flex;
 	flex-shrink: 1;
 	flex-grow: 1;
 	height: 1.5rem;

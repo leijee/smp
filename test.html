@@ -11,7 +11,7 @@
             position: relative;
             border:1px solid #ddd;
         }
-
+		
         .wrapper{
             width: 100px;
             height: 200px;
@@ -97,6 +97,8 @@
 	            <div class="circleProgress leftcircle"></div>
 	        </div>
 		</div>
+		<!--<input type="text" smp-model="name" />
+		<p class="test-data" id="tests">{{name}}</p>-->
 	</body>
 	<script>
 		var Event = {};
@@ -144,7 +146,7 @@
 		
 		
 		function Product(id,description){
-			this.getid = function{
+			this.getid = function(){
 				return id;
 			}
 			this.getdescription = function(){
@@ -163,13 +165,26 @@
 			var p2 = new Product(2,'test2');
 			var p3 = new Product(3,'test3');
 			var products = [p1,p2,p3];
-			var cat = new Cat();
+			var cart = new Cart();
 			function addToCat(){
 				
 			}
-			
-			
-		}())
+		}());
 		
+		
+		var data = {};
+		var bValue;
+		Object.defineProperty(data, "haha", {
+								get : function(){ 
+									return bValue;
+								},
+                                set : function(newValue){ 
+                               		bValue = newValue; 
+                                },
+                               enumerable : true,
+                               configurable : true
+							});
+		data.haha = 38;
+		console.log(data.haha);
 	</script>
 </html>
