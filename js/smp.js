@@ -1517,29 +1517,7 @@ var Cookies = (function(){
 			return arr;
 		}
 	}
-	/**
-	 *将Array类型转换成String类型 
-	 **/
-	function tostring(arr){
-		return arr.join('');
-	}
-	/**
-	 *获取兄弟元素节点 Array
-	 **/
-//	function siblings(elem){
-//		var n = (elem.parentNode||{}).firstChild;
-//		var elemArr = [];
-//		var sibs = function(n,elem){
-//			for(;n;n = n.nextSibling){
-//				if(n.nodeType ===1&&n!==elem){
-//					elemArr.push(n);
-//				}
-//			}
-//			return elemArr;
-//		}
-//		return sibs(n,elem);
-//	}
-//	
+	
 	
 	window.siblings = function(elem){
 		var n = (elem.parentNode||{}).firstChild;
@@ -1576,7 +1554,27 @@ var Cookies = (function(){
 		}
 		return this.splice(index,1);
 	}
-	
+	/**
+	 * 对数字数组进行排序  
+	 **/
+	Array.prototype.sort = function(){
+		var newArr = this;
+		var len = newArr.length;
+		for(var i=0;i<len-1;i++){
+			for(var j=i+1;j<len;j++){
+				if(oldArr[j]<oldArr[i]){
+					var temp;
+					temp = oldArr[i];
+					oldArr[i]=oldArr[j];
+					oldArr[j]=temp;
+				}
+			}
+		}
+		return newArr;
+	}
+	Array.prototype.toString = function(){//将array转换成string对象
+	    return this.join('');
+	}
 	/**
 	 *给字符串添加一个倒序的方法 
 	 * this.split('') 将当前字符串转换成一个数组，调用数组的reverse方法，将数组倒序排列，倒序之后
@@ -1599,9 +1597,7 @@ var Cookies = (function(){
 			return arr;
 		}
 	}
-	Array.prototype.toString = function(){//将array转换成string对象
-	    return this.join('');
-	}
+	
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;

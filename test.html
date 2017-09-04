@@ -186,5 +186,31 @@
 							});
 		data.haha = 38;
 		console.log(data.haha);
+		
+		
+		
+		Array.prototype.sort = function(){
+			var newArr = this;
+			var len = newArr.length;
+			for(var i=0;i<len-1;i++){
+				for(var j=i+1;j<len;j++){
+					if(oldArr[j]<oldArr[i]){
+						var temp;
+						temp = oldArr[i];
+						oldArr[i]=oldArr[j];
+						oldArr[j]=temp;
+					}
+				}
+			}
+			return newArr;
+		}
+		
+	</script>
+	<script src="js/utils.js"></script>
+	<script>
+		utils.Cookies.setItem("name","leijie",20);
+		var b = utils.Cookies.getItem('name');
+		
+		
 	</script>
 </html>

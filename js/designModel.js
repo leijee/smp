@@ -222,8 +222,7 @@ console.log(newArr[0]());
 	console.log(a);
 
 
-//4.实现如下语法的功能：var a = (5).plus(3).minus(6); //2
-//给object数组进行排序（排序条件是每个元素对象的属性个数）
+//4.给object数组进行排序（排序条件是每个元素对象的属性个数）
 var obj1 = {name:'小明'};
 var obj2 = {name:'小明',height:'170cm',weight:'65kg'}
 var obj3 = {name:'小明',sex:'男'};

@@ -536,13 +536,6 @@ height: 0;
  * smp-fix-menu 底部固定菜单 
  **/
 .smp-fix-menu{
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 2rem;
-	background: #fff;
-	z-index: 10;
 	display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -554,6 +547,13 @@ height: 0;
     -moz-box-align: justify;
     -ms-flex-align: center;
     justify-content: space-between;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2rem;
+	border-top: 1px solid #f0f0f0;
+	z-index: 10;
     align-content: center;
     background-color: #FFF;
 }
