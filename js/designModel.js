@@ -1,3 +1,42 @@
+
+/**
+ * 模块化 
+ **/
+(function(global,factory){
+	typeof exports === 'function'&& typeof module !== 'undefined'?module.exports = factory():
+	typeof define === 'function'&&define.amd?define(factory):(global.smp = factory());
+})(this,function(){
+	'use strict'//严格模式
+	
+	console.log('test');
+	
+	
+	function Smp(){
+		this.name = 
+	}
+	
+	return Smp;
+	return new Smp();
+});
+
+//使用
+import Smp = require('Smp');
+
+new Smp({
+	el:#app,
+	data:{
+		
+	}
+});
+
+
+
+
+
+
+
+
+
 /**
  * 构造函数模式 
  **/
@@ -103,16 +142,31 @@ singleton.getInstance().publicMethod();
  * 观察者模式
  * JS里对观察者模式的实现是通过回调来实现的，
  * 我们来先定义一个pubsub对象，其内部包含了3个方法：订阅、退订、发布。
+ * 观察者模式常见的功能例如jquery中事件的注册，我们可以通过观察者模式自定义事件，触发事件
  **/
 var pubsub = {};
 (function (q) {
 
     var topics = {}, // 回调函数存放的数组
         subUid = -1;
-    // 发布方法
+    
+    //订阅方法    (事件注册) 
+    q.subscribe = function (topic, func) {
+        if (!topics[topic]) {//初始化为一个数组，用于存放事件回调函数
+            topics[topic] = [];
+        }
+        var token = (++subUid).toString();
+        topics[topic].push({
+            token: token,//标识
+            func: func//回调函数
+        });
+        return token;
+    };
+    // 发布方法    (事件触发，执行)
     q.publish = function (topic, args) {
-
+		
         if (!topics[topic]) {//如果不存在topic，直接return
+        	console.log('不存在');
             return false;
         }
 
@@ -128,21 +182,7 @@ var pubsub = {};
         return true;
 
     };
-    //订阅方法
-    q.subscribe = function (topic, func) {
-
-        if (!topics[topic]) {
-            topics[topic] = [];
-        }
-
-        var token = (++subUid).toString();
-        topics[topic].push({
-            token: token,
-            func: func
-        });
-        return token;
-    };
-    //退订方法
+    //退订方法   (注销事件)
     q.unsubscribe = function (token) {
         for (var m in topics) {
             if (topics[m]) {
@@ -162,6 +202,7 @@ var pubsub = {};
 //来，订阅一个
 pubsub.subscribe('example1', function (topics, data) {
     console.log(topics + ": " + data);
+    
 });
 
 
@@ -170,9 +211,61 @@ pubsub.publish('example1', 'hello world!');
 pubsub.publish('example1', ['test', 'a', 'b', 'c']);
 pubsub.publish('example1', [{ 'color': 'blue' }, { 'text': 'hello'}]);
 
-
-
-
+//自定义事件
+var obj = {};
+(function(o){
+	var topics ={},
+		count = -1;
+	o.on = function(type,callback){//注册事件
+		if(!topics[type]){//type 事件不存在，创建数组存储事件处理方法
+			topics[type] = [];
+		}
+		
+		var token = ++count;//用到了闭包特性存放count变量
+		topics[type].push({
+			fun:callback,
+			token:token
+		})
+		return token;
+	}
+	
+	o.trigger = function(type,args){//事件触发
+		if(!topics[type]){
+			console.log('不存在');
+			return ;
+		}
+		var types = topics[type];
+		var len = types.length;
+		while(len--){
+			types[len].fun(type,args);
+		}
+		return true;
+	}
+	o.off =  function(token){
+		for (var m in topics) {
+            if (topics[m]) {
+                for (var i = 0, j = topics[m].length; i < j; i++) {
+                    if (topics[m][i].token === token) {
+                        topics[m].splice(i, 1);
+                        return token;
+                    }
+                }
+            }
+        }
+        return false;
+	}
+})(obj);
+//注册look事件
+var eventNum = obj.on('look',function(topics,func){
+	console.log(topics);
+	console.log(args);
+});
+//触发look事件
+obj.trigger('look',function(){
+	
+});
+//取消look事件
+obj.off(eventNum);
 
 
 
@@ -235,7 +328,7 @@ var objArr = [obj1,obj2,obj3];
 function add(num){
 	var _add = function(args){
 		num+=args;
-		return arguments.callee;
+		return add(num);
 	}
 	_add.toString = _add.valueOf = function(){
 		return num;
