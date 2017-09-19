@@ -14,42 +14,108 @@ https://github.com/leijee/smp
 
 ## 使用说明
 在head中需引入的文件，包含组件的基础样式，字体文件，flexiable页面布局</br>
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/smp.css&quot;/&gt;</br>
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/iconfont.css&quot;/&gt;</br>
-&lt;script src=&quot;js/flexible.js&quot;&gt;&lt;/script&gt;</br>
+    &lt;link rel="stylesheet" type="text/css" href="css/smp.css"/&gt;</br>
+    &lt;link rel="stylesheet" type="text/css" href="css/iconfont.css"/&gt;</br>
+    &lt;script src="js/flexible.js"&gt;&lt;/script&gt;
 
 使用相关js组件，需要引入关键文件 &lt;script src=&quot;js/smp.js&quot;&gt;&lt;/script&gt;</br>
-####  轮播组件的使用
+####  1.轮播组件的使用
 ##### html结构
-&lt;div class=&quot;smp-slider&quot; id=&quot;smp-slider&quot;&gt;</br>
-&nbsp; &nbsp;			&lt;div class=&quot;slider-wrapper&quot;&gt;</br>
-	&nbsp; &nbsp;&nbsp; &nbsp;&lt;div class=&quot;slider-item&quot;&gt;</br>
-				&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;	&lt;a href=&quot;javascript:void(0)&quot;&gt;
-            &lt;img alt=&quot;&quot; src=&quot;&quot;/&gt;
-					&lt;/a&gt;</br>
-          	&nbsp; &nbsp;&nbsp;&nbsp;&lt;/div&gt;</br>
-	&nbsp; &nbsp;&nbsp; &nbsp;&lt;div class=&quot;slider-item slider-active&quot;&gt;</br>
-					&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;	&lt;a href=&quot;javascript:void(0)&quot;&gt;
-          &lt;img alt=&quot;&quot; src=&quot;&quot;/&gt;
-&lt;/a&gt;</br>
-				&nbsp;&nbsp; &nbsp;&nbsp;&lt;/div&gt;</br>
-	&nbsp; &nbsp;&nbsp; &nbsp;&lt;div class=&quot;slider-item&quot;&gt;</br>
-					&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&lt;a href=&quot;javascript:void(0)&quot;&gt;
-          &lt;iimg alt=&quot;&quot; src=&quot;&quot;/&gt;
-			  &lt;/a&gt;</br>
-				&nbsp; &nbsp;&nbsp; &nbsp;&lt;/div&gt;</br>
-&nbsp; &nbsp;		&lt;/div&gt;</br>
-		&lt;/div&gt;</br>
+    <div class="smp-slider" id="smp-slider">
+   	   <div class="slider-wrapper">
+	       <div class="slider-item">
+	         	<a href="javascript:void(0)"> <img alt="" src=""/> </a>
+	       </div>
+	       <div class="slider-item slider-active">
+	         	<a href="javascript:void(0)"> <img alt="" src=""/> </a>
+	       </div>
+	       <div class="slider-item">
+	         <a href="javascript:void(0)"> <iimg alt="" src=""/> </a>
+	       </div>
+   	   </div>
+     </div>
 ##### js使用方法
-smp.slider.init("smp-slider",{</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    autoplay:false,//是否自动播放</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    playtime:2000,//每2秒切换一张</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    pagination:true,//是否显示分页</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    currentIndex:1,//默认显示当前第一页，</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    durationTime:500,//默认动画效果周期为500ms</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    color:'#ccc',//分页背景色</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    activeColor:'orange',//分页当前页的颜色</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    sliderEnd:function(index){//滑动结束之后触发的方法</br>
-&nbsp; &nbsp;&nbsp; &nbsp;      console.log('currentIndex'+index);</br>
-&nbsp; &nbsp;&nbsp; &nbsp;    }</br>
-});</br>
+	smp.slider.init("smp-slider",{
+       autoplay:false,//是否自动播放
+       playtime:2000,//每2秒切换一张
+       pagination:true,//是否显示分页
+       currentIndex:1,//默认显示当前第一页，
+       durationTime:500,//默认动画效果周期为500ms
+       color:'#ccc',//分页背景色
+       activeColor:'orange',//分页当前页的颜色
+       sliderEnd:function(index){//滑动结束之后触发的方法
+       console.log('currentIndex'+index);
+       }
+	})
+
+#### 2.回到顶部
+##### 1）.手动添加html 
+	smp.backTop.init('smp-back-top');
+##### 2）.无需添加html
+    
+    smp.backTop.init('smp-back-top');//方式二  注意：不需要再写html，自动创建代码片段
+#### 3.弹出框
+	var _confirm = $id('confirm');
+	var _alert = $id('alert');
+	var _success = $id('success');
+	var _error= $id('error');
+	var _loading= $id('loading');
+	var _notify = $id('notify');
+	var _actionsheet = $id('actionsheet');
+	var SMP_UTILS = smp.utils;
+	
+	//confirm提示框
+	SMP_UTILS.on('click',_confirm,function(){
+		smp.dialog.confirm('提示信息','测试一下',function(){
+			console.log('你点击了确定');
+		});
+	});
+	//alert提示框
+	SMP_UTILS.on('click',_alert,function(){
+		smp.dialog.alert('你点击了我',function(){
+			console.log('你点击了确定');
+		});
+	});
+	//成功提示
+	SMP_UTILS.on('click',_success,function(){
+		smp.dialog.toast('成功','success',1000,function(){
+			console.log('success');
+		});
+	});
+	//失败提示
+	SMP_UTILS.on('click',_error,function(){
+		smp.dialog.toast('失败','error',function(){
+			console.log('error');
+		});
+		setTimeout(function(){
+			smp.dialog.closeToast();
+		},1000);
+	});
+	//正在加载中提示 
+	SMP_UTILS.on('click',_loading,function(){
+		smp.dialog.loading('正在加载中..',2000);
+	});
+	//提示信息
+	SMP_UTILS.on('click',_notify,function(){
+		smp.dialog.notify({
+				msg:'密码错误',
+				time:3000,
+				fix:'top',
+				bgcolor:'#000',
+				color:'#fff'
+			},function(){
+				console.log('消失了');
+		});
+	});
+#### 4.底部菜单弹出框
+	SMP_UTILS.on('click',_actionsheet,function(){
+		smp.actionsheet.init('smp-actionsheet','open');
+	});
+	smp.actionsheet.on('open',function(){//弹出之后的回调方法
+		console.log('打开了');
+	});
+	smp.actionsheet.on('close',function(){//关闭之后的回调方法
+		console.log('关闭了');
+	});
+	//可以手动代码触发关闭
+	//smp.actionsheet.init('smp-actionsheet','close');
