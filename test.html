@@ -11,7 +11,6 @@
             position: relative;
             border:1px solid #ddd;
         }
-		
         .wrapper{
             width: 100px;
             height: 200px;
@@ -104,195 +103,76 @@
 		<div id="app">
 			<h1>{{title}}</h1>
 			<input type="text" s-model="val" />
-			<p>{{val}}</p>
+			<p>{{obj.val}}</p>
 		</div>
 		
 		<div class="testBase" id="testBase">
 			
 		</div>
 	</body>
-	<script>
-		//创建数据库  
-            var db = window.openDatabase("testBase", "1.0","数据库描述",20000);  
-            //创建数据表  
-            db.transaction(function(tx) {  
-                tx.executeSql("create table test (id int UNIQUE, mytitle TEXT, timestamp REAL)");  
-            });  
-            //插入数据  
-            db.transaction(function(tx) {  
-                tx.executeSql("insert into test (id, mytitle, timestamp) values(?, ?, ?)", [1, "WEB Database", new Date().getTime()], null, null);  
-            });  
-  
-            //插入数据  
-            db.transaction(function(tx) {  
-                tx.executeSql("INSERT INTO test (id, mytitle, timestamp) values(?, ?, ?)", [2, "DaWanGanBan", new Date().getTime()], null, null);  
-            });  
-  
-            //删除数据  
-            /*  
-            db.transaction(function(tx){  
-                tx.executeSql("DELETE FROM test where mytitle=?",["WEB Database"],null,null);  
-            });  
-            */  
-              
-            //db.transaction(function(tx) {  
-            //  tx.executeSql("DROP TABLE qqs");  
-            //})  
-  
-            //db.transaction(function(tx) {  
-            //  tx.executeSql("update test set mytitle=? where mytitle = 'fsafdsaf'",['xp'],null,null);  
-            //});  
-  
-            //查询数据  
-            db.transaction(function(tx) {  
-                tx.executeSql("SELECT * FROM test", [],    
-                function(tx, result) {
-                	console.log(result);
-                	var str = '';
-                    for(var i = 0; i < result.rows.length; i++){   
-                    	str += '<b>' + result.rows.item(i)['mytitle'] + '</b><br />'
-                    }
-                    document.getElementById("testBase").innerHTML = str;
-                }, function(){  
-                    alert("error");  
-                });   
-            });    
-		
-	</script>
-	
-	
-	
-	<script>
-		var Event = {};
-		(function(ev){
-			var Events = {},
-				e_num = -1;
-			ev.on = function(e_name,func){
-				if(!Events[e_name]){
-					Events[e_name] = [];
-				}
-				var token = (++e_num).toString();
-				Events[e_name].push({
-					token:token,
-					func:func
-				})
-				return token;
-			}
-			ev.trig = function(e_name,args){
-				if(!Events[e_name]){
-					return false;
-				}
-				var ev_names = Events[e_name];
-				var len = ev_names.length;
-				if(len>0){
-					while(len--){
-						Events[e_name][len].func(args);
-					}
-				}
-				return true;
-			}
-			ev.off = function(token){
-				for(var o in Events){
-					if(Events[o]){
-						for(var i=0,len=Events[o].length;i<len;i++){
-							if(Events[o][i].token === token){
-								Events[o].splice(i,1);
-								return token;
-							}
-						}
-					}
-				}
-				return false
-			}
-		}(Event));
-		
-		
-		function Product(id,description){
-			this.getid = function(){
-				return id;
-			}
-			this.getdescription = function(){
-				return description;
-			}
-		}
-		
-		function Cart(){
-			var items = [];
-			this.addItem = function(item){
-				items.push(item);
-			}
-		}
-		(function(){
-			var p1 = new Product(1,'test1');
-			var p2 = new Product(2,'test2');
-			var p3 = new Product(3,'test3');
-			var products = [p1,p2,p3];
-			var cart = new Cart();
-			function addToCat(){
-				
-			}
-		}());
-		
-		
-		var data = {};
-		var bValue;
-		Object.defineProperty(data, "haha", {
-								get : function(){ 
-									return bValue;
-								},
-                                set : function(newValue){ 
-                               		bValue = newValue; 
-                                },
-                               enumerable : true,
-                               configurable : true
-							});
-		data.haha = 38;
-		console.log(data.haha);
-		
-		
-		
-		Array.prototype.sort = function(){
-			var newArr = this;
-			var len = newArr.length;
-			for(var i=0;i<len-1;i++){
-				for(var j=i+1;j<len;j++){
-					if(oldArr[j]<oldArr[i]){
-						var temp;
-						temp = oldArr[i];
-						oldArr[i]=oldArr[j];
-						oldArr[j]=temp;
-					}
-				}
-			}
-			return newArr;
-		}
-		
-	</script>
+
 	<script src="js/utils.js"></script>
 	<script>
-		utils.Cookies.setItem("name","leijie",20);
-		var b = utils.Cookies.getItem('name');
-		
-		
+		var utils = new Utils();
+		var _db = utils.dataBase;
+		_db.createDataBase("testBase", "1.0","数据库描述",20000);
+		_db.createDatasheet("create table test (id int UNIQUE, mytitle TEXT, timestamp REAL)");
+		_db.operateDatasheet("insert into test (id, mytitle, timestamp) values(?, ?, ?)", [1, "WEB Database", new Date().getTime()], null, null);
+		_db.operateDatasheet("SELECT * FROM test", [],    
+            function(tx, result) {
+            	console.log(result);
+            	var str = '';
+                for(var i = 0; i < result.rows.length; i++){   
+                	str += '<b>' + result.rows.item(i)['mytitle'] + '</b><br />'
+                }
+                document.getElementById("testBase").innerHTML = str;
+            }, function(){  
+                console.log("error");  
+            });
+        
+        
+        var defaultTagRE = /\{\{((?:.|\n)+?)\}\}/g;
+        
 		function Test(options){
+			var data = options.data;
+			console.log(data);
 			var el = options.el;
-			console.log(el);
-			
+			var elArr = Array.prototype.slice.call(el.children,"");
+			console.log(elArr);
+			var token = [];
+			elArr.forEach(function(item){
+				var text = item.innerHTML;
+				var m = defaultTagRE.exec(text);
+				var k  = null;
+				if(m!=null){
+					console.log(m[1]);
+					for(var i in data){
+						console.log(i);
+						if(m[1] == i){
+							k = data[i];
+							console.log(text);
+							console.log(defaultTagRE);
+							item.innerText=k;
+						}
+					}
+					token.push(text.slice(0));
+				}
+			})
+			console.log(token);
+			var j = token.join("+");
+			console.log(j);
 		}
 		
-		
-		
-		function def (obj, key, val, enumerable) {
-		  Object.defineProperty(obj, key, {
-		    value: val,
-		    enumerable: !!enumerable,
-		    writable: true,
-		    configurable: true
-		  });
+		function def (obj, key, val) {
+		    Object.defineProperty(obj, key, {
+		    	set:function(key,val){
+		    		
+		    	},
+		    	get:function(key){
+		    		return ;
+		    	}
+		    });
 		}
-		
-		
-		
 		
 		var test = new Test({
 			el:app,
@@ -302,4 +182,79 @@
 			}
 		});
 	</script>
+	<script>
+		//实现vuejs中的$watch
+		
+		var v = new Vue({
+			data:{
+				a:1,
+				b:2
+			}
+		})
+		v.$watch("a",function(){
+			console.log("触发$watch");
+		})
+//		v.$watch("a",()=>console.log("触发$watch"));
+
+		function Vue(options){
+			var data = options.data;
+		}
+		
+		function Observe(value){
+			this.vallue = value;
+			this.walk(value);
+			
+			this.walk = function(value){
+				Object.keys(value).forEach(function(key){
+					return this.convert(key,value[key]);
+				})
+			}
+			this.convert = function(key,val){
+				defineReactive(this.value,key,val);
+			}
+		}
+		function defineReactive(obj,key,value){
+			var childOb = observe(value);
+			Object.defineProperty(obj, key, {
+			    enumerable: true,
+			    configurable: true,
+			    get:function(){
+			    	return value;
+			    },
+			    set:function(newVal){      
+			    	childOb = observe(newVal)//如果新赋值的值是个复杂类型。再递归它，加上set/get。。
+			    	return childOb;
+			    }
+			  })
+		}
+		function observe(value,vm){
+			if(!value||typeof value !== 'object'){
+				return 
+			}
+			return new Observe();
+		}
+		
+		
+		function Dep(){
+			this.subs = [];
+		}
+		Dep.prototype.addSub = function(sub){
+			this.subs.push(sub);
+		}
+		Dep.prototype.removeSub = function(sub){
+			if(this.subs.length>-1){
+				var i = this.subs.indexOf(sub);
+				if(i>-1){
+					return this.splice(i,1);
+				}
+			}
+		}
+		Dep.prototype.notify = function(){
+			this.subs.forEach(function(sub){
+				return sub.update();
+			})
+		}
+		
+	</script>
+
 </html>

@@ -22,41 +22,6 @@ function $ready(callback){
 		}, false);
 	}	
 }
-//对cookie的操作
-var Cookies = (function(){
-	
-	var encodeStr = function(str){
-		var str = encodeURIComponent(str);
-		return str;
-	}
-	var decodeStr = function(str){
-		var str = decodeURIComponent(str);
-		return str;
-	}
-	
-	return {
-		set:function(key,value,option){
-			var options =option||{expire:3};
-			
-			
-		},
-		get:function(key){
-			
-		},
-		hasItem:function(key){
-			
-		},
-		keys:function(){
-			
-		},
-		removeItem:function(){
-			
-		}
-	}
-	
-})();
-
-
 
 (function(window,factory){
 	if(typeof define == 'function'&&define.amd){
@@ -1601,5 +1566,8 @@ var Cookies = (function(){
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;
+	return Smp
+	
+	
 }))
 
