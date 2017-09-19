@@ -2,16 +2,15 @@
 
 ##### &nbsp;&nbsp;&nbsp;&nbsp;smp 简介：使用了Javascript+html+css+flexible布局   (因为最开始的时候，随便写写，没有使用sass跟less来写css，后面的时候才想到，整个过程就还是用css来写了，打算写的差不多了，再用gulp构建工具进行基本的压缩合并之类.    功能正在更新中-----   希望能够指出其中的问题,多多交流，互相学习。)
 
-# smp用法
-&nbsp;&nbsp;&nbsp;&nbsp;原生javascript+css+html实现UI
- ## smp 简介
+# smp
+原生javascript+css+html实现UI
+## smp 简介
 smp主要是以移动端为主的小型UI组件库,原生的javascript+html+css进行实现，UI布局是用到flexiable.js
 使用了fastclick来解决移动端点击延迟,事件穿透的问题，css上使用sass+compass进行预编译处理。
 效果演示地址：http://www.leijee.me
 
 ## smp 下载地址
 https://github.com/leijee/smp
-
 
 ## 使用说明
 在head中需引入的文件，包含组件的基础样式，字体文件，flexiable页面布局</br>
@@ -54,4 +53,3 @@ smp.slider.init("smp-slider",{</br>
 &nbsp; &nbsp;&nbsp; &nbsp;      console.log('currentIndex'+index);</br>
 &nbsp; &nbsp;&nbsp; &nbsp;    }</br>
 });</br>
->>>>>>> testbranch
