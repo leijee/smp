@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>进度条</title>
+		<link rel="stylesheet" href="css/smp.css"/>
+		<script src="js/flexible.js"></script>
+	</head>
+	<body>
+		<script src="js/loadPage.js"></script>
+		<script>
+			loadPage.showLoading();
+		</script>
+		<!--进度条组件  直线跟圆圈-->
+		<div class="smp-progress" id="smp-progress">
+			<div class="progress lineBar">
+				<div class="progress-bar tips" bar-value="60">
+				</div>
+			</div>
+			<div class="progress lineBar">
+				<div class="progress-bar tips" bar-value="30">
+				</div>
+			</div>
+			<div class="progress lineBar">
+				<div class="progress-bar tips" bar-value="75">
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="50">
+					<div class="circle-right " >
+						<div class="rightBar danger">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar danger">
+						</div>
+					</div>
+				</div>
+				<div class="barText">
+					<span class="danger">50%</span>
+					<p>利用率</p>
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="75">
+					<div class="circle-right ">
+						<div class="rightBar info">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar info">
+						</div>
+					</div>
+				</div>
+				<div class="barText">
+					<span class="info">75%</span>
+					<p>利用率</p>
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="55">
+					<div class="circle-right ">
+						<div class="rightBar warning">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar warning">
+						</div>
+					</div>
+				</div>
+				<div class="barText">
+					<span class="warning">55%</span>
+					<p>利用率</p>
+				</div>
+			</div>
+			<div class="progress circleBar float-l">
+				<div class="progress-bar" bar-value="35">
+					<div class="circle-right ">
+						<div class="rightBar primary">
+						</div>
+					</div>
+					<div class="circle-left">
+						<div class="leftBar primary">
+						</div>
+					</div>
+				</div>
+				<div class="barText">
+					<span class="primary">35%</span>
+					<p>利用率</p>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/smp.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script>
+		$ready(function(){
+			setTimeout(function(){
+				loadPage.hideLoading();//关闭页面正在加载中...
+			},500);
+			FastClick.attach(document.body);
+			smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
+		})
+	</script>
+</html>

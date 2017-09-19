@@ -1,18 +1,28 @@
+/**
+ * time:2017/7/21
+ * author:雷杰
+ **/
+//使用querySelectorAll 获取dom对象
 function $$(selector){
 	var _selectors = document.querySelectorAll(selector);
 	return Array.prototype.slice.call(_selectors);
 }
+//id选择器
 function $id(elementStr){
 	if(typeof elementStr != 'string'){
 		return null;
 	}
 	return document.getElementById(elementStr);
 }
+//html节点加载完成之后执行的方法
+function $ready(callback){
+	if ('addEventListener' in document) {
+		document.addEventListener('DOMContentLoaded', function() {
+			callback();
+		}, false);
+	}	
+}
 
-/**
- * time:2017/7/21
- * author:雷杰
- **/
 (function(window,factory){
 	if(typeof define == 'function'&&define.amd){
 		define(function(){
@@ -33,7 +43,6 @@ function $id(elementStr){
 			
 		}
 	}
-	
 	Smp.prototype.utils = {
 		pageScroll: function () {
             var w_height = document.documentElement.clientHeight;
@@ -363,7 +372,6 @@ function $id(elementStr){
 				sliderEnd:null //结束滑动
 			};
 			
-			
 			var current_opt = s_extend(default_opt,option);
 			var autoplay = current_opt.autoplay;
 			var pagination = current_opt.pagination;
@@ -573,7 +581,7 @@ function $id(elementStr){
 		}
 	}
 	Smp.prototype.Search = {
-		init:function(ele,option){
+		init:function(ele,searchBtn,option){
 			var _search = $$('#'+ele)[0];
 			if(!_search){
 				throw new Error('对象不存在');
@@ -640,14 +648,10 @@ function $id(elementStr){
 					return val;
 				}));
 			}
-			console.log(getHistory('history'));
-			
-			
 			var searchValue = '';
 			var zh_Lock = false;
 			var result_or_history = function(zh_Lock,callFun_result,callFun_history){
 				if(!zh_Lock){
-					console.log(searchValue);
 					if(searchValue != ''){//显示搜索结果
 						setStyle(search_history,{display:'none'});
 						setStyle(search_hot,{display:'none'});
@@ -677,7 +681,6 @@ function $id(elementStr){
 				result_or_history(zh_Lock,null,null);
 			},true);
 			_this.utils.on('click',delete_history,function(e){
-				console.log('aa');
 				_this.dialog.confirm('提示信息','是否删除历史记录',function(){
 					_historyList.innerHTML = '';
 					setStyle(search_history,{display:'none'});
@@ -693,7 +696,6 @@ function $id(elementStr){
 					setHistory('history',{text:searchText});
 				}
 				setStyle($$('#smp-search')[0],{display:'none'});
-				console.log(getHistory('history'));
 			});
 			_this.utils.on('click',_close,function(e){
 				searchBar.value = '';
@@ -707,10 +709,24 @@ function $id(elementStr){
 				}
 			});
 			
-			smp.utils.on('click',$$('#search-btn')[0],function(){
+			smp.utils.on('click',$$('#'+searchBtn)[0],function(){
 				setStyle($$('#smp-search')[0],{display:'block'});
 				showHistory('history');
 			});
+			
+			function changeBgcolor(){
+				var scroll_top =  window.document.documentElement.scrollTop || window.pageYOfset ||document.body.scrollTop;
+				
+				var opt = 0;
+				if(scroll_top<1000){
+					opt = scroll_top*0.001;
+				}else{
+					opt = 1;
+				}
+				setStyle($id('search-bg'),{opacity:opt});
+			}
+			document.addEventListener('scroll',changeBgcolor);
+			
 		},
 		on:function(ele,callback){
 			var zh_Lock = false;
@@ -728,7 +744,6 @@ function $id(elementStr){
 			_this.utils.on('input',ele,function(e){
 				var searchValue = e.target.value;
 				if(zh_Lock){
-					console.log('searchValue = '+searchValue);
 				}
 			},true);
 		}
@@ -858,11 +873,11 @@ function $id(elementStr){
 			var l = [];
 			var r = [];
 			var c = [];
+			var handles = [];
 			for(var j=0;j<cir_len;j++){
 				circleBarVal[j] = parseInt(circleBar[j].getAttribute('bar-value'));
 				circleBarVal[j] = circleBarVal[j]<0?0:circleBarVal[j]>100?100:circleBarVal[j];//设置最小0最大100
 				deg[j] = 3.6*circleBarVal[j]+45;//默认需要加45度
-				
 				d[j] = 0;
 				l[j] = 0;
 				r[j] = 0;
@@ -871,39 +886,33 @@ function $id(elementStr){
 					if(circleBarVal[j]<51){
 						timer[j] = setInterval(function(){
 							r[j]= 3.6*(d[j]);
-							r_circleBar[j].style.transform = "rotate("+ (45+r[j]).toFixed(2)+"deg)";
+							r_circleBar[j].style.webkitTransform = "rotate("+ (45+r[j]).toFixed(2)+"deg)";
 							d[j] ++;
 							if(d[j]>circleBarVal[j]){
 								clearInterval(timer[j])
 							}
 						},s);
 					}
-					
 					if(circleBarVal[j]>50){
 						timer[j]= setInterval(function(){
 							r[j]= 3.6*(d[j]);
 							if(c[j] <51&&flag){
-								r_circleBar[j].style.transform = "rotate("+ (45+r[j])+"deg)";
+								r_circleBar[j].style.webkitTransform = "rotate("+ (45+r[j])+"deg)";
 							}
 							d[j] ++;
 							c[j] ++;
 							if(c[j] >50){
-								console.log('c['+j+'] ='+c[j]);
 								d[j] =50;
-								
 								flag =false;
 								l[j]++;
-								if(d[j]==50){
-									console.log('结束'+Date.now());
+								handles[j] = function(){
+									console.log('test');
+									l_circleBar[j].style.webkitTransform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
+									r_circleBar[j].removeEventListener('webkitTransitionEnd',handles[j]);
 								}
-								console.log(j+'========'+parseInt(l[j]));
-								handle[j] = function(){
-									console.log('开始'+Date.now());
-									l_circleBar[j].style.transform = "rotate("+ (45+parseInt(l[j])*3.6).toFixed(2)+"deg)";
-									r_circleBar[j].removeEventListener('transitionend',handle[j]);
-								}
-								r_circleBar[j].style.transform = "rotate("+ 225+"deg)";
-								r_circleBar[j].addEventListener('transitionend',handle[j]);
+								r_circleBar[j].style.webkitTransform = "rotate("+ 225+"deg)";
+								r_circleBar[j].addEventListener('webkitTransitionEnd',handles[j]);
+								console.log('aaaaaa');
 							}
 							if((c[j])>circleBarVal[j]){
 								clearInterval(timer[j]);
@@ -911,13 +920,50 @@ function $id(elementStr){
 						},s);
 					}
 				})(j)
-				
-				
-				
 			}
 		}
 	}
 	setBar();
+	
+	
+	/**
+	 * smp-news-msg 新闻消息滚动
+	 **/
+	
+	Smp.prototype.newsMsg = (function(ele){
+		var newsMsg = function (ele){
+			var msgList = $$("."+ele)[0];
+			var msgItem = $$("."+ele+" li");
+			var itemLen = msgItem.length;
+			var itemHeight = 0,allHeight;
+			var timer = null;
+			if(itemLen>0){
+				itemHeight = parseInt(getStyle(msgItem[0],'height'));
+			}
+			allHeight = itemHeight*itemLen;
+			console.log('allHeight='+allHeight+'itemHeight='+itemHeight);
+			var currentVal = 0;
+			if(timer){
+				clearInterval(timer);
+			}
+			console.log(isExsitCssStyle('webkitTransform'));
+			timer = setInterval(function(){
+				if(Math.abs(currentVal) == (allHeight-itemHeight)){
+					currentVal = 0;
+				}else{
+					currentVal+=itemHeight;
+				}
+				if(isExsitCssStyle('webkitTransform')){
+					setStyle(msgList,{transform:'translate3d(0px,'+(-currentVal)+'px,0px)',webkitTransform:'translate3d(0px,'+(-currentVal)+'px,0px)'});
+				}
+			},2000);
+		}
+		return {
+			init:function(ele){
+				newsMsg(ele);
+			}
+		}
+	})();
 	
 	
 	/**
@@ -961,78 +1007,185 @@ function $id(elementStr){
 	/**
 	 * 底部弹出菜单栏 
 	 **/
-	Smp.prototype.actionsheet={
-		eType:'',//事件类型
-		openHandle:null,//打开事件时候执行的方法
-		closeHandle:null,//关闭事件时候执行的方法
-		init:function(ele,type){
-			var self = this;
-			var ele = $$('#'+ele)[0];//获取当前的元素
-			var body = $$('body')[0];//获取body
-			var cancelBtn = $$('#J_Cancel')[0];//获取取消按钮
-			var coverNode = $$('.mask-black')[0];//获取遮罩层
-			var cover = null;//遮罩层
-			cover = document.createElement('div');
-			addClass(cover,'mask-black');
-			var cancel = function(){
-				if(hasClass(ele,'toggle')){
-					removeClass(ele,'toggle');
+	Smp.prototype.actionsheet= (function(){
+		var _flag = false;
+		var c_flag = false;
+		var eType = '';//事件类型
+		var openHandle = null;//打开事件时候执行的方法
+		var closeHandle = null;//关闭事件时候执行的方法
+		var body = $$('body')[0];//获取body
+		var cancelBtn = $$('#J_Cancel')[0];//获取取消按钮
+		var coverNode = $$('.mask-black')[0];//获取遮罩层
+		var cover = null;//遮罩层
+		cover = document.createElement('div');
+		addClass(cover,'mask-black');
+		return {
+			init:function(ele,type){
+				var ele = $$('#'+ele)[0];//获取当前的元素
+				var cancel = function(){//关闭   触发close事件
+					if(hasClass(ele,'toggle')){
+						removeClass(ele,'toggle');
+					}
+					if(coverNode!=null&&coverNode!=undefined){
+						body.removeChild(coverNode);
+					}else if(cover){
+						body.removeChild(cover);
+					}else{
+						console.log('cover不存在');
+					}
+					if(isFunction(closeHandle)){
+						smp.actionsheet.handle(closeHandle);
+					}
 				}
-				if(coverNode!=null&&coverNode!=undefined){
-					body.removeChild(coverNode);
-				}else{
-					body.removeChild(cover);
+				var open = function(){//打开   触发open事件
+					body.appendChild(cover);
+					addClass(ele,'toggle');
+					if(isFunction(openHandle)){
+						smp.actionsheet.handle(openHandle);
+					}
 				}
-				cancelBtn.removeEventListener('click',cancel);
-				if(isFunction(self.closeHandle)){
-					self.handle(self.closeHandle);
+				if(type == 'open'){
+					open();
+					if(!_flag){//只添加一次事件
+						_flag = true;
+						cancelBtn.addEventListener('click',cancel);
+					}
+				}else if (type == 'close'){
+					if(cover){
+						cancel();
+					}
 				}
+				if(!c_flag){//添加一次事件
+					c_flag = true;
+					cover.addEventListener('click',function(e){
+						var e = e||window.event;
+						cancel();
+						e.preventDefault();
+						e.cancelable;
+					});
+				}
+			},
+			on:function(type,callback){//自定义事件，监听actionsheet开启与关闭 事件
+				if(type&&type == 'open'){
+					eType = 'open';
+					openHandle = callback;
+				}else if(type&&type == 'close'){
+					eType = 'close';
+					closeHandle = callback;
+				}
+			},
+			handle:function(callback){//事件触发
+				callback();
 			}
-			var open = function(){
-				body.appendChild(cover);
-				addClass(ele,'toggle');
-				if(isFunction(self.openHandle)){
-					self.handle(self.openHandle);
-				}
+		}
+	}());
+	
+	/**
+	 * 设置是否开启显示密码
+	 **/
+	function isShowPassword(pwdBtn){
+		var pwd = $$('input+.icon-browse');
+		if(pwdBtn){
+			pwd = $$('input+.'+pwdBtn);
+		}
+		if(pwd){
+			var pwd_len = pwd.length;
+			for(var j=0;j<pwd_len;j++){
+				(function(i){
+					pwd[j].addEventListener('click',function(e){
+						var _this = this;
+						each(siblings(this),function(ele){
+							if(ele.nodeName == 'INPUT'&&ele.type == 'password'){
+								ele.type = 'text';
+								_this.style.textDecoration = 'line-through';
+							}else{
+								_this.style.textDecoration = 'none';
+								ele.type = 'password';
+							}
+						})
+						
+					})
+				}(j));
 			}
-			if(type == 'open'){
-				open();
-				cancelBtn.addEventListener('click',cancel);
-			}else if (type == 'close'){
-				if(cover){
-					cancel();
-				}
-			}
-			cover.addEventListener('click',function(e){
-				var e = e||window.event;
-				cancel();
-				e.preventDefault();
-				e.cancelable;
-			});
-		},
-		on:function(type,callback){//自定义事件，监听actionsheet开启与关闭 事件
-			if(type&&type == 'open'){
-				this.eType = 'open';
-				this.openHandle = callback;
-			}else if(type&&type == 'close'){
-				this.eType = 'close';
-				this.closeHandle = callback;
-			}
-		},
-		handle:function(callback){//事件触发
-			callback();
 		}
 	}
+	isShowPassword();
 	
+	/**
+	 * 添加百度地图 
+	 **/
+	Smp.prototype.setBaiduMap = {
+		init:function(ele,option){
+			var option = option||{},
+				_w,
+				_h,
+				zoomC,
+				scaleC,
+				setZoom,
+				_theme,
+				_icon;
+			var defaults = {
+				width:'100%',
+				height:'200px',
+				zoomControl: false, // 是否开启地图缩放控件
+		    	scaleControl: false, // 是否开启地图比例尺控件
+				setZoom:11,
+				theme:0,
+				icon:'',
+			}
+			var obj_option = s_extend(defaults,option);
+			var mapId = $id(ele);
+			_w = obj_option.width;//设置地图宽度
+			_h = obj_option.height;//设置地图高度
+			zoomC = obj_option.zoomControl;//
+			scaleC = obj_option.scaleControl;//
+			setZoom = obj_option.setZoom;//
+			_theme = obj_option.theme;//主题风格
+			_icon = obj_option.icon;//自定义标注图
+			setStyle(mapId,{width:_w,height:_h});
+			var map = null;
+			var getMap = function(){
+				return new BMap.Map(ele);
+			}
+			map = !map?getMap():map;
+			var poi = new BMap.Point(113.448054, 22.491276);
+			map.centerAndZoom(poi, setZoom);
+			map.enableScrollWheelZoom(zoomC);//启用滚轮放大缩小
+			map.addControl(new BMap.NavigationControl());// 添加平移缩放控件
+			map.addControl(new BMap.MapTypeControl());//添加地图类型控件
+			if(scaleC){
+				map.addControl(new BMap.ScaleControl());// 添加比例尺控件
+			}
+			var myIcon = null;
+			if(_icon!= ''){
+				myIcon = new BMap.Icon(_icon, new BMap.Size(300,157));//定义自己的标注
+			}
+			var marker = new BMap.Marker(poi,{icon:myIcon}); //创建marker对象
+			map.addOverlay(marker); //在地图中添加marker
+			var setTheme = function(_theme){//设置主题风格
+				var themes = ['normal','light','dark','redalert','googlelite','grassgreen','midnight','pink','darkgreen','bluish','grayscale','hardedge'];
+				map.setMapStyle({style:themes[_theme]});
+			}
+			setTheme(_theme);
+			var intoBaidu = function(){
+				var a_div = document.createElement('div');
+				a_div.id = 'intoBaidu';
+				a_div.innerHTML = '<a href = "http://api.map.baidu.com/marker?location=22.491276,113.448054&title=中山雅居乐长江高尔夫会所&content=中山雅居乐长江高尔夫会所&output=html&src=appName|yourAppName">打开app</a>';
+				$$('body')[0].appendChild(a_div);
+			}
+			intoBaidu();
+		}
+	}
 	/**
 	 *公用的ajax请求方式  
 	 *使用ajax的时候，需要当前页面与请求的url必须是同域下(浏览器的同源策略)
 	 * 同源策略：协议相同，域名相同，端口号相同
 	 **/
 	function _ajax(option,type){
-		if(isObject(option)&&type == 'undefined'){
+		if(isObject(option)&&type != 'undefined'){
 			var option = isObject(option)?option:{};
 			var defaults = {
+				url:'',
 				method:'get',//默认get请求
 				async:true,//默认异步方式
 				data:null,//请求参数为null
@@ -1048,16 +1201,13 @@ function $id(elementStr){
 			var contentType = obj_option.contentType;
 			var succFun = obj_option.succFun;
 		}else if(isString(option)){
-			var url = option;//get方式直接传入一个 string类型的url
+			url = option;//get方式直接传入一个 string类型的url
 		}
 		var xhr =null;
 		if(window.XMLHttpRequest){
 			xhr = new XMLHttpRequest();
 		}else{
 			xhr = new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		if(type == 'get'){
-			method = 'get';
 		}
 		if(type == 'post'){
 			method = 'post';
@@ -1066,11 +1216,10 @@ function $id(elementStr){
 			data = null;
 		}
 		xhr.open(method,url,async);
-		ajax.setRequestHeader("Content-Type", contentType);
+		xhr.setRequestHeader("Content-Type", contentType);
 		xhr.send(data);
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4){//已成功接收请求信息
-				console.log(xhr);
 				if(xhr.status == 200){//返回成功
 					var responseData = xhr.responseText;
 					if(isFunction(succFun)){
@@ -1080,7 +1229,7 @@ function $id(elementStr){
 					throwError(xhr.status);//请求成功，返回失败状态码)
 				}
 			}else{
-				throwError('请求中...');
+				throwError('请求失败');
 			}
 		}
 	}
@@ -1093,8 +1242,8 @@ function $id(elementStr){
 	/**
 	 *使用get方式获取数据   使用方式：smp.getData('http://www.test.com/test?req1=abc&req2=3');
 	 **/
-	Smp.prototype.getData = function(url){
-		_ajax(url,'get');
+	Smp.prototype.getData = function(url,callback){
+		_ajax({url:url,method:'get',succFun:callback});
 	}
 	/**
 	 *使用post方式获取数据 
@@ -1125,7 +1274,7 @@ function $id(elementStr){
 	/**
 	 *实现对象复制
 	 **/
-	function s_extend(deep,target,option,){
+	 window.s_extend = function(target,option,deep){
 		var deep = false;
 		var clone;
 		if(deep == 'undefined' || deep == null){
@@ -1160,7 +1309,15 @@ function $id(elementStr){
 	function throwError(msg){
 		throw Error(msg);
 	}
-
+	
+	function isExsitCssStyle(styleName){
+		var flag = false;
+		if(styleName in document.documentElement.style){
+			flag = true;
+		}
+		return flag;
+	}
+	
 	/**
 	 *判断option对象是否为空 
 	 **/
@@ -1270,10 +1427,10 @@ function $id(elementStr){
 	 *each方法遍历数组元素，并且在func中返回相关的数据
 	 * func三个参数分别是 数组下标对应的元素 数组下标  当前数组 
 	 **/
-	function each(arr,func){
+	window.each = function(arr,func){
 		if(arr){
 			for(var i=0,len=arr.length;i<len;i++){
-				if(arr[i]&&func(arr[i],i.arr)){
+				if(arr[i]&&func(arr[i],i,arr)){
 					break;
 				}
 			}
@@ -1324,21 +1481,15 @@ function $id(elementStr){
 			return arr;
 		}
 	}
-	/**
-	 *将Array类型转换成String类型 
-	 **/
-	function tostring(arr){
-		return arr.join('');
-	}
-	/**
-	 *获取兄弟元素节点 Array
-	 **/
-	function siblings(elem){
+	
+	
+	window.siblings = function(elem){
 		var n = (elem.parentNode||{}).firstChild;
 		var elemArr = [];
 		var sibs = function(n,elem){
-			for(;n;n = n.nexSibling){
+			for(;n;n = n.nextSibling){
 				if(n.nodeType ===1&&n!==elem){
+					
 					elemArr.push(n);
 				}
 			}
@@ -1346,11 +1497,47 @@ function $id(elementStr){
 		}
 		return sibs(n,elem);
 	}
+	
 	/**
 	 *判断是否一个整数 
 	 **/
 	function isNumber(num){
 		return typeof(num)== 'number'&&num%1 === 0;
+	}
+	/**
+	 * 移除数组中指定位置 
+	 **/
+	Array.prototype.deleteIndex = function(index){
+		var len = this.length;
+		var index = index;
+		if(index>len-1){//下标超过数组最大值的时候，移除最后一个
+			index =  len-1;
+		}
+		if(index<0&&Math.abs(index)>len-1){
+			index = 0;
+		}
+		return this.splice(index,1);
+	}
+	/**
+	 * 对数字数组进行排序  
+	 **/
+	Array.prototype.sort = function(){
+		var newArr = this;
+		var len = newArr.length;
+		for(var i=0;i<len-1;i++){
+			for(var j=i+1;j<len;j++){
+				if(oldArr[j]<oldArr[i]){
+					var temp;
+					temp = oldArr[i];
+					oldArr[i]=oldArr[j];
+					oldArr[j]=temp;
+				}
+			}
+		}
+		return newArr;
+	}
+	Array.prototype.toString = function(){//将array转换成string对象
+	    return this.join('');
 	}
 	/**
 	 *给字符串添加一个倒序的方法 
@@ -1374,9 +1561,7 @@ function $id(elementStr){
 			return arr;
 		}
 	}
-	Array.prototype.toString = function(){//将array转换成string对象
-	    return this.join('');
-	}
+	
 	var smp = new Smp();
 	window._this = smp;//将smp对象设置为全局window中的_this
 	window.smp = smp;

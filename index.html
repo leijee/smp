@@ -3,155 +3,170 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>首页</title>
+		<link rel="shortcut icon" href="./favicon.ico"/>
 		<link rel="stylesheet" type="text/css" href="css/smp.css"/>
 		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
 		<script src="js/flexible.js"></script>
-		<style type="text/css">
-			.dialog-test button{
-				margin-top: 20px;
-			}
-		</style>
 	</head>
 	<body>
-		<!--小按钮-->
-		<div class="button">
-			<button type="button" class="small-btn btn-danger">danger</button>
-			<button type="button" class="small-btn btn-primary">primary</button>
-			<button type="button" class="small-btn btn-warning">warning</button>
-			<button type="button" class="small-btn btn-default">default</button>
-			<button type="button" class="small-btn btn-disabled">disabled</button>
-			<button type="button" class="small-btn btn-info">info</button>
+		<script src="js/loadPage.js"></script>
+		<script>
+			loadPage.showLoading();
+		</script>
+		<div class="header">
+			<div class="header-search-form" id="search-form">
+				<i class="iconfont icon-search"></i>
+				<input type="text" placeholder="请输入搜索的商品"/>
+			</div>
+			<div class="header-login">
+				<i class="iconfont icon-account"></i>
+			</div>
+			<div class="search-bg" id="search-bg">
+			</div>
+			
 		</div>
-		<!--大按钮-->
-		<div class="dialog-test">
-			<button type="button" class="btn btn-primary" id="confirm">confirm</button>
-			<button type="button" class="btn btn-warning" id="alert">alert</button>
-			<button type="button" class="btn btn-primary" id="success">success</button>
-			<button type="button" class="btn btn-default" id="notify">notify</button>
-			<button type="button" class="btn btn-info" id="error">error</button>
-			<button type="button" class="btn btn-danger" id="loading">loading</button>
-			<button type="button" class="btn btn-warning" id="actionsheet">actionsheet</button>
+		
+		<div class="smp-search" id="smp-search">
+			<div class="search-head">
+				<div class="search-back">
+					<i class="iconfont icon-back back"></i>
+				</div>
+				<div class="search-text">
+					<div class="search-bar">
+						<i class="iconfont icon-search search"></i>
+						<input type="text" autofocus="true" name="searchValue" placeholder="请输入..."/>
+						<i class="iconfont icon-close close"></i>
+					</div>
+				</div>
+				<div class="search-sure">
+					<button type="button" class="sure-btn">搜索</button>
+				</div>
+			</div>
+			<div class="search-content">
+				<!--显示历史纪录-->
+				<div class="search-history">
+					<div class="history-header clear-fixed">
+						<span class="history-title float-l">
+							最近搜索
+						</span>
+						<span class="history-delete float-r">
+							<i class="iconfont icon-delete" id="delete-history"></i>
+						</span>
+					</div>
+					<ul class="historyList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
+					</ul>
+				</div>		
+				<!--显示热门搜索-->
+				<div class="search-hot">
+					<div class="hotList-title">热门搜索</div>
+					<ul class="hotList clear-fixed">
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为手机</a></li>
+						<li class="tag"><a href="#">洗衣机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">荣耀7</a></li>
+						<li class="tag"><a href="#">耳机</a></li>
+						<li class="tag"><a href="#">冰箱</a></li>
+						<li class="tag"><a href="#">手机</a></li>
+						<li class="tag"><a href="#">华为荣耀手环</a></li>
+					</ul>
+				</div>
+				<!--显示搜索结果-->
+				<div class="search-result">
+					<div class="resultList-title">搜索结果</div>
+					<ul class="resultList">
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">神器</span><span class="tag">炒锅</span></div>
+						</li>
+						<li class="resulItem clear-fixed">
+							<div class="item-name"><a href="#">洗衣机</a></div>
+							<div class="item-tag"><span class="tag">不锈钢</span><span class="tag">不锈钢</span><span class="tag">炒锅</span></div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<!--轮播-->
 		<div class="smp-slider" id="smp-slider">
 			<div class="slider-wrapper">
 				<div class="slider-item">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/1.jpg"/>
+						<img alt="" src="https://img1.360buyimg.com/da/jfs/t7762/169/298675053/47499/3a38c2d3/599168e5Nfaf11ad5.jpg"/>
 					</a>
 				</div>
 				<div class="slider-item slider-active">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/2.jpg"/>
+						<img alt="" src="https://img1.360buyimg.com/da/jfs/t7384/238/319027687/89622/17c5fec5/59916f0cN38de44c3.jpg"/>
 					</a>
 				</div>
 				<div class="slider-item">
 					<a href="javascript:void(0)">
-						<img alt="" src="http://static.ydcss.com/uploads/ydui/3.jpg"/>
+						<img alt="" src="https://m.360buyimg.com/mobilecms/s720x322_jfs/t7159/17/2024559098/189326/5e210f08/59916719N8fb333b3.jpg!q70.jpg"/>
 					</a>
 				</div>
 			</div>
 		</div>
-		<!--进度条组件  直线跟圆圈-->
-		<div class="smp-progress" id="smp-progress">
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="60">
-				</div>
-			</div>
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="30">
-				</div>
-			</div>
-			<div class="progress lineBar">
-				<div class="progress-bar tips" bar-value="75">
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="50">
-					<div class="circle-right " >
-						<div class="rightBar danger">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar danger">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="75">
-					<div class="circle-right ">
-						<div class="rightBar info">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar info">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="55">
-					<div class="circle-right ">
-						<div class="rightBar warning">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar warning">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="progress circleBar float-l">
-				<div class="progress-bar" bar-value="35">
-					<div class="circle-right ">
-						<div class="rightBar primary">
-						</div>
-					</div>
-					<div class="circle-left">
-						<div class="leftBar primary">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--菜单列表按钮-->
+		<!--菜单按钮-->
 		<div class="smp-menu">
 			<ul class="menu-list list-grid-5">
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./button.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5875/51/9145207616/18667/66a76536/59843c8cN82899dad.png" alt="京东超市"/>
-						<span class="link-title">京东超市</span>
+						<span class="link-title">按钮</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./form.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5965/339/3633548361/13799/cd4d0416/5954cf81N3294a71c.png" alt="全球购"/>
-						<span class="link-title">全球购</span>
+						<span class="link-title">表单</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./progressBar.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5656/351/153181074/12227/e35aa8d/591d9456Naa85e195.png" alt="服装城"/>
-						<span class="link-title">服装城</span>
+						<span class="link-title">进度条</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="./map.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5803/126/9174390895/18336/72dd428e/598420dfNdab74566.png" alt="京东生鲜"/>
-						<span class="link-title">京东生鲜</span>
+						<span class="link-title">进入地图</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" id="openMap" href="javascript:void(0);">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5773/256/159664156/17475/742fec7e/591d9475Na810c2eb.png" alt="京东到家"/>
-						<span class="link-title">京东到家</span>
+						<span class="link-title">选择地图</span>
 					</a>
 				</li>
 				<li class="menu-item">
-					<a class="mi-link" href="#">
+					<a class="mi-link" href="tab.html">
 						<img class="link-icon" src="https://m.360buyimg.com/mobilecms/s80x80_jfs/t5647/156/156583179/12255/981e942a/591d94a1Nfde63a47.png" alt="充值缴费"/>
-						<span class="link-title">充值缴费</span>
+						<span class="link-title">选项卡</span>
 					</a>
 				</li>
 				<li class="menu-item">
@@ -180,6 +195,44 @@
 				</li>
 			</ul>	
 		</div>
+		
+		<!--菜单弹出-->
+		<div class="smp-actionsheet" id="smp-actionsheet">
+            <a class="actionsheet-item baidu-map">百度地图</a>
+            <a class="actionsheet-item gaode-map">高德地图</a>
+            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
+		</div>
+		<!--广告图片-->
+		<div class="smp-ad">
+			<ul class="ad-list">
+				<li class="ad-item">
+					<a href="#">
+						<img src="https://m.360buyimg.com/mobilecms/jfs/t5635/181/9760687193/67974/966811b/598aaf7bNb8531dc9.jpg!q70.jpg" alt="" />
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!--消息播报-->
+		<div class="smp-news-msg">
+			<a class="news-msg-title" href="#">
+				<img src="img/smp-news-tit.png">
+			</a>
+			<div class="news-msg-cont">
+				<ul class="msg-cont-list transtions">
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>更新表单</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">爆</span>添加地图功能</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">热</span>添加选项卡功能</a></li>
+					<li class="msg-cont-item"><a href="#"><span class="red-color">火</span>添加内容列表</a></li>
+				</ul>
+			</div>
+			<a class="news-msg-more" href="https://pro.m.jd.com/mall/active/3vWapAz58pJGYRfNeG88ddfsMM8S/index.html">
+				更多
+			</a>
+		</div>
+		
+		
+		
+		<!--列表-->
 		<div class="smp-list theme1">
 			<ul class="data-list">
 				<li class="data-item clear-fixed">
@@ -310,145 +363,131 @@
 				</li>
 			</ul>
 		</div>
+		
 		<!--回到顶部-->
 		<div class="smp-back-top animated" id="smp-back-top">
 			<i class="iconfont icon-less"></i>
 		</div>
+		<!--底部固定菜单-->
+		<footer class="smp-fix-menu">
+			<a href="#">
+				<i class="iconfont icon-all"></i>
+				<p>首页</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-manageorder"></i>
+				<p>订单</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-logistic"></i>
+				<p>发现</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-cart"></i>
+				<p>购物车</p>
+			</a>
+			<a href="#">
+				<i class="iconfont icon-gerenzhongxin"></i>
+				<p>我的</p>
+			</a>
+		</footer>
 		
-		<!--底部菜单-->
-		<div class="smp-actionsheet" id="smp-actionsheet">
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="#" class="actionsheet-item">示例菜单 - Javascript API</a>
-            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
-		</div>
-	
 	</body>
+	
+	<script src="js/fastclick.js"></script>
 	<script src="js/smp.js"></script>
 	<script>
-		var doc = document;
-		var _confirm = $id('confirm');
-		var _alert = $id('alert');
-		var _success = $id('success');
-		var _error= $id('error');
-		var _loading= $id('loading');
-		var _notify = $id('notify');
-		var _actionsheet = $id('actionsheet');
-		var SMP_UTILS = smp.utils;
 		
-		SMP_UTILS.on('click',_confirm,function(){
-			smp.dialog.confirm('提示信息','测试一下',function(){
-				console.log('你点击了确定');
-			});
-		});
-		SMP_UTILS.on('click',_alert,function(){
-			smp.dialog.alert('你点击了我',function(){
-				console.log('你点击了确定');
-			});
-		});
-		SMP_UTILS.on('click',_success,function(){
-			smp.dialog.toast('成功','success',1000,function(){
-				console.log('success');
-			});
-		});
-		SMP_UTILS.on('click',_error,function(){
-			smp.dialog.toast('失败','error',function(){
-				console.log('error');
-			});
+		
+		
+		$ready(function(){
 			setTimeout(function(){
-				smp.dialog.closeToast();
-			},1000);
-		});
-		SMP_UTILS.on('click',_loading,function(){
-			smp.dialog.loading('正在加载中..',2000);
-		});
-		SMP_UTILS.on('click',_notify,function(){
-			smp.dialog.notify({
-					msg:'密码错误',
-					time:3000,
-					fix:'top',
-					bgcolor:'#000',
-					color:'#fff'
-				},function(){
-					console.log('消失了');
-			});
-		});
-		SMP_UTILS.on('click',_actionsheet,function(){
-			smp.actionsheet.init('smp-actionsheet','open');
+				loadPage.hideLoading();//关闭页面正在加载中...
+			},10);
+			FastClick.attach(document.body);
 			
-//			setTimeout(function(){
-//				smp.actionsheet.init('smp-actionsheet','close');//关闭底部菜单
-//			},2000);
+			smp.Search.init('smp-search','search-form',{});
+			
+			smp.slider.init("smp-slider",{
+				autoplay:true,//是否自动播放
+				playtime:2000,//每2秒切换一张
+				pagination:true,//是否显示分页
+				currentIndex:1,//默认显示当前第一页，
+				durationTime:500,//默认动画效果周期为500ms
+				color:'#ccc',//分页背景色
+				activeColor:'orange',//分页当前页的颜色
+				sliderEnd:function(index){
+//					console.log('currentIndex'+index);
+				}
+			});
+			//回到顶部  需要手动添加 html
+			smp.backTop.init('smp-back-top');
+			
+			//懒加载 图片出现在可见区域里的时候，加载图片
+			smp.Loading.lazyLoading();
+			
+			/**
+			 * 到达底部，通过在一个回调方法中加载更多的数据
+			 * callback中的Loading对象含有两个参数 showLoading:显示正在加载中的动画
+			 * hideLoading:销毁正在加载中的动画
+			 **/
+			smp.bottomLoading.init(function(Loading){
+				Loading.showLoading();//显示正在加载的图片
+				var i = 0;
+				var Str = '';
+				while(i<4){
+					Str +='<li class="data-item clear-fixed">'
+						+'<div class="item-pic">'
+							+'<img class="lazy-img" data-src="http://img1.shikee.com/try/2016/06/25/14244120933639105658.jpg"/>'
+						+'</div>'
+						+'<div class="item-info">'
+							+'<div class="item-title">2016夏天新款男士短袖t恤青少年韩版修</div>'
+							+'<div class="item-detail clear-fixed">'
+								+'<div class="float-l"><span>￥181</span><span>/人</span></div>'
+								+'<div class="float-r d-right">right</div>'
+							+'</div>'	
+							+'<div class="item-content">夏天新款男士短袖t恤青少年韩版修'
+							+'</div>'						
+						+'</div>'
+					+'</li>';
+					i++;
+				}
+				$$('.theme2 .data-list')[0].insertAdjacentHTML('beforeend',Str);
+				setTimeout(function(){
+					Loading.hideLoading();//关闭正在加载的图片
+				},500);
+			});
+			//开启动态消息滚动
+			smp.newsMsg.init('msg-cont-list');
+			
+			//弹出底部菜单
+			var SMP_UTILS = smp.utils;
+			var baidu_map = $$('.baidu-map')[0];
+			var gaode_map = $$('.gaode-map')[0];
+			var openMap = $id('openMap');
+			SMP_UTILS.on('click',openMap,function(){
+				smp.actionsheet.init('smp-actionsheet','open');
+			});
+			smp.actionsheet.on('open',function(){
+				console.log('打开了');
+			});
+			smp.actionsheet.on('close',function(){
+				console.log('关闭了');
+			});
+			var Longitude = '113.448054';
+			var Latitude = '22.491276';
+			var activity_address = '中山雅居乐长江高尔夫会所';
+			//进入百度地图
+			baidu_map.addEventListener('click',function(){
+				smp.actionsheet.init('smp-actionsheet','close');
+				location.href = "http://api.map.baidu.com/geocoder?address=" + activity_address + "&output=html&src=appName|yourAppName";
+			});
+			//进入高德地图
+			gaode_map.addEventListener('click',function(){
+				smp.actionsheet.init('smp-actionsheet','close');
+				location.href = "http://uri.amap.com/marker?position=" + Longitude + "," + Latitude + "&name=" + activity_address + "&src=mypage&coordinate=gaode&callnative=1";
+			});
+			
 		});
-		
-		smp.actionsheet.on('open',function(){
-			console.log('打开了');
-		});
-		smp.actionsheet.on('close',function(){
-			console.log('关闭了');
-		});
-		
-		smp.slider.init("smp-slider",{
-			autoplay:false,//是否自动播放
-			playtime:2000,//每2秒切换一张
-			pagination:true,//是否显示分页
-			currentIndex:1,//默认显示当前第一页，
-			durationTime:500,//默认动画效果周期为500ms
-			color:'#ccc',//分页背景色
-			activeColor:'orange',//分页当前页的颜色
-			sliderEnd:function(index){
-				console.log('currentIndex'+index);
-			}
-		});
-		
-		smp.backTop.init('smp-back-top');//方式一
-		//smp.backTop.init();//方式二  注意：无需再写回到顶部的html ，可自动创建
-		
-		smp.Loading.lazyLoading();//图片出现在可见区域里的时候，加载图片
-		
-		/**
-		 * 到达底部，通过在一个回调方法中加载更多的数据
-		 * callback中的Loading对象含有两个参数 showLoading:显示正在加载中的动画
-		 * hideLoading:销毁正在加载中的动画
-		 **/
-		smp.bottomLoading.init(function(Loading){
-			Loading.showLoading();//显示正在加载的图片
-			var i = 0;
-			var Str = '';
-			while(i<4){
-				Str +='<li class="data-item clear-fixed">'
-					+'<div class="item-pic">'
-						+'<img class="lazy-img" data-src="http://img1.shikee.com/try/2016/06/25/14244120933639105658.jpg"/>'
-					+'</div>'
-					+'<div class="item-info">'
-						+'<div class="item-title">2016夏天新款男士短袖t恤青少年韩版修</div>'
-						+'<div class="item-detail clear-fixed">'
-							+'<div class="float-l"><span>￥181</span><span>/人</span></div>'
-							+'<div class="float-r d-right">right</div>'
-						+'</div>'	
-						+'<div class="item-content">夏天新款男士短袖t恤青少年韩版修'
-						+'</div>'						
-					+'</div>'
-				+'</li>';
-				i++;
-			}
-			$$('.theme2 .data-list')[0].insertAdjacentHTML('beforeend',Str);
-			setTimeout(function(){
-				Loading.hideLoading();//关闭正在加载的图片
-			},500);
-		});
-</script>	
-	<script>
-//		smp.progress.init('smp-progress',{
-//			type:'lineBar',//分为lineBar 跟circleBar两种风格
-//			width:'',//设置bar的宽度
-//			background:'',//设置bar的背景颜色
-//			fillColor:'',//填充颜色
-//			fillWidth:'',//填充宽度
-//			progress:'50%'//进度值	
-//		});
-		
-		
-	</script>
+	</script>	
 </html>
